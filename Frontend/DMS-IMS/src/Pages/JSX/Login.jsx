@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import {jwtDecode} from "jwt-decode"; // Correct import for jwt-decode
+import logo from "../../assets/IMSLogo.png"; // Correct import for logo
 
 const Login = ({ isTokenExpired }) => {
     const navigate = useNavigate();
@@ -79,21 +80,21 @@ const Login = ({ isTokenExpired }) => {
             <div className="container">
                 <div className="row gy-4 align-items-center">
                     <div className="col-12 col-md-6 col-xl-7">
-                        <div className="d-flex justify-content-center text-bg-primary">
-                            <div className="col-12 col-xl-9">
-                                <img
-                                    className="img-fluid rounded mb-4"
+                        <div className="d-flex justify-content-center text-bg-primary" style={{height:'86.8vh'}}>
+                            <div className="col-12 col-xl-9 align-content-center">
+                                {/* <img
+                                    className="img-fluid rounded mb-4 d-none d-sm-block"
                                     loading="lazy"
-                                    src="./assets/img/ims-logo.svg"
+                                    src={logo}
                                     width="245"
                                     height="80"
                                     alt="IMS Logo"
-                                />
-                                <hr className="border-primary-subtle mb-4" />
-                                <h2 className="h1 mb-4">
+                                    style={{ mixBlendMode: "multiply", marginLeft: "14rem", width:'7rem', height:'7rem'}}
+                                /> */}
+                                <h2 className="h1 mb-4" style={{textAlign:'center'}}>
                                     Welcome to IMS Computer Science Department
                                 </h2>
-                                <p className="lead mb-5">
+                                <p className="lead mb-5" style={{textAlign:'center'}}>
                                     Empowering the next generation of tech innovators and leaders.
                                 </p>
                                 <div className="text-center">
