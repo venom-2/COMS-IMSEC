@@ -1,52 +1,85 @@
 /* Custom CSS for DashboardHOD */
 html, body {
-    height: 100%;
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
-  
-  .navbar {
-    margin-bottom: 0;
-  }
-  
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  margin-bottom: 0;
+}
+
+.sidebar {
+  height: 100vh;
+  padding-top: 20px;
+  position: fixed;
+  top: 3rem;
+  left: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 200px; /* Set a consistent width for the sidebar */
+  transition: all 0.3s;
+}
+
+.sidebar .nav-link {
+  font-size: 1.1rem;
+  padding: 10px;
+}
+
+.sidebar .nav-link.active {
+  background-color: #495057;
+}
+
+.card {
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-title {
+  color: #000;
+}
+
+.main-content {
+  position: absolute;
+  left: 2rem;
+  z-index: -1;
+}
+
+.form-group label {
+  font-weight: bold;
+}
+
+/* Change the color of the navbar toggler icon to white */
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 1%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+/* Ensure the sidebar collapses correctly */
+.sidebar {
+  height: 100vh;
+}
+
+@media (max-width: 768px) {
   .sidebar {
-    height: 100vh;
-    padding-top: 20px;
     position: fixed;
-    top: 3rem;
+    top: 0;
     left: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    transition: all 0.3s;
+    width: 250px; /* Adjust width for small screens */
+    height: 100%;
+    z-index: 1040;
+    transition: transform 0.3s ease-in-out;
   }
-  
-  .sidebar .nav-link {
-    font-size: 1.1rem;
-    padding: 10px;
+
+  .sidebar.collapse:not(.show) {
+    transform: translateX(-100%);
   }
-  
-  .sidebar .nav-link.active {
-    background-color: #495057;
-  }
-  
-  .card {
-    border: none;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-  }
-  
-  .card-title {
-    color: #000;
-  }
-  
+
   .main-content {
-    margin-left: 240px; /* Adjust according to the sidebar width */
-    padding: 20px;
-    height: 100vh;
-    overflow-y: auto;
+    margin-left: 0; /* Remove margin for main content on small screens */
   }
-  
-  .form-group label {
-    font-weight: bold;
-  }
-  
+}
