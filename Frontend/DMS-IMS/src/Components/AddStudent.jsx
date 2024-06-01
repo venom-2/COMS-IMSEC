@@ -21,7 +21,7 @@ const AddStudent = () => {
 
   const addStudent = async() => {
     const { name, rollNumber, year, branch, section, email } = credentials;
-    const res = await fetch('http://localhost:3000/addData/student', {
+    const res = await fetch('https://coms-imsec-backend.vercel.app/addData/student', {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

@@ -21,7 +21,7 @@ const AddFaculty = () => {
 
   const addFaculty = async() => {
     const { name, department, email, password, role } = credentials;
-    const res = await fetch('http://localhost:3000/addData/user', {
+    const res = await fetch('https://coms-imsec-backend.vercel.app/addData/user', {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
