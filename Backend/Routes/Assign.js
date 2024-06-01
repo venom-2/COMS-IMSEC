@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
 
         // Update the subjectAssigned by appending the new subjectID
         if(subjectAssigned.indexOf(req.body.subjectID) !== -1) {
-            res.send({ success: false, message : "Subject already assigned!"});
+            res.send({ success: true, message : "Subject already assigned!"});
             return;
         }
         subjectAssigned = subjectAssigned ? subjectAssigned + "," + req.body.subjectID : req.body.subjectID;

@@ -19,6 +19,7 @@ html, body {
   overflow-y: auto;
   width: 200px; /* Set a consistent width for the sidebar */
   transition: all 0.3s;
+  z-index: 5;
 }
 
 .sidebar .nav-link {
@@ -43,7 +44,6 @@ html, body {
 .main-content {
   position: absolute;
   left: 2rem;
-  z-index: -1;
 }
 
 .form-group label {
