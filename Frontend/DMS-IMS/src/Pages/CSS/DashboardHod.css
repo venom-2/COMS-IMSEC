@@ -1,0 +1,52 @@
+/* Custom CSS for DashboardHOD */
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .navbar {
+    margin-bottom: 0;
+  }
+  
+  .sidebar {
+    height: 100vh;
+    padding-top: 20px;
+    position: fixed;
+    top: 3rem;
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: all 0.3s;
+  }
+  
+  .sidebar .nav-link {
+    font-size: 1.1rem;
+    padding: 10px;
+  }
+  
+  .sidebar .nav-link.active {
+    background-color: #495057;
+  }
+  
+  .card {
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+  
+  .card-title {
+    color: #000;
+  }
+  
+  .main-content {
+    margin-left: 240px; /* Adjust according to the sidebar width */
+    padding: 20px;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  
+  .form-group label {
+    font-weight: bold;
+  }
+  
