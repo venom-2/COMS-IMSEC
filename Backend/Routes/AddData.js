@@ -2,6 +2,7 @@ const express = require('express');
 const Subjects = require('../Model/Subjects');
 const Student = require('../Model/Student');
 const User = require('../Model/User');
+const Marks = require('../Model/Marks');
 
 const router = express.Router();
 
@@ -40,5 +41,18 @@ router.post('/user', async(req, res) => {
         res.status(500).json({ message: "Database error" });
     }
 });
+
+router.post('/marks', async (req, res) => {
+    try {
+        const { studentId, rollNumber, year, branch, section, marks } = req.body;
+
+        const newMark = await Marks.create({ studentId, rollNumber, year, branch, section, marks });
+        res.status(200).json({ message: "Marks added successfully", success: true });
+    } catch (error) {
+        console.error("Database error:", error);
+        res.status(500).json({ message: "Database error" });
+    }
+});
+
 
 module.exports = router;
