@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import DashboardFaculty from "./Pages/JSX/DashboardFaculty";
 import DashboardAdmin from "./Pages/JSX/DashboardAdmin";
 import {jwtDecode} from "jwt-decode"; // Correct import statement for jwt-decode
+import { COProvider } from './contextAPI/COContext';
 
 const isTokenExpired = (token) => {
   try {
@@ -70,6 +71,7 @@ const ProtectedWrapper = ({ expectedRole }) => {
 
 function App() {
   return (
+    <COProvider>
     <BrowserRouter>
       <Toaster position="top-center" reverseOrder={false} />
       <Routes>
@@ -97,6 +99,7 @@ function App() {
 
       </Routes>
     </BrowserRouter>
+    </COProvider>
   );
 }
 

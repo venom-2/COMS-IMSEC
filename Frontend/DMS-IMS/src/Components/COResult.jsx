@@ -1,15 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Modal, Form, Button, Row, Col, Container } from "react-bootstrap";
+import toast from "react-hot-toast";
+import { COContext } from "../contextAPI/COContext";
 
 const COResult = ({ showModal, setShowModal }) => {
   const [year, setYear] = useState("");
   const [branch, setBranch] = useState("");
   const [subject, setSubject] = useState("");
+  const { coData, setCoData } = useContext(COContext);
 
-  const handleFetch = (e) => {
+  useEffect(() => {
+    fetch("https://coms-imsec-backend.vercel.app/fetch/subject", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ year: year }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setSubject(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, [year]);
+
+  const handleFetch = async (e) => {
     e.preventDefault();
-    // Handle fetch logic here
-    console.log("Fetching results for:", { year, branch, subject });
+    const response = await fetch("http://localhost:3000/fetch/co", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ year, branch, subject }),
+    });
+    const parsedResponse = await response.json();
+    setCoData(parsedResponse);
+    console.log("CO Data:", coData, parsedResponse);
+    toast.success("Results fetched successfully");
   };
 
   return (
@@ -31,10 +60,10 @@ const COResult = ({ showModal, setShowModal }) => {
                     required
                   >
                     <option value="">Select Year</option>
-                    <option value="2021">2021</option>
-                    <option value="2022">2022</option>
-                    <option value="2023">2023</option>
-                    <option value="2024">2024</option>
+                    <option value="1">1st Year</option>
+                    <option value="2">2nd Year</option>
+                    <option value="3">3rd Year</option>
+                    <option value="4">4th Year</option>
                     {/* Add more options as needed */}
                   </Form.Control>
                 </Form.Group>
@@ -60,19 +89,36 @@ const COResult = ({ showModal, setShowModal }) => {
             </Row>
             <Row className="mb-3">
               <Col>
-                <Form.Group controlId="subject">
+                <Form.Group controlId="branch">
                   <Form.Label>Subject</Form.Label>
                   <Form.Control
-                    type="text"
-                    placeholder="Enter Subject"
+                    as="select"
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
                     required
-                  />
+                  >
+                    <option value="">Select Subject</option>
+                    {subject && Array.isArray(subject) && subject.length > 0 ? (
+                      subject.map((sub) => (
+                        <option key={sub._id} value={sub.subjectName}>
+                          {sub.subjectName}
+                        </option>
+                      ))
+                    ) : (
+                      <option disabled>No subjects available</option>
+                    )}
+
+                    {/* Add more options as needed */}
+                  </Form.Control>
                 </Form.Group>
               </Col>
             </Row>
-            <Button variant="primary" type="submit" className="w-100">
+            <Button
+              variant="primary"
+              type="submit"
+              className="w-100"
+              onClick={handleFetch}
+            >
               Fetch
             </Button>
           </Form>
