@@ -73,8 +73,11 @@ function App() {
     <BrowserRouter>
       <Toaster position="top-center" reverseOrder={false} />
       <Routes>
+
         <Route path="/" element={<LandingPage />} />
+
         <Route path="/login" element={<Login isTokenExpired={isTokenExpired} />} />
+
         <Route path="/dashboardhod" element={<ProtectedWrapper expectedRole="HOD" />}>
           <Route index element={<DashboardHOD />} />
           <Route path="add-students" element={<DashboardHOD />} />
@@ -82,8 +85,16 @@ function App() {
           <Route path="add-faculty" element={<DashboardHOD />} />
           <Route path="add-subjects" element={<DashboardHOD />} />
         </Route>
-        <Route path="/dashboardfaculty" element={<ProtectedRoute element={<DashboardFaculty />} expectedRole="Faculty" />} />
+
+        <Route path="/dashboardfaculty" element={<ProtectedWrapper expectedRole="Faculty" />}>
+          <Route index element={<DashboardFaculty />} />
+          <Route path="add-students" element={<DashboardFaculty />} />
+          <Route path="add-marks" element={<DashboardFaculty />} />
+          <Route path="view-co" element={<DashboardFaculty />} />
+        </Route>
+        
         <Route path="/dashboardadmin" element={<ProtectedRoute element={<DashboardAdmin />} expectedRole="Admin" />} />
+
       </Routes>
     </BrowserRouter>
   );
