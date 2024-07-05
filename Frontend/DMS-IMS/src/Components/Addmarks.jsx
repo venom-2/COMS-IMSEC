@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Form, Button, Tab, Nav } from 'react-bootstrap';
 import toast from "react-hot-toast";
 
 const Addmarks = () => {
@@ -223,57 +223,81 @@ const Addmarks = () => {
           </div>
         )}
 
-        <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal show={showModal} onHide={() => setShowModal(false)} centered>
           <Modal.Header closeButton>
             <Modal.Title>Add Marks for {selectedStudent?.name}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form>
-              <h4>Section A</h4>
-              <Form.Group controlId="A1a">
-                <Form.Label>1(a)</Form.Label>
-                <Form.Control
-                  type="text"
-                  onChange={(e) =>
-                    handleMarksChange("A", "1a", e.target.value)
-                  }
-                />
-              </Form.Group>
-              <Form.Group controlId="A1b">
-                <Form.Label>1(b)</Form.Label>
-                <Form.Control
-                  type="text"
-                  onChange={(e) =>
-                    handleMarksChange("A", "1b", e.target.value)
-                  }
-                />
-              </Form.Group>
-              {/* Add other fields for Section A */}
-
-              <h4>Section B</h4>
-              <Form.Group controlId="B2a">
-                <Form.Label>2(a)</Form.Label>
-                <Form.Control
-                  type="text"
-                  onChange={(e) =>
-                    handleMarksChange("B", "2a", e.target.value)
-                  }
-                />
-              </Form.Group>
-              {/* Add other fields for Section B */}
-
-              <h4>Section C</h4>
-              <Form.Group controlId="C3">
-                <Form.Label>3</Form.Label>
-                <Form.Control
-                  type="text"
-                  onChange={(e) =>
-                    handleMarksChange("C", "3", e.target.value)
-                  }
-                />
-              </Form.Group>
-              {/* Add other fields for Section C */}
-            </Form>
+            <Tab.Container defaultActiveKey="sectionA">
+              <Nav variant="pills" className="mb-3">
+                <Nav.Item>
+                  <Nav.Link eventKey="sectionA">Section A</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="sectionB">Section B</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="sectionC">Section C</Nav.Link>
+                </Nav.Item>
+              </Nav>
+              <Tab.Content>
+                <Tab.Pane eventKey="sectionA">
+                  <Form>
+                    <Form.Group controlId="A1a">
+                      <Form.Label>1(a)</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter marks for 1(a)"
+                        onChange={(e) =>
+                          handleMarksChange("A", "1a", e.target.value)
+                        }
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="A1b">
+                      <Form.Label>1(b)</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter marks for 1(b)"
+                        onChange={(e) =>
+                          handleMarksChange("A", "1b", e.target.value)
+                        }
+                      />
+                    </Form.Group>
+                    {/* Add other fields for Section A */}
+                  </Form>
+                </Tab.Pane>
+                <Tab.Pane eventKey="sectionB">
+                  <Form>
+                    <Form.Group controlId="B2a">
+                      <Form.Label>2(a)</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter marks for 2(a)"
+                        onChange={(e) =>
+                          handleMarksChange("B", "2a", e.target.value)
+                        }
+                      />
+                    </Form.Group>
+                    {/* Add other fields for Section B */}
+                  </Form>
+                </Tab.Pane>
+                <Tab.Pane eventKey="sectionC">
+                  <Form>
+                    <Form.Group controlId="C3">
+                      <Form.Label>3</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter marks for 3"
+                        onChange={(e) =>
+                          handleMarksChange("C", "3", e.target.value)
+                        }
+                      />
+                    </Form.Group>
+                    {/* Add other fields for Section C */}
+                  </Form>
+                </Tab.Pane>
+              </Tab.Content>
+            </Tab.Container>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowModal(false)}>
