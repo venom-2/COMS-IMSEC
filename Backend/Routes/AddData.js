@@ -44,9 +44,9 @@ router.post('/user', async(req, res) => {
 
 router.post('/marks', async (req, res) => {
     try {
-        const { studentId, rollNumber, year, branch, section, marks } = req.body;
+        const { studentId, rollNumber, ct, subject, year, branch, section, marks } = req.body;
 
-        const newMark = await Marks.create({ studentId, rollNumber, year, branch, section, marks });
+        const newMark = await Marks.create({ studentId, rollNumber, ct, year, branch, subject, section, marks });
         res.status(200).json({ message: "Marks added successfully", success: true });
     } catch (error) {
         console.error("Database error:", error);

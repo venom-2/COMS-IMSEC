@@ -6,6 +6,10 @@ const marksSchema = new mongoose.Schema({
         ref : 'Student',
         required: true
     },
+    ct : {
+        type: Number,
+        required: true
+    },
     rollNumber: {
         type: String,
         required: true
@@ -15,6 +19,10 @@ const marksSchema = new mongoose.Schema({
         required: true
     },
     branch: {
+        type: String,
+        required: true
+    },
+    subject : {
         type: String,
         required: true
     },

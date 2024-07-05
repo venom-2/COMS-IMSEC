@@ -2,6 +2,7 @@ const express = require('express');
 const User = require("../Model/User");
 const Subjects = require('../Model/Subjects');
 const Student = require('../Model/Student');
+const Marks = require('../Model/Marks');
 
 const router = express.Router();
 
@@ -33,6 +34,17 @@ router.post('/students', async(req, res) => {
         console.error("Database error:", error);
         res.status(500).json({ message: "Database error" });
     }
-})
+});
+
+router.post('/co', async(req, res) => {
+    try {
+        const co = await Marks.find({ subject : req.body.subject, year : req.body.year, branch : req.body.branch});
+        console.log(co, req.body);
+        res.send(co);
+    } catch (error) {
+        console.error("Database error:", error);
+        res.status(500).json({ message: "Database error" });
+    }
+});
 
 module.exports = router;
