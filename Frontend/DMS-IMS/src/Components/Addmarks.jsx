@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Modal, Button, Form } from "react-bootstrap";
 import toast from "react-hot-toast";
 
 const Addmarks = () => {
@@ -9,13 +10,30 @@ const Addmarks = () => {
   });
 
   const [subjects, setSubjects] = useState([]);
-  const [students, setStudents] = useState([]); // State for students
+  const [students, setStudents] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [marks, setMarks] = useState({
+    A: {},
+    B: {},
+    C: {},
+  });
 
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormState((prevState) => ({
       ...prevState,
       [id]: value,
+    }));
+  };
+
+  const handleMarksChange = (section, part, value) => {
+    setMarks((prevState) => ({
+      ...prevState,
+      [section]: {
+        ...prevState[section],
+        [part]: value,
+      },
     }));
   };
 
@@ -35,7 +53,7 @@ const Addmarks = () => {
         if (response.ok) {
           toast.success("Students fetched successfully!");
           console.log("Students:", data);
-          setStudents(data || []); // Update state with fetched students or empty array
+          setStudents(data || []);
         } else {
           toast.error("Failed to fetch students.");
         }
@@ -60,16 +78,30 @@ const Addmarks = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          setSubjects(data || []); // Ensure subjects are an array
+          setSubjects(data || []);
         })
         .catch((error) => {
           console.error("Error:", error);
-          setSubjects([]); // Fallback to empty array on error
+          setSubjects([]);
         });
     } else {
       setSubjects([]);
     }
   }, [formState.year]);
+
+  const handleAddMarksClick = (student) => {
+    setSelectedStudent(student);
+    setShowModal(true);
+  };
+
+  const handleSubmitMarks = () => {
+    // Handle submitting marks
+    console.log("Submitted marks for student:", selectedStudent);
+    console.log("Marks:", marks);
+    // You can call an API to save these marks or perform other actions
+    setShowModal(false);
+    toast.success("Marks submitted successfully!");
+  };
 
   return (
     <div className="container-fluid">
@@ -152,7 +184,6 @@ const Addmarks = () => {
           </div>
         </div>
 
-        {/* Conditionally render the table if students are available */}
         {students.length > 0 && (
           <div className="card mt-4 shadow-sm">
             <div className="card-body">
@@ -177,7 +208,12 @@ const Addmarks = () => {
                       <td>{student.branch}</td>
                       <td>{student.year}</td>
                       <td>
-                        <button className="btn btn-primary btn-sm">Add Marks</button>
+                        <button
+                          className="btn btn-primary btn-sm"
+                          onClick={() => handleAddMarksClick(student)}
+                        >
+                          Add Marks
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -186,6 +222,68 @@ const Addmarks = () => {
             </div>
           </div>
         )}
+
+        <Modal show={showModal} onHide={() => setShowModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add Marks for {selectedStudent?.name}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <h4>Section A</h4>
+              <Form.Group controlId="A1a">
+                <Form.Label>1(a)</Form.Label>
+                <Form.Control
+                  type="text"
+                  onChange={(e) =>
+                    handleMarksChange("A", "1a", e.target.value)
+                  }
+                />
+              </Form.Group>
+              <Form.Group controlId="A1b">
+                <Form.Label>1(b)</Form.Label>
+                <Form.Control
+                  type="text"
+                  onChange={(e) =>
+                    handleMarksChange("A", "1b", e.target.value)
+                  }
+                />
+              </Form.Group>
+              {/* Add other fields for Section A */}
+
+              <h4>Section B</h4>
+              <Form.Group controlId="B2a">
+                <Form.Label>2(a)</Form.Label>
+                <Form.Control
+                  type="text"
+                  onChange={(e) =>
+                    handleMarksChange("B", "2a", e.target.value)
+                  }
+                />
+              </Form.Group>
+              {/* Add other fields for Section B */}
+
+              <h4>Section C</h4>
+              <Form.Group controlId="C3">
+                <Form.Label>3</Form.Label>
+                <Form.Control
+                  type="text"
+                  onChange={(e) =>
+                    handleMarksChange("C", "3", e.target.value)
+                  }
+                />
+              </Form.Group>
+              {/* Add other fields for Section C */}
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowModal(false)}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleSubmitMarks}>
+              Submit
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </main>
     </div>
   );
