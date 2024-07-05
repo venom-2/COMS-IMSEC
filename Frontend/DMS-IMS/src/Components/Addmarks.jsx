@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Button, Tab, Nav } from 'react-bootstrap';
+import { Modal, Form, Button, Tab, Nav, Row, Col } from "react-bootstrap";
 import toast from "react-hot-toast";
 
 const Addmarks = () => {
@@ -18,6 +18,11 @@ const Addmarks = () => {
     B: {},
     C: {},
   });
+ const [selectedTest, setSelectedTest] = React.useState("");
+
+  const handleTestChange = (event) => {
+    setSelectedTest(event.target.value);
+  };
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -94,13 +99,42 @@ const Addmarks = () => {
     setShowModal(true);
   };
 
-  const handleSubmitMarks = () => {
+  const handleSubmitMarks = async () => {
     // Handle submitting marks
     console.log("Submitted marks for student:", selectedStudent);
     console.log("Marks:", marks);
-    // You can call an API to save these marks or perform other actions
+    const data = {
+      studentId: selectedStudent._id,
+      rollNumber: selectedStudent.rollNumber,
+      ct : selectedTest,
+      year: selectedStudent.year,
+      branch: selectedStudent.branch,
+      subject: formState.subject,
+      section: selectedStudent.section,
+      marks,
+    };
+    await fetch("http://localhost:3000/addData/marks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          console.log("Marks submitted successfully!");
+          toast.success("Marks submitted successfully!");
+        } else {
+          console.error("Failed to submit marks.");
+          toast.error("Failed to submit marks.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        toast.error("An error occurred while submitting marks.");
+      });
     setShowModal(false);
-    toast.success("Marks submitted successfully!");
   };
 
   return (
@@ -225,7 +259,24 @@ const Addmarks = () => {
 
         <Modal show={showModal} onHide={() => setShowModal(false)} centered>
           <Modal.Header closeButton>
-            <Modal.Title>Add Marks for {selectedStudent?.name}</Modal.Title>
+            <Modal.Title>
+              Add Marks for {selectedStudent?.name}
+              <Row className="mt-3">
+                <Col>
+                  <Form.Group controlId="classTest">
+                    <Form.Label>Class Test</Form.Label>
+                    <Form.Select
+                      value={selectedTest}
+                      onChange={handleTestChange}
+                    >
+                      <option value="">Select CT</option>
+                      <option value="1">CT-01</option>
+                      <option value="2">CT-02</option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Tab.Container defaultActiveKey="sectionA">
@@ -263,6 +314,36 @@ const Addmarks = () => {
                         }
                       />
                     </Form.Group>
+                    <Form.Group controlId="A1c">
+                      <Form.Label>1(c)</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter marks for 1(c)"
+                        onChange={(e) =>
+                          handleMarksChange("A", "1c", e.target.value)
+                        }
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="A1d">
+                      <Form.Label>1(d)</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter marks for 1(d)"
+                        onChange={(e) =>
+                          handleMarksChange("A", "1d", e.target.value)
+                        }
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="A1e">
+                      <Form.Label>1(e)</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter marks for 1(e)"
+                        onChange={(e) =>
+                          handleMarksChange("A", "1e", e.target.value)
+                        }
+                      />
+                    </Form.Group>
                     {/* Add other fields for Section A */}
                   </Form>
                 </Tab.Pane>
@@ -278,6 +359,36 @@ const Addmarks = () => {
                         }
                       />
                     </Form.Group>
+                    <Form.Group controlId="B2b">
+                      <Form.Label>2(b)</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter marks for 2(b)"
+                        onChange={(e) =>
+                          handleMarksChange("B", "2b", e.target.value)
+                        }
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="B2c">
+                      <Form.Label>2(c)</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter marks for 2(c)"
+                        onChange={(e) =>
+                          handleMarksChange("B", "2c", e.target.value)
+                        }
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="B2d">
+                      <Form.Label>2(d)</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter marks for 2(d)"
+                        onChange={(e) =>
+                          handleMarksChange("B", "2d", e.target.value)
+                        }
+                      />
+                    </Form.Group>
                     {/* Add other fields for Section B */}
                   </Form>
                 </Tab.Pane>
@@ -290,6 +401,26 @@ const Addmarks = () => {
                         placeholder="Enter marks for 3"
                         onChange={(e) =>
                           handleMarksChange("C", "3", e.target.value)
+                        }
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="C4">
+                      <Form.Label>4</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter marks for 4"
+                        onChange={(e) =>
+                          handleMarksChange("C", "4", e.target.value)
+                        }
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="C5">
+                      <Form.Label>5</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter marks for 5"
+                        onChange={(e) =>
+                          handleMarksChange("C", "5", e.target.value)
                         }
                       />
                     </Form.Group>

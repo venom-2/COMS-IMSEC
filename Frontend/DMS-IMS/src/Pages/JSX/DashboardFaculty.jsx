@@ -2,12 +2,11 @@ import React, { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import '../CSS/DashboardHod.css'; // Import custom CSS
 import MainDashboard from "../../Components/MainDashboard";
-import AddSubject from "../../Components/AddSubject";
 import AddStudent from "../../Components/AddStudent";
-import AssignFaculty from "../../Components/AssignFaculty";
-import AddFaculty from "../../Components/AddFaculty";
 import toast from "react-hot-toast";
 import Addmarks from "../../Components/Addmarks";
+import COResult from "../../Components/COResult";
+import CO from "../../Components/CO";
 
 const DashboardFaculty = () => {
   const location = useLocation();
@@ -84,7 +83,7 @@ const DashboardFaculty = () => {
             {location.pathname === '/DashboardFaculty' && <MainDashboard />}
             {location.pathname === '/DashboardFaculty/add-students' && <AddStudent />}
             {location.pathname === '/DashboardFaculty/add-marks' && <Addmarks />}
-            {location.pathname === '/DashboardFaculty/view-co' && <AssignFaculty />}
+            {location.pathname === '/DashboardFaculty/view-co' && <CO />}
           </main>
         </div>
       </div>
