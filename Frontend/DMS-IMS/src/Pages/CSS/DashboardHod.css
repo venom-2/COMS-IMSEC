@@ -43,7 +43,13 @@ html, body {
 
 .main-content {
   position: absolute;
-  left: 2rem;
+  left: 0rem;
+}
+
+@media (min-width: 1024px) {
+  .main-content {
+    left: 5rem; /* Set the margin to the width of the sidebar */
+  }
 }
 
 .form-group label {
