@@ -19,7 +19,7 @@ const Login = ({ isTokenExpired }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("https://coms-imsec-backend.vercel.app/login", {
+            const response = await fetch("https://coms-imsec-phi.vercel.app/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
