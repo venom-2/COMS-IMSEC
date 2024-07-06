@@ -47,7 +47,7 @@ const Addmarks = () => {
     if (formState.year && formState.branch && formState.subject) {
       console.log("Fetching students for:", formState);
       try {
-        const response = await fetch("http://localhost:3000/fetch/students", {
+        const response = await fetch("https://coms-imsec-phi.vercel.app/fetch/students", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -74,7 +74,7 @@ const Addmarks = () => {
 
   useEffect(() => {
     if (formState.year) {
-      fetch("https://coms-imsec-backend.vercel.app/fetch/subject", {
+      fetch("https://coms-imsec-phi.vercel.app/fetch/subject", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -113,7 +113,7 @@ const Addmarks = () => {
       section: selectedStudent.section,
       marks,
     };
-    await fetch("http://localhost:3000/addData/marks", {
+    await fetch("https://coms-imsec-phi.vercel.app/addData/marks", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

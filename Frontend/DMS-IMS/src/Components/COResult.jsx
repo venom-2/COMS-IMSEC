@@ -10,7 +10,7 @@ const COResult = ({ showModal, setShowModal }) => {
   const { coData, setCoData } = useContext(COContext);
 
   useEffect(() => {
-    fetch("https://coms-imsec-backend.vercel.app/fetch/subject", {
+    fetch("https://coms-imsec-phi.vercel.app/fetch/subject", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -28,7 +28,7 @@ const COResult = ({ showModal, setShowModal }) => {
 
   const handleFetch = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:3000/fetch/co", {
+    const response = await fetch("https://coms-imsec-phi.vercel.app/fetch/co", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

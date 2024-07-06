@@ -15,7 +15,7 @@ const AddSubject = () => {
 
   const addSubject = async()=>{
     const { subjectCode, subjectName, year, description} = credentials;
-    const res = await fetch('https://coms-imsec-backend.vercel.app/addData/subject', {
+    const res = await fetch('https://coms-imsec-phi.vercel.app/addData/subject', {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
