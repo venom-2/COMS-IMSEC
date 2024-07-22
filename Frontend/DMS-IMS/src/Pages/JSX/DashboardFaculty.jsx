@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FaTachometerAlt, FaUserPlus, FaPlus, FaFileAlt } from 'react-icons/fa';
 import '../CSS/DashboardHod.css'; // Import custom CSS
 import MainDashboard from "../../Components/MainDashboard";
 import AddStudent from "../../Components/AddStudent";
 import toast from "react-hot-toast";
 import Addmarks from "../../Components/Addmarks";
-import COResult from "../../Components/COResult";
 import CO from "../../Components/CO";
 
 const DashboardFaculty = () => {
@@ -20,7 +20,6 @@ const DashboardFaculty = () => {
       bsCollapse.hide();
     }
   }, [location]);
-
 
   // for logging out
   const handleClick = () => {
@@ -57,22 +56,22 @@ const DashboardFaculty = () => {
               <ul className="nav flex-column">
                 <li className="nav-item">
                   <Link className="nav-link active text-white" to='/DashboardFaculty'>
-                    Dashboard
+                    <FaTachometerAlt className="me-2" /> Dashboard
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link text-white" to="/DashboardFaculty/add-students">
-                    Add Students
+                    <FaUserPlus className="me-2" /> Add Students
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link text-white" to="/DashboardFaculty/add-marks">
-                    Add Marks
+                    <FaPlus className="me-2" /> Add Marks
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link text-white" to="/DashboardFaculty/view-co">
-                    View CO Results
+                    <FaFileAlt className="me-2" /> View CO
                   </Link>
                 </li>
               </ul>
