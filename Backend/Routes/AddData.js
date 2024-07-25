@@ -18,9 +18,19 @@ router.post('/subject', async(req, res) => {
     }
 });
 
+const validateIMSECEmail = (email) => {
+    // Regular expression to match the specific pattern of IMSEC email addresses
+    const imsecEmailPattern = /^[ab]\d{4}(cs|it|ec|ee|me|ce)\d{4}@imsec\.ac\.in$/;
+
+    return imsecEmailPattern.test(email);
+};
+
 router.post('/student', async(req, res) => {
     try {
         const { name, rollNumber, year, branch, section, email } = req.body;
+        if(!validateIMSECEmail(email)) {
+            return res.status(400).json({ message: "Invalid email", success: false });
+        }
         const student = new Student({ name, rollNumber, year, branch, section, email });
         await student.save();
         res.status(200).json({ message: "Student added successfully", success: true });
