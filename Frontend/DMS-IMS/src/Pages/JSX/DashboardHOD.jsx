@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FaTachometerAlt, FaUserPlus, FaPlus, FaUsers, FaChalkboardTeacher } from 'react-icons/fa';
 import '../CSS/DashboardHod.css'; // Import custom CSS
 import MainDashboard from "../../Components/MainDashboard";
 import AddSubject from "../../Components/AddSubject";
@@ -55,27 +56,27 @@ const DashboardHOD = () => {
               <ul className="nav flex-column">
                 <li className="nav-item">
                   <Link className="nav-link active text-white" to='/dashboardhod'>
-                    Dashboard
+                    <FaTachometerAlt className="me-2" /> Dashboard
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link text-white" to="/dashboardhod/assign-faculty">
-                    Assign Faculty
+                    <FaChalkboardTeacher className="me-2" /> Assign Faculty
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link text-white" to="/dashboardhod/add-students">
-                    Add Students
+                    <FaUserPlus className="me-2" /> Add Students
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link text-white" to="/dashboardhod/add-faculty">
-                    Add Faculty
+                    <FaUsers className="me-2" /> Add Faculty
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link text-white" to="/dashboardhod/add-subjects">
-                    Add Subject
+                    <FaPlus className="me-2" /> Add Subject
                   </Link>
                 </li>
               </ul>

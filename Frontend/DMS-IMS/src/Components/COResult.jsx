@@ -37,8 +37,10 @@ const COResult = ({ showModal, setShowModal }) => {
     });
     const parsedResponse = await response.json();
     setCoData(parsedResponse);
-    console.log("CO Data:", coData, parsedResponse);
+    // console.log("CO Data:", coData, parsedResponse);
+    console.log(parsedResponse);
     toast.success("Results fetched successfully");
+    setShowModal(false);
   };
 
   return (
@@ -124,11 +126,6 @@ const COResult = ({ showModal, setShowModal }) => {
           </Form>
         </Container>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShowModal(false)}>
-          Close
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 };
