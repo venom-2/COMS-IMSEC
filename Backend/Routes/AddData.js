@@ -36,7 +36,7 @@ router.post('/student', async(req, res) => {
         res.status(200).json({ message: "Student added successfully", success: true });
     } catch (error) {
         console.error("Database error:", error);
-        res.status(500).json({ message: "Database error" });
+        res.status(500).json({ message: "Something went wrong..." });
     }
 });
 
