@@ -18,7 +18,7 @@ const Addmarks = () => {
     B: {},
     C: {},
   });
- const [selectedTest, setSelectedTest] = React.useState("");
+  const [selectedTest, setSelectedTest] = React.useState("");
 
   const handleTestChange = (event) => {
     setSelectedTest(event.target.value);
@@ -47,7 +47,7 @@ const Addmarks = () => {
     if (formState.year && formState.branch && formState.subject) {
       console.log("Fetching students for:", formState);
       try {
-        const response = await fetch("http://localhost:3000/fetch/students", {
+        const response = await fetch("https://coms-imsec-phi.vercel.app/fetch/students", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -74,7 +74,7 @@ const Addmarks = () => {
 
   useEffect(() => {
     if (formState.year) {
-      fetch("https://coms-imsec-backend.vercel.app/fetch/subject", {
+      fetch("https://coms-imsec-phi.vercel.app/fetch/subject", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -106,14 +106,14 @@ const Addmarks = () => {
     const data = {
       studentId: selectedStudent._id,
       rollNumber: selectedStudent.rollNumber,
-      ct : selectedTest,
+      ct: selectedTest,
       year: selectedStudent.year,
       branch: selectedStudent.branch,
       subject: formState.subject,
       section: selectedStudent.section,
       marks,
     };
-    await fetch("http://localhost:3000/addData/marks", {
+    await fetch("https://coms-imsec-phi.vercel.app/addData/marks", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -300,8 +300,9 @@ const Addmarks = () => {
                         type="number"
                         placeholder="Enter marks for 1(a)"
                         onChange={(e) =>
-                          handleMarksChange("A", "1a", e.target.value)
+                          handleMarksChange("A", "_1a", e.target.value)
                         }
+                        required
                       />
                     </Form.Group>
                     <Form.Group controlId="A1b">
@@ -310,8 +311,9 @@ const Addmarks = () => {
                         type="number"
                         placeholder="Enter marks for 1(b)"
                         onChange={(e) =>
-                          handleMarksChange("A", "1b", e.target.value)
+                          handleMarksChange("A", "_1b", e.target.value)
                         }
+                        required
                       />
                     </Form.Group>
                     <Form.Group controlId="A1c">
@@ -320,8 +322,9 @@ const Addmarks = () => {
                         type="number"
                         placeholder="Enter marks for 1(c)"
                         onChange={(e) =>
-                          handleMarksChange("A", "1c", e.target.value)
+                          handleMarksChange("A", "_1c", e.target.value)
                         }
+                        required
                       />
                     </Form.Group>
                     <Form.Group controlId="A1d">
@@ -330,8 +333,9 @@ const Addmarks = () => {
                         type="number"
                         placeholder="Enter marks for 1(d)"
                         onChange={(e) =>
-                          handleMarksChange("A", "1d", e.target.value)
+                          handleMarksChange("A", "_1d", e.target.value)
                         }
+                        required
                       />
                     </Form.Group>
                     <Form.Group controlId="A1e">
@@ -340,8 +344,9 @@ const Addmarks = () => {
                         type="number"
                         placeholder="Enter marks for 1(e)"
                         onChange={(e) =>
-                          handleMarksChange("A", "1e", e.target.value)
+                          handleMarksChange("A", "_1e", e.target.value)
                         }
+                        required
                       />
                     </Form.Group>
                     {/* Add other fields for Section A */}
@@ -355,8 +360,9 @@ const Addmarks = () => {
                         type="number"
                         placeholder="Enter marks for 2(a)"
                         onChange={(e) =>
-                          handleMarksChange("B", "2a", e.target.value)
+                          handleMarksChange("B", "_2a", e.target.value)
                         }
+                        required
                       />
                     </Form.Group>
                     <Form.Group controlId="B2b">
@@ -365,8 +371,9 @@ const Addmarks = () => {
                         type="number"
                         placeholder="Enter marks for 2(b)"
                         onChange={(e) =>
-                          handleMarksChange("B", "2b", e.target.value)
+                          handleMarksChange("B", "_2b", e.target.value)
                         }
+                        required
                       />
                     </Form.Group>
                     <Form.Group controlId="B2c">
@@ -375,8 +382,9 @@ const Addmarks = () => {
                         type="number"
                         placeholder="Enter marks for 2(c)"
                         onChange={(e) =>
-                          handleMarksChange("B", "2c", e.target.value)
+                          handleMarksChange("B", "_2c", e.target.value)
                         }
+                        required
                       />
                     </Form.Group>
                     <Form.Group controlId="B2d">
@@ -385,8 +393,20 @@ const Addmarks = () => {
                         type="number"
                         placeholder="Enter marks for 2(d)"
                         onChange={(e) =>
-                          handleMarksChange("B", "2d", e.target.value)
+                          handleMarksChange("B", "_2d", e.target.value)
                         }
+                        required
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="B2e">
+                      <Form.Label>2(e)</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter marks for 2(e)"
+                        onChange={(e) =>
+                          handleMarksChange("B", "_2e", e.target.value)
+                        }
+                        required
                       />
                     </Form.Group>
                     {/* Add other fields for Section B */}
@@ -400,8 +420,9 @@ const Addmarks = () => {
                         type="number"
                         placeholder="Enter marks for 3"
                         onChange={(e) =>
-                          handleMarksChange("C", "3", e.target.value)
+                          handleMarksChange("C", "_3", e.target.value)
                         }
+                        required
                       />
                     </Form.Group>
                     <Form.Group controlId="C4">
@@ -410,8 +431,9 @@ const Addmarks = () => {
                         type="number"
                         placeholder="Enter marks for 4"
                         onChange={(e) =>
-                          handleMarksChange("C", "4", e.target.value)
+                          handleMarksChange("C", "_4", e.target.value)
                         }
+                        required
                       />
                     </Form.Group>
                     <Form.Group controlId="C5">
@@ -420,8 +442,9 @@ const Addmarks = () => {
                         type="number"
                         placeholder="Enter marks for 5"
                         onChange={(e) =>
-                          handleMarksChange("C", "5", e.target.value)
+                          handleMarksChange("C", "_5", e.target.value)
                         }
+                        required
                       />
                     </Form.Group>
                     {/* Add other fields for Section C */}

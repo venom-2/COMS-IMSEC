@@ -12,7 +12,7 @@ const AssignFaculty = () => {
   });
 
   const assignSubject = async()=> {
-    const response = await fetch('https://coms-imsec-backend.vercel.app/assign', {
+    const response = await fetch('https://coms-imsec-phi.vercel.app/assign', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -38,7 +38,7 @@ const AssignFaculty = () => {
   };
 
   useEffect(() => {
-    fetch("https://coms-imsec-backend.vercel.app/fetch/faculty", {
+    fetch("https://coms-imsec-phi.vercel.app/fetch/faculty", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -55,7 +55,7 @@ const AssignFaculty = () => {
   }, [credentials.branch]);
 
   useEffect(() => {
-    fetch("https://coms-imsec-backend.vercel.app/fetch/subject", {
+    fetch("https://coms-imsec-phi.vercel.app/fetch/subject", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
