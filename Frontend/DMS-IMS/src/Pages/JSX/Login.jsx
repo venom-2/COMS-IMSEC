@@ -28,7 +28,7 @@ const Login = ({ isTokenExpired }) => {
             });
 
             if (!response.ok) {
-                throw new Error('Login failed');
+                toast.error("Login Failed!");
             }
 
             const parsedResponse = await response.json();
@@ -57,8 +57,7 @@ const Login = ({ isTokenExpired }) => {
                 role: ""
             });
         } catch (error) {
-            console.error("Error during login:", error);
-            toast.error("An error occurred. Please try again.");
+            toast.error("Login failed! Invalid credentials.");
         }
     };
 
@@ -82,15 +81,6 @@ const Login = ({ isTokenExpired }) => {
                     <div className="col-12 col-md-6 col-xl-7">
                         <div className="d-flex justify-content-center text-bg-primary" style={{height:'86.8vh'}}>
                             <div className="col-12 col-xl-9 align-content-center">
-                                {/* <img
-                                    className="img-fluid rounded mb-4 d-none d-sm-block"
-                                    loading="lazy"
-                                    src={logo}
-                                    width="245"
-                                    height="80"
-                                    alt="IMS Logo"
-                                    style={{ mixBlendMode: "multiply", marginLeft: "14rem", width:'7rem', height:'7rem'}}
-                                /> */}
                                 <h2 className="h1 mb-4" style={{textAlign:'center'}}>
                                     Welcome to IMS Computer Science Department
                                 </h2>
