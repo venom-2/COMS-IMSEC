@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import {jwtDecode} from "jwt-decode"; // Correct import for jwt-decode
-import logo from "../../assets/IMSLogo.png"; // Correct import for logo
 
 const Login = ({ isTokenExpired }) => {
     const navigate = useNavigate();
