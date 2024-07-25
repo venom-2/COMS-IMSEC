@@ -34,7 +34,7 @@ const AddStudent = () => {
     if(data.success) {
       toast.success("Student added successfully!");
     } else {
-      toast.error("Student addition failed!");
+      toast.error(data.message);
     }
     setCredentials({
       name: "",
