@@ -18,7 +18,12 @@ const Addmarks = () => {
     B: {},
     C: {},
   });
-  const [selectedTest, setSelectedTest] = React.useState("");
+  const [errors, setErrors] = useState({
+    A: {},
+    B: {},
+    C: {},
+  });
+  const [selectedTest, setSelectedTest] = React.useState(1);
 
   const handleTestChange = (event) => {
     setSelectedTest(event.target.value);
@@ -33,11 +38,33 @@ const Addmarks = () => {
   };
 
   const handleMarksChange = (section, part, value) => {
+    let isValid = true;
+    let errorMessage = "";
+
+    if (section === "A" && (value < 0 || value > 1)) {
+      isValid = false;
+      errorMessage = "Value must be between 0 and 1";
+    } else if (section === "B" && (value < 0 || value > 5)) {
+      isValid = false;
+      errorMessage = "Value must be between 0 and 5";
+    } else if (section === "C" && (value < 0 || value > 10)) {
+      isValid = false;
+      errorMessage = "Value must be between 0 and 10";
+    }
+
     setMarks((prevState) => ({
       ...prevState,
       [section]: {
         ...prevState[section],
         [part]: value,
+      },
+    }));
+
+    setErrors((prevState) => ({
+      ...prevState,
+      [section]: {
+        ...prevState[section],
+        [part]: isValid ? "" : errorMessage,
       },
     }));
   };
@@ -299,55 +326,80 @@ const Addmarks = () => {
                       <Form.Control
                         type="number"
                         placeholder="Enter marks for 1(a)"
+                        value={marks.A._1a || ""}
                         onChange={(e) =>
                           handleMarksChange("A", "_1a", e.target.value)
                         }
+                        isInvalid={!!errors.A._1a}
                         required
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.A._1a}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="A1b">
                       <Form.Label>1(b)</Form.Label>
                       <Form.Control
                         type="number"
                         placeholder="Enter marks for 1(b)"
+                        value={marks.A._1b || ""}
                         onChange={(e) =>
                           handleMarksChange("A", "_1b", e.target.value)
                         }
+                        isInvalid={!!errors.A._1b}
                         required
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.A._1b}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="A1c">
                       <Form.Label>1(c)</Form.Label>
                       <Form.Control
                         type="number"
                         placeholder="Enter marks for 1(c)"
+                        value={marks.A._1c || ""}
                         onChange={(e) =>
                           handleMarksChange("A", "_1c", e.target.value)
                         }
+                        isInvalid={!!errors.A._1c}
                         required
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.A._1c}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="A1d">
                       <Form.Label>1(d)</Form.Label>
                       <Form.Control
                         type="number"
                         placeholder="Enter marks for 1(d)"
+                        value={marks.A._1d || ""}
                         onChange={(e) =>
                           handleMarksChange("A", "_1d", e.target.value)
                         }
+                        isInvalid={!!errors.A._1d}
                         required
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.A._1d}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="A1e">
                       <Form.Label>1(e)</Form.Label>
                       <Form.Control
                         type="number"
                         placeholder="Enter marks for 1(e)"
+                        value={marks.A._1e || ""}
                         onChange={(e) =>
                           handleMarksChange("A", "_1e", e.target.value)
                         }
+                        isInvalid={!!errors.A._1e}
                         required
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.A._1e}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     {/* Add other fields for Section A */}
                   </Form>
@@ -359,55 +411,80 @@ const Addmarks = () => {
                       <Form.Control
                         type="number"
                         placeholder="Enter marks for 2(a)"
+                        value={marks.B._2a || ""}
                         onChange={(e) =>
                           handleMarksChange("B", "_2a", e.target.value)
                         }
+                        isInvalid={!!errors.B._2a}
                         required
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.B._2a}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="B2b">
                       <Form.Label>2(b)</Form.Label>
                       <Form.Control
                         type="number"
                         placeholder="Enter marks for 2(b)"
+                        value={marks.B._2b || ""}
                         onChange={(e) =>
                           handleMarksChange("B", "_2b", e.target.value)
                         }
+                        isInvalid={!!errors.B._2b}
                         required
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.B._2b}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="B2c">
                       <Form.Label>2(c)</Form.Label>
                       <Form.Control
                         type="number"
                         placeholder="Enter marks for 2(c)"
+                        value={marks.B._2c || ""}
                         onChange={(e) =>
                           handleMarksChange("B", "_2c", e.target.value)
                         }
+                        isInvalid={!!errors.B._2c}
                         required
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.B._2c}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="B2d">
                       <Form.Label>2(d)</Form.Label>
                       <Form.Control
                         type="number"
                         placeholder="Enter marks for 2(d)"
+                        value={marks.B._2d || ""}
                         onChange={(e) =>
                           handleMarksChange("B", "_2d", e.target.value)
                         }
+                        isInvalid={!!errors.B._2d}
                         required
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.B._2d}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="B2e">
                       <Form.Label>2(e)</Form.Label>
                       <Form.Control
                         type="number"
                         placeholder="Enter marks for 2(e)"
+                        value={marks.B._2e || ""}
                         onChange={(e) =>
                           handleMarksChange("B", "_2e", e.target.value)
                         }
+                        isInvalid={!!errors.B._2e}
                         required
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.B._2e}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     {/* Add other fields for Section B */}
                   </Form>
@@ -419,33 +496,48 @@ const Addmarks = () => {
                       <Form.Control
                         type="number"
                         placeholder="Enter marks for 3"
+                        value={marks.C._3 || ""}
                         onChange={(e) =>
                           handleMarksChange("C", "_3", e.target.value)
                         }
+                        isInvalid={!!errors.C._3}
                         required
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.C._3}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="C4">
                       <Form.Label>4</Form.Label>
                       <Form.Control
                         type="number"
                         placeholder="Enter marks for 4"
+                        value={marks.C._4 || ""}
                         onChange={(e) =>
                           handleMarksChange("C", "_4", e.target.value)
                         }
+                        isInvalid={!!errors.C._4}
                         required
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.C._4}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="C5">
                       <Form.Label>5</Form.Label>
                       <Form.Control
                         type="number"
                         placeholder="Enter marks for 5"
+                        value={marks.C._5 || ""}
                         onChange={(e) =>
                           handleMarksChange("C", "_5", e.target.value)
                         }
+                        isInvalid={!!errors.C._5}
                         required
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.C._5}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     {/* Add other fields for Section C */}
                   </Form>
