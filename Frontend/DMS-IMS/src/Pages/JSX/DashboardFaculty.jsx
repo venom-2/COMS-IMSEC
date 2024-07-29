@@ -25,7 +25,7 @@ const DashboardFaculty = () => {
   const handleClick = () => {
     localStorage.setItem("authToken", "");
     localStorage.setItem("role", "");
-    navigate("/login");
+    navigate("/");
     toast.success("Logged out successfully!");
   };
 
