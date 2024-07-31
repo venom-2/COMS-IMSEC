@@ -126,7 +126,7 @@ const Login = ({ isTokenExpired }) => {
                             <a href="#">Forgot Password?</a>
                         </div>
                         <div className="d-flex justify-content-center">
-                            <button onClick={handleSubmit} className="butn btn">Login</button>
+                            <button onClick={handleSubmit} className="butn">Login</button>
                         </div>
                     </div>
                 </div>

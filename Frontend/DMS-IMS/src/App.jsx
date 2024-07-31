@@ -7,6 +7,7 @@ import DashboardFaculty from "./Pages/JSX/DashboardFaculty";
 import DashboardAdmin from "./Pages/JSX/DashboardAdmin";
 import { jwtDecode } from "jwt-decode"; // Correct import statement for jwt-decode
 import { COProvider } from './contextAPI/COContext';
+import { ToggleProvider } from "./contextAPI/ToggleContext";
 // import LoadingScreen from "./Pages/JSX/Loading";
 // import { useEffect, useState } from "react";
 
@@ -83,30 +84,32 @@ function App() {
   return (
     <>
       <COProvider>
-        <BrowserRouter>
-          <Toaster position="top-center" reverseOrder={false} />
-          <Routes>
-            <Route path="/" element={<Login isTokenExpired={isTokenExpired} />} />
+        <ToggleProvider>
+          <BrowserRouter>
+            <Toaster position="top-center" reverseOrder={false} />
+            <Routes>
+              <Route path="/" element={<Login isTokenExpired={isTokenExpired} />} />
 
-            <Route path="/dashboardhod" element={<ProtectedWrapper expectedRole="HOD" />}>
-              <Route index element={<DashboardHOD />} />
-              <Route path="add-students" element={<DashboardHOD />} />
-              <Route path="assign-faculty" element={<DashboardHOD />} />
-              <Route path="add-faculty" element={<DashboardHOD />} />
-              <Route path="add-subjects" element={<DashboardHOD />} />
-            </Route>
+              <Route path="/dashboardhod" element={<ProtectedWrapper expectedRole="HOD" />}>
+                <Route index element={<DashboardHOD />} />
+                <Route path="add-students" element={<DashboardHOD />} />
+                <Route path="assign-faculty" element={<DashboardHOD />} />
+                <Route path="add-faculty" element={<DashboardHOD />} />
+                <Route path="add-subjects" element={<DashboardHOD />} />
+              </Route>
 
-            <Route path="/dashboardfaculty" element={<ProtectedWrapper expectedRole="Faculty" />}>
-              <Route index element={<DashboardFaculty />} />
-              <Route path="add-students" element={<DashboardFaculty />} />
-              <Route path="add-marks" element={<DashboardFaculty />} />
-              <Route path="view-co" element={<DashboardFaculty />} />
-            </Route>
+              <Route path="/dashboardfaculty" element={<ProtectedWrapper expectedRole="Faculty" />}>
+                <Route index element={<DashboardFaculty />} />
+                <Route path="add-students" element={<DashboardFaculty />} />
+                <Route path="add-marks" element={<DashboardFaculty />} />
+                <Route path="view-co" element={<DashboardFaculty />} />
+              </Route>
 
-            <Route path="/dashboardadmin" element={<ProtectedRoute element={<DashboardAdmin />} expectedRole="Admin" />} />
+              <Route path="/dashboardadmin" element={<ProtectedRoute element={<DashboardAdmin />} expectedRole="Admin" />} />
 
-          </Routes>
-        </BrowserRouter>
+            </Routes>
+          </BrowserRouter>
+        </ToggleProvider>
       </COProvider>
     </>
   );

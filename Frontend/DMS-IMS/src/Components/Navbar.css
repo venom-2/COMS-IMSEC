@@ -1,0 +1,25 @@
+/* Navbar.css */
+.dropdown-menu {
+    right: 10px;
+    top: 60px;
+    padding: 20px;
+    width: 300px;
+  }
+  
+  .profile-info {
+    text-align: center;
+  }
+  
+  .profile-info img {
+    display: block;
+    margin: 0 auto;
+  }
+  
+  .profile-info p {
+    margin: 0;
+  }
+  
+  .profile-info button {
+    margin-top: 10px;
+  }
+  
