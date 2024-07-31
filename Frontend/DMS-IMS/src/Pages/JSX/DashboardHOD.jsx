@@ -32,7 +32,7 @@ const DashboardHOD = () => {
           <Sidebar />
         </div>
         <div className="main-content">
-
+          
         </div>
       </div>
     </div>
