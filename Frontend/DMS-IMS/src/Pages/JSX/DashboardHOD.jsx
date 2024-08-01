@@ -1,15 +1,11 @@
 import React, { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaTachometerAlt, FaUserPlus, FaPlus, FaUsers, FaChalkboardTeacher } from 'react-icons/fa';
 import '../CSS/DashboardHod.css'; // Import custom CSS
-import MainDashboard from "../../Components/MainDashboard";
-import AddSubject from "../../Components/AddSubject";
-import AddStudent from "../../Components/AddStudent";
-import AssignFaculty from "../../Components/AssignFaculty";
-import AddFaculty from "../../Components/AddFaculty";
 import toast from "react-hot-toast";
 import Navbar from "../../Components/Navbar";
 import Sidebar from "../../Components/Sidebar";
+import HodDashboard_addFaculty from "../../Components/HodDashboard_components/HodDashboard_addFaculty";
+import HodDashboard_addStudent from "../../Components/HodDashboard_components/HodDashboard_addStudent";
 
 const DashboardHOD = () => {
   const location = useLocation();
@@ -32,7 +28,8 @@ const DashboardHOD = () => {
           <Sidebar />
         </div>
         <div className="main-content">
-          
+          {/* <HodDashboard_addFaculty/> */}
+          <HodDashboard_addStudent/>
         </div>
       </div>
     </div>

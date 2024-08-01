@@ -1,0 +1,73 @@
+.add-faculty-container{
+    width: calc(100vw-80px);
+    margin-left: 80px;
+}
+
+.form-faculty,.heading-faculty,.faculty-table{
+    width: 80vw;
+}
+
+.heading-faculty{
+    padding: 10px 10px;
+    color: white;
+    background-color: #433D8B;
+    border-radius: 5px;
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.3);
+}
+
+.form-faculty{
+    padding: 25px;
+    background-color: #433D8B;
+    color: white;
+    border-radius: 5px;
+}
+
+form,.first-row,.third-row{
+    width: 70vw;
+}
+
+.submit-btn{
+    width: 70vw;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #17153B;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-btn:hover{
+    background-color: #1d1b4e;
+}
+
+.faculty-table{
+    overflow-y: auto;
+    max-height: 30vh;
+}
+
+.upload{
+    background-color: #433D8B;
+    width: 80vw;
+    height: 18vh;
+    border-radius: 5px;
+}
+
+.upload-btn{
+    width: 80vw;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    background-color: #17153B;
+    color: white;
+}
+
+.upload-btn:hover{
+    background-color: #1d1b4e;
+    color: white;
+}
+
+.upload-input{
+    border-color: #17153B;
+    border: 2px dashed #17153B;
+    border-bottom: none;
+}

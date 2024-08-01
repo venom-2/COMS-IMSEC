@@ -22,4 +22,11 @@
   .profile-info button {
     margin-top: 10px;
   }
-  
+
+.button{
+  background-color: #2E236C;
+}
+
+.button:hover{
+    background-color:#4b4281;
+}

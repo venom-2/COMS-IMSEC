@@ -38,7 +38,7 @@ const Navbar = ({handleLogout}) => {
               <p className="mb-1"><strong>Department:</strong> IT Department</p>
             </div>
             <div className="text-center mt-3">
-              <button className="btn btn-primary me-2">Edit</button>
+              <button className="btn btn-primary me-2 px-4 button">Edit</button>
               <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
             </div>
           </div>
