@@ -26,10 +26,6 @@ const Login = ({ isTokenExpired }) => {
                 body: JSON.stringify(credentials)
             });
 
-            if (!response.ok) {
-                toast.error("Login Failed!");
-            }
-
             const parsedResponse = await response.json();
             const { authToken } = parsedResponse;
 
