@@ -28,8 +28,8 @@ const DashboardHOD = () => {
           <Sidebar />
         </div>
         <div className="main-content">
-          {/* <HodDashboard_addFaculty/> */}
-          <HodDashboard_addStudent/>
+          {location.pathname === "/dashboardhod/add-students" && <HodDashboard_addStudent/>}
+          {location.pathname === "/dashboardhod/add-faculty" && <HodDashboard_addFaculty/>}
         </div>
       </div>
     </div>

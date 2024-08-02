@@ -3,9 +3,10 @@ import { useDropzone } from 'react-dropzone';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './HodDashboard_addFaculty.css';
 import toast from 'react-hot-toast';
+import {jwtDecode} from 'jwt-decode';
 
 const HodDashboard_addStudent = () => {
-  const [files, setFiles] = useState();
+  const [files, setFiles] = useState([]);
   const [students, setStudents] = useState({
     name: '',
     rollNumber: '',
@@ -16,11 +17,13 @@ const HodDashboard_addStudent = () => {
 
   const handleChange = (e) => {
     setStudents({ ...students, [e.target.name]: e.target.value });
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const payload = jwtDecode(localStorage.getItem("authToken"));
+      students.branch = payload.user.department;
       console.log(students);
       const response = await fetch("https://dms-backend-eight.vercel.app/add/student", {
         method: "POST",
@@ -30,13 +33,32 @@ const HodDashboard_addStudent = () => {
         },
         body: JSON.stringify(students)
       });
+      const data = await response.json();
+      console.log(data);
+      if (data.success) {
+        toast.success("Student added successfully!");
+        setStudents({
+          name: '',
+          rollNumber: '',
+          email: '',
+          year: '',
+          section: ''
+        });
+      } else {
+        toast.error(data.message);
+      }
     } catch (error) {
+      console.log(error);
       toast.error("Failed to add student!");
     }
-  }
+  };
 
   const handleFileSubmit = async (e) => {
     e.preventDefault();
+    if (files.length === 0) {
+      toast.error("No files selected!");
+      return;
+    }
     try {
       const formData = new FormData();
       formData.append('file', files[0]);
@@ -47,12 +69,19 @@ const HodDashboard_addStudent = () => {
         },
         body: formData
       });
+      const data = await response.json();
+      console.log(data);
+      if (data.success) {
+        toast.success("Students added successfully!");
+        setFiles([]);
+      } else {
+        toast.error(data.message);
+      }
     } catch (error) {
+      console.log(error);
       toast.error("Failed to add students!");
     }
-  }
-
-
+  };
 
   const { getRootProps, getInputProps, open } = useDropzone({
     accept: '.csv',
@@ -66,7 +95,7 @@ const HodDashboard_addStudent = () => {
   });
 
   const handleUploadClick = () => {
-    open(); 
+    open();
   };
 
   return (
@@ -82,8 +111,8 @@ const HodDashboard_addStudent = () => {
               <input className='form-control' onChange={handleChange} value={students.name} type="text" id="name" name="name" placeholder="Enter name" required />
             </div>
             <div className="roll-no d-flex flex-column flex-fill">
-              <label htmlFor="roll-no">Roll No</label>
-              <input className='form-control' onChange={handleChange} value={students.rollNumber} type="number" id="rollNumber" name="rollNumber" placeholder="Enter roll no" required />
+              <label htmlFor="rollNumber">Roll No</label>
+              <input className='form-control' onChange={handleChange} value={students.rollNumber} type="text" id="rollNumber" name="rollNumber" placeholder="Enter roll no" required />
             </div>
           </div>
           <div className="email d-flex flex-column flex-wrap">
@@ -94,7 +123,7 @@ const HodDashboard_addStudent = () => {
             <div className="year d-flex flex-column flex-fill">
               <label htmlFor="year">Year</label>
               <select className='form-control' id="year" name="year" onChange={handleChange} value={students.year} required>
-                <option value="" disabled selected >Select year</option>
+                <option value="" disabled>Select year</option>
                 <option value="1st year">1st year</option>
                 <option value="2nd year">2nd year</option>
                 <option value="3rd year">3rd year</option>
@@ -104,7 +133,7 @@ const HodDashboard_addStudent = () => {
             <div className="section d-flex flex-column flex-fill">
               <label htmlFor="section">Section</label>
               <select className='form-control' id="section" name="section" onChange={handleChange} value={students.section} required>
-                <option value="" disabled selected>Select section</option>
+                <option value="" disabled>Select section</option>
                 <option value="section-01">Section-01</option>
                 <option value="section-02">Section-02</option>
                 <option value="section-03">Section-03</option>
@@ -125,9 +154,9 @@ const HodDashboard_addStudent = () => {
         <div className="upload-file" {...getRootProps()}>
           <input {...getInputProps()} />
           <div className="dropzone upload-input p-3 text-center bg-light" onClick={handleUploadClick}>
-            <div className="upload-icon mb-2 ">
+            <div className="upload-icon mb-2">
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 5V19M12 5L7 10M12 5L17 10M4 15H20" stroke="#17153B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M12 5V19M12 5L7 10M12 5L17 10M4 15H20" stroke="#17153B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
             <p>Choose a file or drag it here.</p>
@@ -139,6 +168,6 @@ const HodDashboard_addStudent = () => {
       </div>
     </div>
   );
-}
+};
 
 export default HodDashboard_addStudent;
