@@ -18,7 +18,7 @@ const Login = ({ isTokenExpired }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("https://coms-imsec-phi.vercel.app/login", {
+            const response = await fetch("https://dms-backend-eight.vercel.app/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -62,11 +62,11 @@ const Login = ({ isTokenExpired }) => {
 
     const getDashboardRoute = (role) => {
         switch (role) {
-            case "Admin":
+            case "admin":
                 return "/dashboardadmin";
-            case "HOD":
+            case "hod":
                 return "/dashboardhod";
-            case "Faculty":
+            case "faculty":
                 return "/DashboardFaculty";
             default:
                 return "/";
@@ -118,8 +118,8 @@ const Login = ({ isTokenExpired }) => {
                             >
                                 <option value="">Select Role</option>
                                 <option value="admin">Admin</option>
-                                <option value="HOD">Head of Department</option>
-                                <option value="Faculty">Faculty</option>
+                                <option value="hod">Head of Department</option>
+                                <option value="faculty">Faculty</option>
                             </select>
                         </div>
                         <div className="d-flex justify-content-end mb-3">

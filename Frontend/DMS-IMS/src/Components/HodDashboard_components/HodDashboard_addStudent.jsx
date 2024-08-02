@@ -2,9 +2,57 @@ import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './HodDashboard_addFaculty.css';
+import toast from 'react-hot-toast';
 
 const HodDashboard_addStudent = () => {
   const [files, setFiles] = useState();
+  const [students, setStudents] = useState({
+    name: '',
+    rollNumber: '',
+    email: '',
+    year: '',
+    section: ''
+  });
+
+  const handleChange = (e) => {
+    setStudents({ ...students, [e.target.name]: e.target.value });
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      console.log(students);
+      const response = await fetch("https://dms-backend-eight.vercel.app/add/student", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "authToken": localStorage.getItem("authToken")
+        },
+        body: JSON.stringify(students)
+      });
+    } catch (error) {
+      toast.error("Failed to add student!");
+    }
+  }
+
+  const handleFileSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append('file', files[0]);
+      const response = await fetch("https://dms-backend-eight.vercel.app/csv/student", {
+        method: "POST",
+        headers: {
+          "authToken": localStorage.getItem("authToken")
+        },
+        body: formData
+      });
+    } catch (error) {
+      toast.error("Failed to add students!");
+    }
+  }
+
+
 
   const { getRootProps, getInputProps, open } = useDropzone({
     accept: '.csv',
@@ -18,7 +66,6 @@ const HodDashboard_addStudent = () => {
   });
 
   const handleUploadClick = () => {
-    console.log(files);
     open(); 
   };
 
@@ -32,22 +79,22 @@ const HodDashboard_addStudent = () => {
           <div className="first-row d-flex gap-5 flex-wrap">
             <div className="name d-flex flex-column flex-fill">
               <label htmlFor="name">Name</label>
-              <input className='form-control' type="text" id="name" name="name" placeholder="Enter name" required />
+              <input className='form-control' onChange={handleChange} value={students.name} type="text" id="name" name="name" placeholder="Enter name" required />
             </div>
             <div className="roll-no d-flex flex-column flex-fill">
               <label htmlFor="roll-no">Roll No</label>
-              <input className='form-control' type="number" id="roll-no" name="roll-no" placeholder="Enter roll no" required />
+              <input className='form-control' onChange={handleChange} value={students.rollNumber} type="number" id="rollNumber" name="rollNumber" placeholder="Enter roll no" required />
             </div>
           </div>
           <div className="email d-flex flex-column flex-wrap">
             <label htmlFor="email">Email</label>
-            <input className='form-control' type="email" id="email" name="email" placeholder="Enter email" required />
+            <input className='form-control' type="email" onChange={handleChange} value={students.email} id="email" name="email" placeholder="Enter email" required />
           </div>
           <div className="third-row d-flex gap-5 flex-wrap">
             <div className="year d-flex flex-column flex-fill">
               <label htmlFor="year">Year</label>
-              <select className='form-control' id="year" name="year" required>
-                <option value="" disabled selected>Select year</option>
+              <select className='form-control' id="year" name="year" onChange={handleChange} value={students.year} required>
+                <option value="" disabled selected >Select year</option>
                 <option value="1st year">1st year</option>
                 <option value="2nd year">2nd year</option>
                 <option value="3rd year">3rd year</option>
@@ -56,7 +103,7 @@ const HodDashboard_addStudent = () => {
             </div>
             <div className="section d-flex flex-column flex-fill">
               <label htmlFor="section">Section</label>
-              <select className='form-control' id="section" name="section" required>
+              <select className='form-control' id="section" name="section" onChange={handleChange} value={students.section} required>
                 <option value="" disabled selected>Select section</option>
                 <option value="section-01">Section-01</option>
                 <option value="section-02">Section-02</option>
@@ -66,7 +113,7 @@ const HodDashboard_addStudent = () => {
             </div>
           </div>
           <div className="submit d-flex justify-content-center">
-            <input className='submit-btn btn btn-primary' type="submit" value="Add Student" />
+            <input className='submit-btn btn btn-primary' type="submit" onClick={handleSubmit} value="Add Student" />
           </div>
         </form>
       </div>
@@ -87,7 +134,7 @@ const HodDashboard_addStudent = () => {
           </div>
         </div>
         <div className="mt-0">
-          <button className="btn upload-btn">Upload CSV</button>
+          <button className="btn upload-btn" onClick={handleFileSubmit}>Upload CSV</button>
         </div>
       </div>
     </div>

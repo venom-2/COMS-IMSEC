@@ -27,7 +27,8 @@ const isTokenExpired = (token) => {
 const allowedRole = (token) => {
   try {
     const decodedToken = jwtDecode(token);
-    return decodedToken.sub;
+    console.log("Decoded Token:", decodedToken);
+    return decodedToken.user.role;
   } catch (error) {
     return null; // Error while decoding token
   }
@@ -90,7 +91,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Login isTokenExpired={isTokenExpired} />} />
 
-              <Route path="/dashboardhod" element={<ProtectedWrapper expectedRole="HOD" />}>
+              <Route path="/dashboardhod" element={<ProtectedWrapper expectedRole="hod" />}>
                 <Route index element={<DashboardHOD />} />
                 <Route path="add-students" element={<DashboardHOD />} />
                 <Route path="assign-faculty" element={<DashboardHOD />} />
@@ -98,14 +99,14 @@ function App() {
                 <Route path="add-subjects" element={<DashboardHOD />} />
               </Route>
 
-              <Route path="/dashboardfaculty" element={<ProtectedWrapper expectedRole="Faculty" />}>
+              <Route path="/dashboardfaculty" element={<ProtectedWrapper expectedRole="faculty" />}>
                 <Route index element={<DashboardFaculty />} />
                 <Route path="add-students" element={<DashboardFaculty />} />
                 <Route path="add-marks" element={<DashboardFaculty />} />
                 <Route path="view-co" element={<DashboardFaculty />} />
               </Route>
 
-              <Route path="/dashboardadmin" element={<ProtectedRoute element={<DashboardAdmin />} expectedRole="Admin" />} />
+              <Route path="/dashboardadmin" element={<ProtectedRoute element={<DashboardAdmin />} expectedRole="admin" />} />
 
             </Routes>
           </BrowserRouter>
