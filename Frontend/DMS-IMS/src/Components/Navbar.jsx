@@ -44,9 +44,9 @@ const Navbar = ({handleLogout}) => {
           <i className="fa-solid fa-user fa-2xl" onClick={toggleDropdown}></i>
         </a>
       </nav>
-      <div className={`dropdown ${dropdownOpen ? 'show' : ''}`} style={{ position: 'absolute', right: '10px', top: '40px' }}>
+      <div className={`dropdown ${dropdownOpen ? 'show' : ''}`} style={{ position: 'absolute', right: '10px', top: '25px' }}>
         <div className={`dropdown-menu ${dropdownOpen ? 'show' : ''}`} style={{ display: dropdownOpen ? 'block' : 'none', padding: '20px', width: '350px' }}>
-          <h6 className="dropdown-header text-center">Welcome, {userData.name}</h6>
+          <h6 className="dropdown-header text-center" style={{fontSize:'1.2rem', color:'#17153b'}}>Welcome, {userData.name}</h6>
           <hr className="dropdown-divider" />
           <div className="profile-info">
             <div className=" mt-3" style={{textAlign:'left'}}>

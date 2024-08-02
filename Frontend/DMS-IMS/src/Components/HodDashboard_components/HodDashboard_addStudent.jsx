@@ -45,7 +45,7 @@ const HodDashboard_addStudent = () => {
           section: ''
         });
       } else {
-        toast.error(data.message);
+        toast.error("Failed to add student!");
       }
     } catch (error) {
       console.log(error);

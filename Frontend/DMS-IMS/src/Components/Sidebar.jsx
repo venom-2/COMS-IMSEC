@@ -7,6 +7,7 @@ const Sidebar = () => {
 
     const {toggleState, setToggleState} = React.useContext(ToggleContext);
 
+
     return (
         <div className='sidebar-container'>
             <div className="sidebar d-flex flex-column align-content-between">
@@ -16,7 +17,7 @@ const Sidebar = () => {
                         <span className={`${toggleState ? 'show' : 'hide'} mx-3`}> Dashboard</span>
                     </div>
                     <div className="add-faculty">
-                        <Link to='/dashboardhod/add-faculty'>
+                        <Link to='/dashboardhod/add-faculty' style={{ textDecoration: 'none' }}>
                         <i class="fa-solid fa-user-group fa-2xl"></i>
                         <span className={`${toggleState ? 'show' : 'hide'} mx-3`}>Add Faculty</span>
                         </Link>
@@ -26,7 +27,7 @@ const Sidebar = () => {
                         <span className={`${toggleState ? 'show' : 'hide'} mx-3`}>Assign Faculty</span>
                     </div>
                     <div className="add-student">
-                        <Link to='/dashboardhod/add-students'>
+                        <Link to='/dashboardhod/add-students' style={{ textDecoration: 'none' }}>
                         <i class="fa-solid fa-user-plus fa-2xl"></i>
                         <span className={`${toggleState ? 'show' : 'hide'} mx-3`}>Add Student</span>
                         </Link>

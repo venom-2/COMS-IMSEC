@@ -70,4 +70,5 @@ form,.first-row,.third-row{
     border-color: #17153B;
     border: 2px dashed #17153B;
     border-bottom: none;
+    cursor: pointer;
 }
