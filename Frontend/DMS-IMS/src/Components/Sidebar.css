@@ -1,21 +1,21 @@
-.show{
+.show {
     color: white;
 }
 
-.hide{
+.hide {
     display: none;
 }
 
-.show:hover{
+.show:hover {
     cursor: pointer;
     color: rgb(186, 177, 177);
 }
 
-.sidebar i{
+.sidebar i {
     color: white;
 }
 
-.sidebar{
+.sidebar {
     position: absolute;
     top: 72px;
     background-color: #17153B;
@@ -23,46 +23,50 @@
     height: 90vh;
 }
 
-.dashboard,.add-faculty,.add-student,.assign-faculty,.settings{
+.dashboard,
+.add-faculty,
+.add-student,
+.assign-faculty,
+.settings {
     padding: 5px 20px 5px 20px;
 }
 
-.fa-user:hover{
+.fa-user:hover {
     cursor: pointer;
     color: rgb(186, 177, 177);
 }
 
-.fa-bars:hover{
+.fa-bars:hover {
     cursor: pointer;
     color: rgb(186, 177, 177);
 }
 
-.fa-user-plus:hover{
+.fa-user-plus:hover {
     cursor: pointer;
     color: rgb(186, 177, 177);
 }
 
-.fa-house:hover{
+.fa-house:hover {
     cursor: pointer;
     color: rgb(186, 177, 177);
 }
 
-.fa-user-group:hover{
+.fa-user-group:hover {
     cursor: pointer;
     color: rgb(186, 177, 177);
 }
 
-.fa-people-group:hover{
+.fa-people-group:hover {
     cursor: pointer;
     color: rgb(186, 177, 177);
 }
 
-.fa-gear:hover{
+.fa-gear:hover {
     cursor: pointer;
     color: rgb(186, 177, 177);
 }
 
-.fa-book-open:hover{
+.fa-book-open:hover {
     cursor: pointer;
     color: rgb(186, 177, 177);
 }

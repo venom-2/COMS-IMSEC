@@ -19,11 +19,14 @@ const HodDashboard_home = () => {
         </div>
       </div>
       <div className="button-container d-flex flex-wrap justify-content-center">
-        <div className="course-outcome d-flex justify-content-center">
+        <div className="course-outcome d-flex justify-content-center col md-4">
           <button className="btn course-outcome-btn btn-primary">Course Outcome</button>
         </div>
-        <div className="attendance d-flex justify-content-center">
+        <div className="attendance d-flex justify-content-center col md-4">
           <button className="btn attendance-btn btn-primary">Attendance</button>
+        </div>
+        <div className="co-feedback d-flex justify-content-center col md-4">
+          <button className="btn co-feedback-btn btn-primary">CO Feedback</button>
         </div>
       </div>
     </div>

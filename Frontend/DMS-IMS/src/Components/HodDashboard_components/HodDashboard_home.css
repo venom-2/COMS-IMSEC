@@ -32,12 +32,11 @@
     width: calc(100vw-60vw);
 }
 
-.course-outcome, .attendance{
+.course-outcome, .attendance, .co-feedback{
     height: 50px;
-    
 }
 
-.course-outcome-btn, .attendance-btn{
+.course-outcome-btn, .attendance-btn, .co-feedback-btn{
     height: 50px;
     width: 20vw;
     

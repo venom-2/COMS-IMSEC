@@ -106,11 +106,11 @@ const HodDashboard_addStudent = () => {
       <div className="form-faculty d-flex justify-content-center mt-2">
         <form className="d-flex flex-column gap-3">
           <div className="first-row d-flex gap-5 flex-wrap">
-            <div className="name d-flex flex-column ">
+            <div className="name d-flex flex-column col md-6">
               <label htmlFor="name">Name</label>
               <input className='form-control' onChange={handleChange} value={students.name} type="text" id="name" name="name" placeholder="Enter name" required />
             </div>
-            <div className="roll-no d-flex flex-column flex-fill">
+            <div className="roll-no d-flex flex-column col md-6">
               <label htmlFor="rollNumber">Roll No</label>
               <input className='form-control' onChange={handleChange} value={students.rollNumber} type="text" id="rollNumber" name="rollNumber" placeholder="Enter roll no" required />
             </div>
@@ -120,7 +120,7 @@ const HodDashboard_addStudent = () => {
             <input className='form-control' type="email" onChange={handleChange} value={students.email} id="email" name="email" placeholder="Enter email" required />
           </div>
           <div className="third-row d-flex gap-5 flex-wrap">
-            <div className="year d-flex flex-column flex-fill">
+            <div className="year d-flex flex-column col md-6">
               <label htmlFor="year">Year</label>
               <select className='form-control' id="year" name="year" onChange={handleChange} value={students.year} required>
                 <option value="" disabled>Select year</option>
@@ -130,7 +130,7 @@ const HodDashboard_addStudent = () => {
                 <option value="4th year">4th year</option>
               </select>
             </div>
-            <div className="section d-flex flex-column flex-fill">
+            <div className="section d-flex flex-column col md-6">
               <label htmlFor="section">Section</label>
               <select className='form-control' id="section" name="section" onChange={handleChange} value={students.section} required>
                 <option value="" disabled>Select section</option>

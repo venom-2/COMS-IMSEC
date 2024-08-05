@@ -37,7 +37,7 @@ const Sidebar = () => {
                         </Link>
                     </div>
                     <div className="add-student">
-                        <Link to='/dashboardhod/add-students' style={{ textDecoration: 'none' }}>
+                        <Link to='/dashboardhod/add-subject' style={{ textDecoration: 'none' }}>
                             <i class="fa-solid fa-book-open fa-2xl"></i>
                             <span className={`${toggleState ? 'show' : 'hide'} mx-3`}> Add Subject</span>
                         </Link>
