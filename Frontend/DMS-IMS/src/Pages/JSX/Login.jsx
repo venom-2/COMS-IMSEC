@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import "../CSS/Login.css";
+import Cat from '../../assets/cat-sad-kitty-sad.gif';
 
 const Login = ({ isTokenExpired }) => {
     const navigate = useNavigate();
@@ -71,69 +72,75 @@ const Login = ({ isTokenExpired }) => {
 
     return (
         <>
-            <div className="container-fluid d-flex flex-wrap p-0">
-            <div className="login d-flex align-items-center flex-column justify-content-center col-12 col-md-6" style={{ minHeight: '100vh', gap: '3rem' }}>
-                <div className="login-form d-flex flex-column align-items-center justify-content-center w-75" style={{ minHeight: '60vh' }}>
-                    <div className="heading text-center mb-4">
-                        <h1>Login to your Account</h1>
-                        <p>See what is going on with your department</p>
-                    </div>
-                    <div className="input w-100">
-                        <div className="form-group mb-3">
-                            <label htmlFor="email">Email</label>
-                            <input 
-                                type="email" 
-                                name="email" 
-                                id="email" 
-                                value={credentials.email} 
-                                onChange={handleChange} 
-                                placeholder="email@imsec.ac.in"
-                                className="form-control" 
-                            />
-                        </div>
-                        <div className="form-group mb-3">
-                            <label htmlFor="password">Password</label>
-                            <input 
-                                type="password" 
-                                name="password" 
-                                id="password" 
-                                value={credentials.password} 
-                                onChange={handleChange} 
-                                placeholder="********"
-                                className="form-control" 
-                            />
-                        </div>
-                        <div className="form-group mb-3">
-                            <label htmlFor="role">Role</label>
-                            <select 
-                                name="role" 
-                                id="role" 
-                                value={credentials.role} 
-                                onChange={handleChange}
-                                className="form-control"
-                            >
-                                <option value="">Select Role</option>
-                                <option value="admin">Admin</option>
-                                <option value="hod">Head of Department</option>
-                                <option value="faculty">Faculty</option>
-                            </select>
-                        </div>
-                        <div className="d-flex justify-content-end mb-3">
-                            <a href="#">Forgot Password?</a>
-                        </div>
-                        <div className="d-flex justify-content-center">
-                            <button onClick={handleSubmit} className="butn">Login</button>
-                        </div>
-                    </div>
-                </div>
-                <div className="text-center">
-                    <p>Powered by <span style={{ color: '#433D8B' }}>XceeDesigns</span></p>
+            <div className="small-screen-visibility">
+                <div className="content-container">
+                    <h1>This website is not available on small screens.</h1>
+                    <img src={Cat} alt=""/>
                 </div>
             </div>
-            <div className="img login-image d-none d-md-block col-md-6" style={{ height: '100vh' }}>
-                {/* Image Background */}
+            <div className="container-fluid d-flex flex-wrap p-0 login-container">
+                <div className="login d-flex align-items-center flex-column justify-content-center col-12 col-md-6" style={{ minHeight: '100vh', gap: '3rem' }}>
+                    <div className="login-form d-flex flex-column align-items-center justify-content-center w-75" style={{ minHeight: '60vh' }}>
+                        <div className="heading text-center mb-4">
+                            <h1>Login to your Account</h1>
+                            <p>See what is going on with your department</p>
+                        </div>
+                        <div className="input w-100">
+                            <div className="form-group mb-3">
+                                <label htmlFor="email">Email</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    id="email"
+                                    value={credentials.email}
+                                    onChange={handleChange}
+                                    placeholder="email@imsec.ac.in"
+                                    className="form-control"
+                                />
+                            </div>
+                            <div className="form-group mb-3">
+                                <label htmlFor="password">Password</label>
+                                <input
+                                    type="password"
+                                    name="password"
+                                    id="password"
+                                    value={credentials.password}
+                                    onChange={handleChange}
+                                    placeholder="********"
+                                    className="form-control"
+                                />
+                            </div>
+                            <div className="form-group mb-3">
+                                <label htmlFor="role">Role</label>
+                                <select
+                                    name="role"
+                                    id="role"
+                                    value={credentials.role}
+                                    onChange={handleChange}
+                                    className="form-control"
+                                >
+                                    <option value="">Select Role</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="hod">Head of Department</option>
+                                    <option value="faculty">Faculty</option>
+                                </select>
+                            </div>
+                            <div className="d-flex justify-content-end mb-3">
+                                <a href="#">Forgot Password?</a>
+                            </div>
+                            <div className="d-flex justify-content-center">
+                                <button onClick={handleSubmit} className="butn">Login</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="text-center">
+                        <p>Powered by <span style={{ color: '#433D8B' }}>XceeDesigns</span></p>
+                    </div>
+                </div>
+                <div className="img login-image d-none d-md-block col-md-6" style={{ height: '100vh' }}>
+                    {/* Image Background */}
+                </div>
             </div>
-        </div>
         </>
     );
 };

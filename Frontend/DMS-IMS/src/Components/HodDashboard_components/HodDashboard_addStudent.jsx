@@ -106,7 +106,7 @@ const HodDashboard_addStudent = () => {
       <div className="form-faculty d-flex justify-content-center mt-2">
         <form className="d-flex flex-column gap-3">
           <div className="first-row d-flex gap-5 flex-wrap">
-            <div className="name d-flex flex-column flex-fill">
+            <div className="name d-flex flex-column ">
               <label htmlFor="name">Name</label>
               <input className='form-control' onChange={handleChange} value={students.name} type="text" id="name" name="name" placeholder="Enter name" required />
             </div>

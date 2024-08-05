@@ -96,7 +96,7 @@ function App() {
                 <Route path="add-students" element={<DashboardHOD />} />
                 <Route path="assign-faculty" element={<DashboardHOD />} />
                 <Route path="add-faculty" element={<DashboardHOD />} />
-                <Route path="add-subjects" element={<DashboardHOD />} />
+                <Route path="home" element={<DashboardHOD />} />
               </Route>
 
               <Route path="/dashboardfaculty" element={<ProtectedWrapper expectedRole="faculty" />}>

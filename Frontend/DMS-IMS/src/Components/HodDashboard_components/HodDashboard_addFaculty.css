@@ -20,6 +20,8 @@
     background-color: #433D8B;
     color: white;
     border-radius: 5px;
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.3);
+
 }
 
 form,.first-row,.third-row{

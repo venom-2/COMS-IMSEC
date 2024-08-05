@@ -61,3 +61,8 @@
     cursor: pointer;
     color: rgb(186, 177, 177);
 }
+
+.fa-book-open:hover{
+    cursor: pointer;
+    color: rgb(186, 177, 177);
+}

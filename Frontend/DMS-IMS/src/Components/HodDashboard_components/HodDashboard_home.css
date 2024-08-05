@@ -1,0 +1,44 @@
+.container{
+    width: 100vw;
+}
+
+.card-container{
+    height: 30vh;
+    width: calc(100vw-60vw);
+    margin-left: 80px;
+}
+
+.card1,.card2,.card3{
+    height: 20vh;
+    width: 20vw;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+    background-color: #2E236C;
+}
+
+.card1 p, .card2 p, .card3 p{
+    font-size: 1.5rem;
+    color: white;
+}
+
+.button-container{
+    width: calc(100vw-60vw);
+}
+
+.course-outcome, .attendance{
+    height: 50px;
+    
+}
+
+.course-outcome-btn, .attendance-btn{
+    height: 50px;
+    width: 20vw;
+    
+}
