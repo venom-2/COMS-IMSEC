@@ -170,15 +170,12 @@ const HodDashboard_addSubject = () => {
                         </div>
                         <div className="confirm-password d-flex flex-column col md-6">
                             <label htmlFor="subjectType">Subject Type</label>
-                            <input
-                                className='form-control'
-                                type="text"
-                                placeholder='Enter type of subject'
-                                name="subjectType"
-                                value={formData.subjectType}
-                                onChange={handleChange}
-                                required
-                            />
+                            <select name="subjectType" value={formData.subjectType} onChange={handleChange} className='form-control'>
+                                <option value="" disabled>Select Subject Type</option>
+                                <option value="Theory">Regular</option>
+                                <option value="Practical">Practical</option>
+                                <option value="Elective">Elective</option>
+                            </select>
                         </div>
                     </div>
                     <div className="submit d-flex justify-content-center">
@@ -194,6 +191,7 @@ const HodDashboard_addSubject = () => {
                             <th scope="col">Name</th>
                             <th scope="col">Subject Code</th>
                             <th scope="col">NAAC Code</th>
+                            <th scope="col">Year</th>
                             <th scope="col">Subject Type</th>
                             <th scope="col">Remove</th>
                         </tr>
@@ -205,6 +203,7 @@ const HodDashboard_addSubject = () => {
                                 <td>{subject.subjectName}</td>
                                 <td>{subject.subjectCode}</td>
                                 <td>{subject.subjectNAACCode}</td>
+                                <td>{subject.year}</td>
                                 <td>{subject.subjectType}</td>
                                 <td><button className='btn btn-danger' onClick={() => openModal(subject._id)}>Remove</button></td>
                             </tr>

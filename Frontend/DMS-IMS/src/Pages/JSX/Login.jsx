@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import "../CSS/Login.css";
-import Cat from '../../assets/cat-sad-kitty-sad.gif';
+import Cat from '../../assets/cat-sad-kitty-sad.webp';
 
 const Login = ({ isTokenExpired }) => {
     const navigate = useNavigate();
@@ -74,7 +74,7 @@ const Login = ({ isTokenExpired }) => {
         <>
             <div className="small-screen-visibility">
                 <div className="content-container">
-                    <h1>This website is not available on small screens.</h1>
+                    <h1>Sorry, this website is not available on small screens.</h1>
                     <img src={Cat} alt=""/>
                 </div>
             </div>

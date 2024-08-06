@@ -29,6 +29,9 @@ const HodDashboard_home = () => {
           <button className="btn co-feedback-btn btn-primary">CO Feedback</button>
         </div>
       </div>
+      <div className="button-container d-flex flex-wrap justify-content-center mt-5 text-danger">
+      <h1>Under development</h1>
+      </div>
     </div>
   )
 }
