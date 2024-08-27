@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './HodDashboard_addFaculty.css';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { toast } from 'react-hot-toast';
 import RemoveAssignedSubjectModal from '../RemoveAssignedSubjectModal'; // Import the modal
 
@@ -8,6 +8,7 @@ const HodDashboard_assignFaculty = () => {
     const [faculties, setFaculties] = useState([]);
     const [year, setYear] = useState('');
     const [subjects, setSubjects] = useState([]);
+    const [deleteSubject, setDeleteSubject] = useState({ userId: '', subjectId: '' });
     const [selectedFaculty, setSelectedFaculty] = useState('');
     const [selectedSubject, setSelectedSubject] = useState('');
     const [currentAssignedSubjects, setCurrentAssignedSubjects] = useState([]);
@@ -75,7 +76,14 @@ const HodDashboard_assignFaculty = () => {
             const data = await response.json();
             if (data.success) {
                 toast.success(data.message);
-                setFaculties([...faculties, data.faculty]);
+                // Update the faculties state without adding a new row
+                setFaculties((prevFaculties) =>
+                    prevFaculties.map((faculty) =>
+                        faculty._id === selectedFaculty
+                            ? { ...faculty, assignedSubjects: [...faculty.assignedSubjects, selectedSubject] }
+                            : faculty
+                    )
+                );
                 resetForm();
             } else {
                 console.error(data);
@@ -95,7 +103,7 @@ const HodDashboard_assignFaculty = () => {
     };
 
     const openModal = () => {
-        console.log({currentAssignedSubjects});
+        console.log({ currentAssignedSubjects });
         setShowModal(true);
     };
 
@@ -103,14 +111,45 @@ const HodDashboard_assignFaculty = () => {
         setShowModal(false);
     };
 
-    const confirmModal = () => {
-        // Handle the logic to remove the subject from the faculty
-        // Example: Call the API to remove the subject
-        // ...
+    const confirmModal = async (e) => {
+        e.preventDefault();
+        try {
+            console.log(deleteSubject);
+            const response = await fetch('https://dms-backend-eight.vercel.app/delete/assignedsubject', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authToken': localStorage.getItem('authToken'),
+                },
+                body: JSON.stringify(deleteSubject),
+            });
 
-        // Close the modal after confirming
-        closeModal();
+            const data = await response.json();
+            if (data.success) {
+                toast.success(data.message);
+
+                // Update the faculties state after removing the subject
+                setFaculties((prevFaculties) =>
+                    prevFaculties.map((faculty) =>
+                        faculty._id === deleteSubject.userId
+                            ? { ...faculty, assignedSubjects: faculty.assignedSubjects.filter(subject => subject !== deleteSubject.subjectId) }
+                            : faculty
+                    )
+                );
+
+                resetForm();
+            } else {
+                console.error(data);
+                toast.error(data.message);
+            }
+        } catch (err) {
+            console.error('Error:', err);
+            toast.error('Failed to remove the assigned subject.');
+        } finally {
+            closeModal();
+        }
     };
+
 
     const handleSelectAssignedSubjects = (faculty) => {
         setCurrentAssignedSubjects(faculty.assignedSubjects);
@@ -226,6 +265,7 @@ const HodDashboard_assignFaculty = () => {
                                         className='form-select'
                                         style={{ width: '300px' }}
                                         onFocus={() => handleSelectAssignedSubjects(faculty)}
+                                        onChange={(e) => { setDeleteSubject({ userId: faculty._id, subjectId: e.target.value }) }}
                                     >
                                         <option value="">Assigned Subject(s)</option>
                                         {faculty.assignedSubjects.map((subject) => (
@@ -245,7 +285,6 @@ const HodDashboard_assignFaculty = () => {
                 show={showModal}
                 onClose={closeModal}
                 onConfirm={confirmModal}
-                subjects={currentAssignedSubjects}
             />
         </div>
     );

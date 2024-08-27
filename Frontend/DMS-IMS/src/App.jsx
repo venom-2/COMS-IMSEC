@@ -105,7 +105,10 @@ function App() {
                 <Route path="add-students" element={<DashboardFaculty />} />
                 <Route path="add-marks" element={<DashboardFaculty />} />
                 <Route path="home" element={<DashboardFaculty />} />
+                <Route path="attendance" element={<DashboardFaculty />} />
+                <Route path="lab-marks" element={<DashboardFaculty />} />
                 <Route path="view-co" element={<DashboardFaculty />} />
+                <Route path="assignment" element={<DashboardFaculty />} />
               </Route>
 
               <Route path="/dashboardadmin" element={<ProtectedRoute element={<DashboardAdmin />} expectedRole="admin" />} />

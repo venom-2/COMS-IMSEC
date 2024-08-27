@@ -27,7 +27,25 @@ const Sidebar = () => {
                     <div className="add-marks">
                         <Link to='/dashboardfaculty/add-marks' style={{ textDecoration: 'none' }}>
                             <i class="fa-solid fa-plus fa-2xl"></i>
-                            <span className={`${toggleState ? 'show' : 'hide'} mx-4`}>Add Marks</span>
+                            <span className={`${toggleState ? 'show' : 'hide'} mx-4`}>CT Marks</span>
+                        </Link>
+                    </div>
+                    <div className="add-marks">
+                        <Link to='/dashboardfaculty/assignment' style={{ textDecoration: 'none' }}>
+                            <i class="fa-solid fa-book fa-2xl"></i>
+                            <span className={`${toggleState ? 'show' : 'hide'} mx-4`}>Assignment Marks</span>
+                        </Link>
+                    </div>
+                    <div className="add-marks">
+                        <Link to='/dashboardfaculty/lab-marks' style={{ textDecoration: 'none' }}>
+                            <i class="fa-solid fa-flask fa-2xl"></i>
+                            <span className={`${toggleState ? 'show' : 'hide'} mx-4`}>Lab Marks</span>
+                        </Link>
+                    </div>
+                    <div className="add-marks">
+                        <Link to='/dashboardfaculty/attendance' style={{ textDecoration: 'none' }}>
+                            <i class="fa-solid fa-clipboard-user fa-2xl"></i>
+                            <span className={`${toggleState ? 'show' : 'hide'} mx-4`}> Attendance</span>
                         </Link>
                     </div>
                     <div className="view-co">

@@ -8,6 +8,9 @@ import FacultyDashboard_home from "../../Components/FacultyDashboard_components/
 import FacultyDashboard_addStudent from "../../Components/FacultyDashboard_components/FacultyDashboard_addStudent";
 import FacultyDashboard_addMarks from "../../Components/FacultyDashboard_components/FacultyDashboard_addMarks";
 import FacultyDashboard_viewCO from "../../Components/FacultyDashboard_components/FacultyDashboard_viewCO";
+import FacultyDashboard_attendance from "../../Components/FacultyDashboard_components/FacultyDashboard_attendance";
+import FacultyDashboard_assignment from "../../Components/FacultyDashboard_components/FacultyDashboard_assignment";
+import FacultyDashboard_labMarks from "../../Components/FacultyDashboard_components/FacultyDashboard_labMarks";
 
 const DashboardFaculty = () => {
   const location = useLocation();
@@ -34,7 +37,10 @@ const DashboardFaculty = () => {
           {location.pathname === '/dashboardfaculty/home' && <FacultyDashboard_home/>}
           {location.pathname === '/dashboardfaculty/add-students' && <FacultyDashboard_addStudent />}
           {location.pathname === '/dashboardfaculty/add-marks' && <FacultyDashboard_addMarks />}
+          {location.pathname === '/dashboardfaculty/attendance' && <FacultyDashboard_attendance />}
+          {location.pathname === '/dashboardfaculty/lab-marks' && <FacultyDashboard_labMarks />}
           {location.pathname === '/dashboardfaculty/view-co' && <FacultyDashboard_viewCO />}
+          {location.pathname === '/dashboardfaculty/assignment' && <FacultyDashboard_assignment />}
         </main>
       </div>
     </div>

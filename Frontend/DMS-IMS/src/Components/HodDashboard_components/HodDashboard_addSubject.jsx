@@ -190,7 +190,7 @@ const HodDashboard_addSubject = () => {
                             <th scope="col">Sr. No.</th>
                             <th scope="col">Name</th>
                             <th scope="col">Subject Code</th>
-                            <th scope="col">NAAC Code</th>
+                            <th scope="col">NBA Code</th>
                             <th scope="col">Year</th>
                             <th scope="col">Subject Type</th>
                             <th scope="col">Remove</th>
