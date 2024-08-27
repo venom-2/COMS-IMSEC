@@ -47,6 +47,21 @@
     color: rgb(186, 177, 177);
 }
 
+.fa-book:hover {
+    cursor: pointer;
+    color: rgb(186, 177, 177);
+}
+
+.fa-flask:hover {
+    cursor: pointer;
+    color: rgb(186, 177, 177);
+}
+
+.fa-clipboard-user:hover {
+    cursor: pointer;
+    color: rgb(186, 177, 177);
+}
+
 .fa-file:hover {
     cursor: pointer;
     color: rgb(186, 177, 177);
