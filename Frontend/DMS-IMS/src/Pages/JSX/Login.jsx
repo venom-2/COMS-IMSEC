@@ -64,7 +64,7 @@ const Login = ({ isTokenExpired }) => {
             case "hod":
                 return "/dashboardhod/home";
             case "faculty":
-                return "/DashboardFaculty";
+                return "/dashboardfaculty/home";
             default:
                 return "/";
         }

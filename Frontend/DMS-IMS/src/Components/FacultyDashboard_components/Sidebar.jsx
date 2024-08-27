@@ -1,6 +1,6 @@
 import React from 'react'
 import './Sidebar.css'
-import { ToggleContext } from '../contextAPI/ToggleContext'
+import { ToggleContext } from '../../contextAPI/ToggleContext'
 import { Link } from 'react-router-dom'
 
 const Sidebar = () => {
@@ -13,33 +13,27 @@ const Sidebar = () => {
             <div className="sidebar d-flex flex-column align-content-between">
                 <div className="categories d-flex flex-column gap-4">
                     <div className="dashboard">
-                        <Link to='/dashboardhod/home' style={{ textDecoration: 'none' }}>
+                        <Link to='/dashboardfaculty/home' style={{ textDecoration: 'none' }}>
                             <i class="fa-solid fa-house fa-2xl"></i>
                             <span className={`${toggleState ? 'show' : 'hide'} mx-3`}> Dashboard</span>
                         </Link>
                     </div>
-                    <div className="add-faculty">
-                        <Link to='/dashboardhod/add-faculty' style={{ textDecoration: 'none' }}>
-                            <i class="fa-solid fa-user-group fa-2xl"></i>
-                            <span className={`${toggleState ? 'show' : 'hide'} mx-3`}>Add Faculty</span>
-                        </Link>
-                    </div>
-                    <div className="assign-faculty">
-                        <Link to='/dashboardhod/assign-faculty' style={{ textDecoration: 'none' }}>
-                            <i class="fa-solid fa-people-group fa-2xl"></i>
-                            <span className={`${toggleState ? 'show' : 'hide'} mx-3`}>Assign Faculty</span>
-                        </Link>
-                    </div>
                     <div className="add-student">
-                        <Link to='/dashboardhod/add-students' style={{ textDecoration: 'none' }}>
+                        <Link to='/dashboardfaculty/add-students' style={{ textDecoration: 'none' }}>
                             <i class="fa-solid fa-user-plus fa-2xl"></i>
                             <span className={`${toggleState ? 'show' : 'hide'} mx-3`}>Add Student</span>
                         </Link>
                     </div>
-                    <div className="add-student">
-                        <Link to='/dashboardhod/add-subject' style={{ textDecoration: 'none' }}>
-                            <i class="fa-solid fa-book-open fa-2xl"></i>
-                            <span className={`${toggleState ? 'show' : 'hide'} mx-3`}> Add Subject</span>
+                    <div className="add-marks">
+                        <Link to='/dashboardfaculty/add-marks' style={{ textDecoration: 'none' }}>
+                            <i class="fa-solid fa-plus fa-2xl"></i>
+                            <span className={`${toggleState ? 'show' : 'hide'} mx-4`}>Add Marks</span>
+                        </Link>
+                    </div>
+                    <div className="view-co">
+                        <Link to='/dashboardfaculty/view-co' style={{ textDecoration: 'none' }}>
+                            <i class="fa-solid fa-file fa-2xl"></i>
+                            <span className={`${toggleState ? 'show' : 'hide'} mx-4`}> View CO</span>
                         </Link>
                     </div>
                 </div>

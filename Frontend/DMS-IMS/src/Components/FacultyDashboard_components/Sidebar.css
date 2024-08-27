@@ -1,0 +1,78 @@
+.show {
+    color: white;
+}
+
+.hide {
+    display: none;
+}
+
+.show:hover {
+    cursor: pointer;
+    color: rgb(186, 177, 177);
+}
+
+.sidebar i {
+    color: white;
+}
+
+.sidebar {
+    position: absolute;
+    top: 72px;
+    background-color: #17153B;
+    width: fit-content;
+    height: 90vh;
+}
+
+.dashboard,
+.add-student,
+.settings {
+    padding: 5px 20px 5px 20px;
+}
+
+.add-marks{
+    padding: 5px 20px 5px 23px;
+}
+
+.view-co{
+    padding: 5px 20px 5px 25px;
+}
+
+.fa-user:hover {
+    cursor: pointer;
+    color: rgb(186, 177, 177);
+}
+
+.fa-plus:hover {
+    cursor: pointer;
+    color: rgb(186, 177, 177);
+}
+
+.fa-file:hover {
+    cursor: pointer;
+    color: rgb(186, 177, 177);
+}
+
+.fa-bars:hover {
+    cursor: pointer;
+    color: rgb(186, 177, 177);
+}
+
+.fa-user-plus:hover {
+    cursor: pointer;
+    color: rgb(186, 177, 177);
+}
+
+.fa-house:hover {
+    cursor: pointer;
+    color: rgb(186, 177, 177);
+}
+
+.fa-gear:hover {
+    cursor: pointer;
+    color: rgb(186, 177, 177);
+}
+
+.fa-book-open:hover {
+    cursor: pointer;
+    color: rgb(186, 177, 177);
+}

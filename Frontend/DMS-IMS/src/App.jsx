@@ -104,6 +104,7 @@ function App() {
                 <Route index element={<DashboardFaculty />} />
                 <Route path="add-students" element={<DashboardFaculty />} />
                 <Route path="add-marks" element={<DashboardFaculty />} />
+                <Route path="home" element={<DashboardFaculty />} />
                 <Route path="view-co" element={<DashboardFaculty />} />
               </Route>
 

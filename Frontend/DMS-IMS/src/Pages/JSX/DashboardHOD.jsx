@@ -3,14 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import '../CSS/DashboardHod.css'; // Import custom CSS
 import toast from "react-hot-toast";
 import Navbar from "../../Components/Navbar";
-import Sidebar from "../../Components/Sidebar";
+import Sidebar from "../../Components/HodDashboard_components/Sidebar";
 import HodDashboard_addFaculty from "../../Components/HodDashboard_components/HodDashboard_addFaculty";
 import HodDashboard_addStudent from "../../Components/HodDashboard_components/HodDashboard_addStudent";
 import HodDashboard_assignFaculty from "../../Components/HodDashboard_components/HodDashboard_assignFaculty";
 import HodDashboard_home from "../../Components/HodDashboard_components/HodDashboard_home";
 import HodDashboard_addSubject from "../../Components/HodDashboard_components/HodDashboard_addSubject";
 
-const DashboardHOD = () => {
+const DashboardHOD = () => { 
   const location = useLocation();
   const navigate = useNavigate();
 
