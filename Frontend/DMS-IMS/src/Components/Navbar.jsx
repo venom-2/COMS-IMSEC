@@ -36,16 +36,14 @@ const Navbar = ({ handleLogout }) => {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#070F2B' }}>
+    <AppBar position="static" sx={{ backgroundColor: '#070F2B', width: `calc(100% - 240px)`, ml: '240px' }}>
       <Toolbar>
         {/* Sidebar Toggle Button */}
-        <IconButton edge="start" color="inherit" onClick={toggleSidebar}>
-          <MenuIcon />
+        <IconButton edge="start" color="inherit">
         </IconButton>
 
         {/* Navbar Title */}
         <Typography variant="h6" sx={{ flexGrow: 1, mx: '2rem' }}>
-          Gradium AI
         </Typography>
 
         {/* User Icon Dropdown */}

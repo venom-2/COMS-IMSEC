@@ -2,7 +2,7 @@ import React from 'react'
 
 const FacultyDashboard_addMarks = () => {
   return (
-    <div style={{paddingLeft:'500px'}}>FacultyDashboard_addmarks (Under Development)</div>
+    <div style={{marginLeft: '240px'}}>FacultyDashboard_addmarks (Under Development)</div>
   )
 }
 

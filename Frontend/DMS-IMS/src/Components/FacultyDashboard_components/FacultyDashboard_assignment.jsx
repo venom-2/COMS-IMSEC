@@ -2,7 +2,7 @@ import React from 'react'
 
 const FacultyDashboard_assignment = () => {
   return (
-    <div>FacultyDashboard_assignment</div>
+    <div style={{marginLeft: '240px'}}>FacultyDashboard_assignment</div>
   )
 }
 

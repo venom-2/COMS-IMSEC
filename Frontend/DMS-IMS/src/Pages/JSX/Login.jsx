@@ -3,6 +3,8 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import "../CSS/Login.css";
 import Cat from '../../assets/cat-sad-kitty-sad.webp';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const Login = ({ isTokenExpired }) => {
     const navigate = useNavigate();
@@ -11,6 +13,7 @@ const Login = ({ isTokenExpired }) => {
         password: "",
         role: ""
     });
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     const handleChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -77,6 +80,10 @@ const Login = ({ isTokenExpired }) => {
         }
     };
 
+    const togglePassword = () => {
+        setPasswordVisible(!passwordVisible);
+    }
+
     return (
         <>
             <div className="small-screen-visibility">
@@ -106,18 +113,29 @@ const Login = ({ isTokenExpired }) => {
                                     required
                                 />
                             </div>
-                            <div className="form-group mb-3">
-                                <label htmlFor="password">Password</label>
-                                <input
-                                    type="password"
-                                    name="password"
-                                    id="password"
-                                    value={credentials.password}
-                                    onChange={handleChange}
-                                    placeholder="********"
-                                    className="form-control"
-                                    required
-                                />
+                            <div className="form-group mb-3 d-flex w-100">
+                                <div className="pass-container w-100">
+                                    <label htmlFor="password">Password</label>
+                                    <input
+                                        type={passwordVisible?"password":"text"}
+                                        name="password"
+                                        id="password"
+                                        value={credentials.password}
+                                        onChange={handleChange}
+                                        placeholder="********"
+                                        className="form-control"
+                                        required
+                                    />
+                                </div>
+                                <div className="input-group-append d-flex align-items-center mt-4">
+                                    <button
+                                        type="button"
+                                        className="btn btn-outline-secondary"
+                                        onClick={togglePassword}
+                                    >
+                                        {passwordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                    </button>
+                                </div>
                             </div>
                             <div className="form-group mb-3">
                                 <label htmlFor="role">Role</label>
