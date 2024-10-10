@@ -18,6 +18,13 @@ const Login = ({ isTokenExpired }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Check if any field is empty
+        if (!credentials.email || !credentials.password || !credentials.role) {
+            toast.error("Please fill in all the fields.");
+            return; // Do not proceed further if fields are empty
+        }
+
         try {
             const response = await fetch("https://dms-backend-eight.vercel.app/login", {
                 method: "POST",
@@ -75,7 +82,7 @@ const Login = ({ isTokenExpired }) => {
             <div className="small-screen-visibility">
                 <div className="content-container">
                     <h1>Sorry, this website is not available on small screens.</h1>
-                    <img src={Cat} alt=""/>
+                    <img src={Cat} alt="" />
                 </div>
             </div>
             <div className="container-fluid d-flex flex-wrap p-0 login-container">
@@ -96,6 +103,7 @@ const Login = ({ isTokenExpired }) => {
                                     onChange={handleChange}
                                     placeholder="email@imsec.ac.in"
                                     className="form-control"
+                                    required
                                 />
                             </div>
                             <div className="form-group mb-3">
@@ -108,6 +116,7 @@ const Login = ({ isTokenExpired }) => {
                                     onChange={handleChange}
                                     placeholder="********"
                                     className="form-control"
+                                    required
                                 />
                             </div>
                             <div className="form-group mb-3">
@@ -118,6 +127,7 @@ const Login = ({ isTokenExpired }) => {
                                     value={credentials.role}
                                     onChange={handleChange}
                                     className="form-control"
+                                    required
                                 >
                                     <option value="">Select Role</option>
                                     <option value="admin">Admin</option>
@@ -134,7 +144,7 @@ const Login = ({ isTokenExpired }) => {
                         </div>
                     </div>
                     <div className="text-center">
-                        <p>Powered by <span style={{ color: '#433D8B' }}>XceeDesigns</span></p>
+                        <p>Powered by <span style={{ color: '#1B1A55' }}>XceeDesigns</span></p>
                     </div>
                 </div>
                 <div className="img login-image d-none d-md-block col-md-6" style={{ height: '100vh' }}>

@@ -24,13 +24,13 @@ p {
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
-    background-color: #433D8B;
+    background-color: #1B1A55;
     color: white;
     width: 100%;
 }
 
 .butn:hover {
-    background-color: #615bab;
+    background-color: #535C91;
 }
 
 .login-image {

@@ -5,11 +5,9 @@ import DashboardHOD from "./Pages/JSX/DashboardHOD";
 import { Toaster } from "react-hot-toast";
 import DashboardFaculty from "./Pages/JSX/DashboardFaculty";
 import DashboardAdmin from "./Pages/JSX/DashboardAdmin";
-import { jwtDecode } from "jwt-decode"; // Correct import statement for jwt-decode
+import { jwtDecode } from "jwt-decode"; 
 import { COProvider } from './contextAPI/COContext';
 import { ToggleProvider } from "./contextAPI/ToggleContext";
-// import LoadingScreen from "./Pages/JSX/Loading";
-// import { useEffect, useState } from "react";
 
 const isTokenExpired = (token) => {
   try {
@@ -73,14 +71,6 @@ const ProtectedWrapper = ({ expectedRole }) => {
 };
 
 function App() {
-
-  // const [isLoading, setIsLoading] = useState(true);
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setIsLoading(false);
-  //   }, 2000);
-  // }, [])
 
   return (
     <>

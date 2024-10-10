@@ -1,69 +1,110 @@
-import React from 'react'
-import './Sidebar.css'
-import { ToggleContext } from '../../contextAPI/ToggleContext'
-import { Link } from 'react-router-dom'
+import React, { useContext } from 'react';
+import { ToggleContext } from '../../contextAPI/ToggleContext';
+import { Link } from 'react-router-dom';
+import { Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, IconButton, Box } from '@mui/material';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import AddIcon from '@mui/icons-material/Add';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import ScienceIcon from '@mui/icons-material/Science';
+import FactCheckIcon from '@mui/icons-material/FactCheck';
+import ArticleIcon from '@mui/icons-material/Article';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 const Sidebar = () => {
-
-    const { toggleState, setToggleState } = React.useContext(ToggleContext);
-
+    const { toggleState, setToggleState } = useContext(ToggleContext);
 
     return (
-        <div className='sidebar-container'>
-            <div className="sidebar d-flex flex-column align-content-between">
-                <div className="categories d-flex flex-column gap-4">
-                    <div className="dashboard">
-                        <Link to='/dashboardfaculty/home' style={{ textDecoration: 'none' }}>
-                            <i class="fa-solid fa-house fa-2xl"></i>
-                            <span className={`${toggleState ? 'show' : 'hide'} mx-3`}> Dashboard</span>
-                        </Link>
-                    </div>
-                    <div className="add-student">
-                        <Link to='/dashboardfaculty/add-students' style={{ textDecoration: 'none' }}>
-                            <i class="fa-solid fa-user-plus fa-2xl"></i>
-                            <span className={`${toggleState ? 'show' : 'hide'} mx-3`}>Add Student</span>
-                        </Link>
-                    </div>
-                    <div className="add-marks">
-                        <Link to='/dashboardfaculty/add-marks' style={{ textDecoration: 'none' }}>
-                            <i class="fa-solid fa-plus fa-2xl"></i>
-                            <span className={`${toggleState ? 'show' : 'hide'} mx-4`}>CT Marks</span>
-                        </Link>
-                    </div>
-                    <div className="add-marks">
-                        <Link to='/dashboardfaculty/assignment' style={{ textDecoration: 'none' }}>
-                            <i class="fa-solid fa-book fa-2xl"></i>
-                            <span className={`${toggleState ? 'show' : 'hide'} mx-4`}>Assignment Marks</span>
-                        </Link>
-                    </div>
-                    <div className="add-marks">
-                        <Link to='/dashboardfaculty/lab-marks' style={{ textDecoration: 'none' }}>
-                            <i class="fa-solid fa-flask fa-2xl"></i>
-                            <span className={`${toggleState ? 'show' : 'hide'} mx-4`}>Lab Marks</span>
-                        </Link>
-                    </div>
-                    <div className="add-marks">
-                        <Link to='/dashboardfaculty/attendance' style={{ textDecoration: 'none' }}>
-                            <i class="fa-solid fa-clipboard-user fa-2xl"></i>
-                            <span className={`${toggleState ? 'show' : 'hide'} mx-4`}> Attendance</span>
-                        </Link>
-                    </div>
-                    <div className="view-co">
-                        <Link to='/dashboardfaculty/view-co' style={{ textDecoration: 'none' }}>
-                            <i class="fa-solid fa-file fa-2xl"></i>
-                            <span className={`${toggleState ? 'show' : 'hide'} mx-4`}> View CO</span>
-                        </Link>
-                    </div>
-                </div>
-                <div className="settings-container mt-auto mb-3">
-                    <div className="settings">
-                        <i class="fa-solid fa-gear fa-2xl"></i>
-                        <span className={`${toggleState ? 'show' : 'hide'} mx-3`}>Settings</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
+        <Drawer
+            variant="persistent"
+            anchor="left"
+            open={toggleState}
+            sx={{
+                '& .MuiDrawer-paper': {
+                    width: toggleState ? 240 : 80,
+                    transition: 'width 0.3s',
+                    boxSizing: 'border-box',
+                    backgroundColor: '#070F2B',
+                    color: 'white'
+                },
+            }}
+        >
+            <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                px={2}
+                py={1}
+            >
+                <IconButton onClick={() => setToggleState(!toggleState)}>
+                    <ChevronLeftIcon sx={{ color: 'white' }} />
+                </IconButton>
+            </Box>
+            <Divider />
+            <List>
+                <ListItem button component={Link} to='/dashboardfaculty/home'>
+                    <ListItemIcon sx={{ color: 'white' }}>
+                        <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Dashboard" sx={{ display: toggleState ? 'block' : 'none', color: 'white' }} />
+                </ListItem>
 
-export default Sidebar
+                <ListItem button component={Link} to='/dashboardfaculty/add-students'>
+                    <ListItemIcon sx={{ color: 'white' }}>
+                        <PersonAddIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Add Student" sx={{ display: toggleState ? 'block' : 'none', color: 'white' }} />
+                </ListItem>
+
+                <ListItem button component={Link} to='/dashboardfaculty/add-marks'>
+                    <ListItemIcon sx={{ color: 'white' }}>
+                        <AddIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="CT Marks" sx={{ display: toggleState ? 'block' : 'none', color: 'white' }} />
+                </ListItem>
+
+                <ListItem button component={Link} to='/dashboardfaculty/assignment'>
+                    <ListItemIcon sx={{ color: 'white' }}>
+                        <AssignmentIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Assignment Marks" sx={{ display: toggleState ? 'block' : 'none', color: 'white' }} />
+                </ListItem>
+
+                <ListItem button component={Link} to='/dashboardfaculty/lab-marks'>
+                    <ListItemIcon sx={{ color: 'white' }}>
+                        <ScienceIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Lab Marks" sx={{ display: toggleState ? 'block' : 'none', color: 'white' }} />
+                </ListItem>
+
+                <ListItem button component={Link} to='/dashboardfaculty/attendance'>
+                    <ListItemIcon sx={{ color: 'white' }}>
+                        <FactCheckIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Attendance" sx={{ display: toggleState ? 'block' : 'none', color: 'white' }} />
+                </ListItem>
+
+                <ListItem button component={Link} to='/dashboardfaculty/view-co'>
+                    <ListItemIcon sx={{ color: 'white' }}>
+                        <ArticleIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="View CO" sx={{ display: toggleState ? 'block' : 'none', color: 'white' }} />
+                </ListItem>
+            </List>
+
+            <Divider variant="middle" sx={{ backgroundColor: 'white', height: '2px' }} />
+
+            <List>
+                <ListItem button>
+                    <ListItemIcon sx={{ color: 'white' }}>
+                        <SettingsIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Settings" sx={{ display: toggleState ? 'block' : 'none', color: 'white' }} />
+                </ListItem>
+            </List>
+        </Drawer>
+    );
+};
+
+export default Sidebar;
