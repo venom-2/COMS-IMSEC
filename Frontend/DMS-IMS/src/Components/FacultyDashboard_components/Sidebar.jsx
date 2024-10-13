@@ -18,7 +18,6 @@ const Sidebar = () => {
             sx={{
                 '& .MuiDrawer-paper': {
                     width: 240,
-                    transition: 'width 0.3s',
                     boxSizing: 'border-box',
                     backgroundColor: '#070F2B',
                     color: 'white',
@@ -38,49 +37,49 @@ const Sidebar = () => {
             </Box>
             <Divider />
             <List>
-                <ListItem button component={Link} to='/dashboardfaculty/home'>
+                <ListItem button component={Link} to='/dashboardfaculty/home' sx={{ '&:hover': { backgroundColor: '#2E3A59' } }}>
                     <ListItemIcon sx={{ color: 'white' }}>
                         <DashboardIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Dashboard" sx={{ display: 'block', color: 'white' }} />
+                    <ListItemText primary="Home" sx={{ display: 'block', color: 'white' }} />
                 </ListItem>
 
-                <ListItem button component={Link} to='/dashboardfaculty/add-students'>
+                <ListItem button component={Link} to='/dashboardfaculty/add-students' sx={{ '&:hover': { backgroundColor: '#2E3A59' } }}>
                     <ListItemIcon sx={{ color: 'white' }}>
                         <PersonAddIcon />
                     </ListItemIcon>
                     <ListItemText primary="Add Student" sx={{ display: 'block', color: 'white' }} />
                 </ListItem>
 
-                <ListItem button component={Link} to='/dashboardfaculty/add-marks'>
+                <ListItem button component={Link} to='/dashboardfaculty/add-marks' sx={{ '&:hover': { backgroundColor: '#2E3A59' } }}>
                     <ListItemIcon sx={{ color: 'white' }}>
                         <AddIcon />
                     </ListItemIcon>
                     <ListItemText primary="CT Marks" sx={{ display: 'block', color: 'white' }} />
                 </ListItem>
 
-                <ListItem button component={Link} to='/dashboardfaculty/assignment'>
+                <ListItem button component={Link} to='/dashboardfaculty/assignment' sx={{ '&:hover': { backgroundColor: '#2E3A59' } }}>
                     <ListItemIcon sx={{ color: 'white' }}>
                         <AssignmentIcon />
                     </ListItemIcon>
                     <ListItemText primary="Assignment Marks" sx={{ display: 'block', color: 'white' }} />
                 </ListItem>
 
-                <ListItem button component={Link} to='/dashboardfaculty/lab-marks'>
+                <ListItem button component={Link} to='/dashboardfaculty/lab-marks' sx={{ '&:hover': { backgroundColor: '#2E3A59' } }}>
                     <ListItemIcon sx={{ color: 'white' }}>
                         <ScienceIcon />
                     </ListItemIcon>
                     <ListItemText primary="Lab Marks" sx={{ display: 'block', color: 'white' }} />
                 </ListItem>
 
-                <ListItem button component={Link} to='/dashboardfaculty/attendance'>
+                <ListItem button component={Link} to='/dashboardfaculty/attendance' sx={{ '&:hover': { backgroundColor: '#2E3A59' } }}>
                     <ListItemIcon sx={{ color: 'white' }}>
                         <FactCheckIcon />
                     </ListItemIcon>
                     <ListItemText primary="Attendance" sx={{ display: 'block', color: 'white' }} />
                 </ListItem>
 
-                <ListItem button component={Link} to='/dashboardfaculty/view-co'>
+                <ListItem button component={Link} to='/dashboardfaculty/view-co' sx={{ '&:hover': { backgroundColor: '#2E3A59' } }}>
                     <ListItemIcon sx={{ color: 'white' }}>
                         <ArticleIcon />
                     </ListItemIcon>
@@ -91,7 +90,7 @@ const Sidebar = () => {
             <Divider variant="li" sx={{ backgroundColor: 'white', height: '2px', mt: 'auto' }} />
 
             <List>
-                <ListItem button>
+                <ListItem button sx={{ '&:hover': { backgroundColor: '#2E3A59' } }}>
                     <ListItemIcon sx={{ color: 'white' }}>
                         <SettingsIcon />
                     </ListItemIcon>

@@ -5,6 +5,7 @@ import "../CSS/Login.css";
 import Cat from '../../assets/cat-sad-kitty-sad.webp';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import Logo from '../../assets/favicon-32x32.png'
 
 const Login = ({ isTokenExpired }) => {
     const navigate = useNavigate();
@@ -95,6 +96,9 @@ const Login = ({ isTokenExpired }) => {
             <div className="container-fluid d-flex flex-wrap p-0 login-container">
                 <div className="login d-flex align-items-center flex-column justify-content-center col-12 col-md-6" style={{ minHeight: '100vh', gap: '3rem' }}>
                     <div className="login-form d-flex flex-column align-items-center justify-content-center w-75" style={{ minHeight: '60vh' }}>
+                        <div className="logo">
+                            <img src={Logo} alt="Gradium AI" className="mb-4" style={{width: '60px'}} />
+                        </div>
                         <div className="heading text-center mb-4">
                             <h1>Login to your Account</h1>
                             <p>See what is going on with your department</p>
@@ -117,7 +121,7 @@ const Login = ({ isTokenExpired }) => {
                                 <div className="pass-container w-100">
                                     <label htmlFor="password">Password</label>
                                     <input
-                                        type={passwordVisible?"password":"text"}
+                                        type={passwordVisible?"text":"password"}
                                         name="password"
                                         id="password"
                                         value={credentials.password}
@@ -133,7 +137,7 @@ const Login = ({ isTokenExpired }) => {
                                         className="btn btn-outline-secondary"
                                         onClick={togglePassword}
                                     >
-                                        {passwordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                        {passwordVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
                                     </button>
                                 </div>
                             </div>
@@ -154,15 +158,15 @@ const Login = ({ isTokenExpired }) => {
                                 </select>
                             </div>
                             <div className="d-flex justify-content-end mb-3">
-                                <a href="#">Forgot Password?</a>
+                                <a href="#"></a>
                             </div>
                             <div className="d-flex justify-content-center">
                                 <button onClick={handleSubmit} className="butn">Login</button>
                             </div>
                         </div>
                     </div>
-                    <div className="text-center">
-                        <p>Powered by <span style={{ color: '#1B1A55' }}>XceeDesigns</span></p>
+                    <div className="text-center pt-4">
+                        <p>Don't have an account ? <span style={{ color: '#1B1A55' }}>Contact Admin</span> </p>
                     </div>
                 </div>
                 <div className="img login-image d-none d-md-block col-md-6" style={{ height: '100vh' }}>

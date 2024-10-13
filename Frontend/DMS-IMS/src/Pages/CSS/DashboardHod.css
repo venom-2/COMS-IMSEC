@@ -21,7 +21,9 @@ html, body {
 
 .main-content{
   width: 100vw;
-  height: 90vh;
+  height: 100vh;
+  margin-left: 240px;
+  background-color: #070f2b13;
 }
 
 

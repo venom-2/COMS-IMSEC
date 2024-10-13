@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AppBar, Toolbar, IconButton, Menu, Typography, Button, Divider, Box } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { ToggleContext } from '../contextAPI/ToggleContext';
 import { jwtDecode } from 'jwt-decode';
@@ -36,7 +35,7 @@ const Navbar = ({ handleLogout }) => {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#070F2B', width: `calc(100% - 240px)`, ml: '240px' }}>
+    <AppBar position="fixed" sx={{ backgroundColor: '#070F2B', width: `calc(100% - 240px)`, ml: '240px' }}>
       <Toolbar>
         {/* Sidebar Toggle Button */}
         <IconButton edge="start" color="inherit">
@@ -78,9 +77,6 @@ const Navbar = ({ handleLogout }) => {
 
           {/* Action Buttons */}
           <Box sx={{ display: 'flex', justifyContent: 'center', padding: '10px 20px' }}>
-            <Button variant="contained" color="primary" sx={{ marginRight: '10px' }}>
-              Edit
-            </Button>
             <Button variant="contained" color="error" onClick={handleLogout}>
               Logout
             </Button>
