@@ -26,6 +26,13 @@ html, body {
   background-color: #070f2b13;
 }
 
+.main-contenthod{
+  width: 90vw;
+  height: 90vh;
+  margin-left: 150px;
+  background-color: #070f2b13;
+}
+
 
 @media (max-width: 768px) {
   .sidebar {

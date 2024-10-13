@@ -9,7 +9,7 @@ import ScienceIcon from '@mui/icons-material/Science';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import ArticleIcon from '@mui/icons-material/Article';
 import SettingsIcon from '@mui/icons-material/Settings';
-
+ 
 const Sidebar = () => {
 
     return (

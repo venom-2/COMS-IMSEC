@@ -20,31 +20,31 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 
-function createData(id, name, calories, fat, carbs, protein) {
+function createData(id, name, year, branch, rollno, email) {
     return {
       id,
       name,
-      calories,
-      fat,
-      carbs,
-      protein,
+      year,
+      branch,
+      rollno,
+      email,
     };
   }
   
   const rows = [
-    createData(1, 'Cupcake', 305, 3.7, 67, 4.3),
-    createData(2, 'Donut', 452, 25.0, 51, 4.9),
-    createData(3, 'Eclair', 262, 16.0, 24, 6.0),
-    createData(4, 'Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData(5, 'Gingerbread', 356, 16.0, 49, 3.9),
-    createData(6, 'Honeycomb', 408, 3.2, 87, 6.5),
-    createData(7, 'Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData(8, 'Jelly Bean', 375, 0.0, 94, 0.0),
-    createData(9, 'KitKat', 518, 26.0, 65, 7.0),
-    createData(10, 'Lollipop', 392, 0.2, 98, 0.0),
-    createData(11, 'Marshmallow', 318, 0, 81, 2.0),
-    createData(12, 'Nougat', 360, 19.0, 9, 37.0),
-    createData(13, 'Oreo', 437, 18.0, 63, 4.0),
+    createData(1, 'Akshat', 4, 'CS', 2101430120000, 'a@imsec.ac.in'),
+    createData(2, 'Krishna', 4, 'CS', 2101430120001, 'a@imsec.ac.in'),
+    createData(3, 'Khushi', 4, 'CS', 2101430120002, 'a@imsec.ac.in'),
+    createData(4, 'Divyanshi', 4, 'CS', 2101430120003, 'a@imsec.ac.in'),
+    createData(5, 'Harsh', 4, 'CS', 2101430120004, 'a@imsec.ac.in'),
+    createData(6, 'Ayush', 4, 'CS', 2101430120005, 'a@imsec.ac.in'),
+    createData(7, 'Lalit', 4, 'CS', 2101430120006, 'a@imsec.ac.in'),
+    createData(8, 'Chandni', 4, 'CS', 2101430120007, 'a@imsec.ac.in'),
+    createData(9, 'Shweta', 4, 'CS', 2101430120008, 'a@imsec.ac.in'),
+    createData(10, 'Sunny', 4, 'CS', 2101430120009, 'a@imsec.ac.in'),
+    createData(11, 'Amit', 4, 'CS', 2101430120010, 'a@imsec.ac.in'),
+    createData(12, 'Aditya', 4, 'CS', 2101430120011, 'a@imsec.ac.in'),
+    createData(13, 'Krishna Kant', 4, 'CS', 2101430120012, 'a@imsec.ac.in'),
   ];
   
   function descendingComparator(a, b, orderBy) {
@@ -71,26 +71,26 @@ function createData(id, name, calories, fat, carbs, protein) {
       label: 'Name',
     },
     {
-      id: 'calories',
+      id: 'year',
       numeric: true,
-      disablePadding: false,
+      disablePadding: true,
       label: 'Year',
     },
     {
-      id: 'fat',
-      numeric: true,
-      disablePadding: false,
+      id: 'branch',
+      numeric: false,
+      disablePadding: true,
       label: 'Branch',
     },
     {
-      id: 'carbs',
+      id: 'rollno',
       numeric: true,
       disablePadding: false,
       label: 'Roll Number',
     },
     {
-      id: 'protein',
-      numeric: true,
+      id: 'email',
+      numeric: false,
       disablePadding: false,
       label: 'Email',
     },
@@ -118,8 +118,8 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
+            align={headCell.numeric ? 'center' : 'center'}
+            padding="normal"
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -195,7 +195,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable() {
+export default function EnhancedTable({searchTerm}) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -245,15 +245,23 @@ export default function EnhancedTable() {
     setPage(0);
   };
 
+  const filteredRows = rows.filter((row) =>
+    row.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    row.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    row.branch.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    row.rollno.toString().includes(searchTerm) ||
+    row.year.toString().includes(searchTerm)
+  );
+
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredRows.length) : 0;
 
   const visibleRows = React.useMemo(
     () =>
-      [...rows]
+      [...filteredRows]
         .sort(getComparator(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage]
+    [order, orderBy, page, rowsPerPage, filteredRows]
   );
 
   return (
@@ -272,7 +280,7 @@ export default function EnhancedTable() {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={filteredRows.length}
             />
             <TableBody>
               {visibleRows.map((row, index) => {
@@ -299,13 +307,13 @@ export default function EnhancedTable() {
                         }}
                       />
                     </TableCell>
-                    <TableCell component="th" id={labelId} scope="row" padding="none">
+                    <TableCell component="th" id={labelId} scope="row" padding="normal" align="center">
                       {row.name}
                     </TableCell>
-                    <TableCell align="right">{row.calories}</TableCell>
-                    <TableCell align="right">{row.fat}</TableCell>
-                    <TableCell align="right">{row.carbs}</TableCell>
-                    <TableCell align="right">{row.protein}</TableCell>
+                    <TableCell align="center">{row.year}</TableCell>
+                    <TableCell align="center">{row.branch}</TableCell>
+                    <TableCell align="center">{row.rollno}</TableCell>
+                    <TableCell align="center">{row.email}</TableCell>
                   </TableRow>
                 );
               })}
@@ -320,7 +328,7 @@ export default function EnhancedTable() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={filteredRows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

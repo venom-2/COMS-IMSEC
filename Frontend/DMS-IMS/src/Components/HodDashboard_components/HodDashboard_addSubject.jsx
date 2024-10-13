@@ -106,7 +106,7 @@ const HodDashboard_addSubject = () => {
     };
 
     return (
-        <div className='add-faculty-container d-flex flex-column align-items-center'>
+        <div className='add-faculty-container d-flex flex-column align-items-center' style={{marginTop: '70px'}}>
             <div className="heading-faculty h-20 d-flex justify-content-center mt-2">
                 <h2>Add Subject</h2>
             </div>
