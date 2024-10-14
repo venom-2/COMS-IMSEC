@@ -1,9 +1,11 @@
-import React from 'react'
-import { Breadcrumbs, Container, Link, Typography} from '@mui/material';
+import React, {useState} from 'react'
+import { Breadcrumbs, Container, Link, Typography, Box, Button, TextField} from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 
 const FacultyDashboard_addMarks = () => {
+
+  const [searchTerm, setSearchTerm] = useState('');
 
   const breadcrumbs = [
     <Link underline="none" key="1" color="inherit">
@@ -14,6 +16,10 @@ const FacultyDashboard_addMarks = () => {
     </Typography>,
   ];
 
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
   return (
     <Container sx={{mt: 10}}>
       <Breadcrumbs
@@ -23,6 +29,22 @@ const FacultyDashboard_addMarks = () => {
       >
         {breadcrumbs}
       </Breadcrumbs>
+      <Box component="div" sx={{ display: 'flex', height: '80px', alignItems: 'center' }} >
+        <TextField
+          label="Search"
+          variant="outlined"
+          value={searchTerm}
+          onChange={handleSearch}
+          fullWidth
+          sx={{ mt: 2 }}
+        >
+        </TextField>
+        <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+          <Button variant='contained' sx={{ width: '9rem', ml: 2, height: '55px' }}>
+            Add Marks
+          </Button>
+        </Box>
+      </Box>
     </Container>
   )
 }
