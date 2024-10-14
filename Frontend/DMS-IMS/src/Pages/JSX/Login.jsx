@@ -1,11 +1,26 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import "../CSS/Login.css";
-import Cat from "../../assets/cat-sad-kitty-sad.webp";
+import {
+  TextField,
+  Button,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  IconButton,
+  Grid,
+  InputAdornment,
+} from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import EmailIcon from "@mui/icons-material/Email";
+import LockIcon from "@mui/icons-material/Lock";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import Logo from "../../assets/favicon-32x32.png";
+import Cat from "../../assets/cat-sad-kitty-sad.webp";
+import LoginImage from "../../assets/login-image.jpg"; // Adjust the import path for your image
+import "../CSS/Login.css";
 
 const Login = ({ isTokenExpired }) => {
   const navigate = useNavigate();
@@ -30,16 +45,13 @@ const Login = ({ isTokenExpired }) => {
     }
 
     try {
-      const response = await fetch(
-        "https://dms-backend-eight.vercel.app/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(credentials),
-        }
-      );
+      const response = await fetch("https://dms-backend-eight.vercel.app/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
 
       const parsedResponse = await response.json();
       const { authToken } = parsedResponse;
@@ -55,7 +67,6 @@ const Login = ({ isTokenExpired }) => {
         }
 
         toast.success("Login successful!");
-
         navigate(getDashboardRoute(credentials.role));
       } else {
         toast.error("Login failed! Invalid credentials.");
@@ -96,113 +107,108 @@ const Login = ({ isTokenExpired }) => {
           <img src={Cat} alt="" />
         </div>
       </div>
-      <div className="container-fluid d-flex flex-wrap p-0 login-container">
-        <div
-          className="login d-flex align-items-center flex-column justify-content-center col-12 col-md-6"
-          style={{ minHeight: "100vh", gap: "3rem" }}
-        >
-          <div
-            className="login-form d-flex flex-column align-items-center justify-content-center w-75"
-            style={{ minHeight: "60vh" }}
-          >
-            <div className="logo">
-              <img
-                src={Logo}
-                alt="Gradium AI"
-                className="mb-4"
-                style={{ width: "60px" }}
-              />
-            </div>
+      <Grid container className="login-container" sx={{ minHeight: "100vh" }}>
+        <Grid item xs={12} md={6} className="login d-flex align-items-center flex-column justify-content-center" sx={{ gap: "3rem" }}>
+          <div className="login-form d-flex flex-column align-items-center justify-content-center" style={{ width: "75%", minHeight: "60vh" }}>
+            <img src={Logo} alt="Gradium AI" className="mb-4" style={{ width: "60px" }} />
             <div className="heading text-center mb-4">
               <h1>Login to your Account</h1>
               <p>See what is going on with your department</p>
             </div>
-            <div className="input w-100">
-              <div className="form-group mb-3">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  value={credentials.email}
-                  onChange={handleChange}
-                  placeholder="email@imsec.ac.in"
-                  className="form-control"
-                  required
-                />
-              </div>
-              <label htmlFor="email">Password</label>
-              <div className="form-group mb-3 d-flex w-100 position-relative">
-                <input
-                  type={passwordVisible ? "text" : "password"}
-                  name="password"
-                  id="password"
-                  value={credentials.password}
-                  onChange={handleChange}
-                  placeholder="********"
-                  className="form-control"
-                  required
-                  style={{ paddingRight: "40px" }} 
-                />
-                <button
-                  type="button"
-                  className="btn btn-link position-absolute"
-                  onClick={togglePassword}
-                  style={{
-                    right: "10px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    padding: "0",
-                    height: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    color: "#1b1a55",
-                  }}
-                >
-                  {passwordVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                </button>
-              </div>
-
-              <div className="form-group mb-3">
-                <label htmlFor="role">Role</label>
-                <select
+            <form className="input w-100" onSubmit={handleSubmit}>
+              <TextField
+                label="Email"
+                name="email"
+                type="email"
+                value={credentials.email}
+                onChange={handleChange}
+                placeholder="email@imsec.ac.in"
+                fullWidth
+                margin="normal"
+                required
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <EmailIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <FormControl fullWidth margin="normal" required>
+                <InputLabel>Role</InputLabel>
+                <Select
                   name="role"
-                  id="role"
                   value={credentials.role}
                   onChange={handleChange}
-                  className="form-control"
-                  required
+                  label="Role"
+                  startAdornment = {
+                    <InputAdornment position="start">
+                      <AssignmentIndIcon/>
+                    </InputAdornment>
+                  }
                 >
-                  <option value="">Select Role</option>
-                  <option value="admin">Admin</option>
-                  <option value="hod">Head of Department</option>
-                  <option value="faculty">Faculty</option>
-                </select>
-              </div>
-              <div className="d-flex justify-content-end mb-3">
-                <a href="#"></a>
-              </div>
+                  <MenuItem value="">Select Role</MenuItem>
+                  <MenuItem value="admin">Admin</MenuItem>
+                  <MenuItem value="hod">Head of Department</MenuItem>
+                  <MenuItem value="faculty">Faculty</MenuItem>
+                </Select>
+              </FormControl>
+              <TextField
+                label="Password"
+                name="password"
+                type={passwordVisible ? "text" : "password"}
+                value={credentials.password}
+                onChange={handleChange}
+                placeholder="********"
+                fullWidth
+                margin="normal"
+                required
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <LockIcon />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={togglePassword}>
+                        {passwordVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
               <div className="d-flex justify-content-center">
-                <button onClick={handleSubmit} className="butn">
+                <Button 
+                  type="submit" 
+                  variant="contained" 
+                  sx={{ 
+                    backgroundColor: "#1B1A55", 
+                    color: "white", 
+                    width: "100%", 
+                    marginTop: 2, 
+                    '&:hover': {
+                      backgroundColor: '#535C91' // Lighter shade on hover
+                    }
+                  }}
+                >
                   Login
-                </button>
+                </Button>
               </div>
-            </div>
+            </form>
           </div>
           <div className="text-center pt-4">
             <p>
               Don't have an account ?{" "}
-              <span style={{ color: "#1B1A55" }}>Contact Admin</span>{" "}
+              <span style={{ color: "#1B1A55" }}>Contact Admin</span>
             </p>
           </div>
-        </div>
-        <div
-          className="img login-image d-none d-md-block col-md-6"
-          style={{ height: "100vh" }}
-        >
+        </Grid>
+        <Grid item md={6} className="img login-image d-none d-md-block" 
+              sx={{ height: "100vh", backgroundImage: `url(${LoginImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
           {/* Image Background */}
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     </>
   );
 };
