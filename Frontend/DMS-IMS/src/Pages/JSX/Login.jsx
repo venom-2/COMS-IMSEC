@@ -131,6 +131,7 @@ const Login = ({ isTokenExpired }) => {
                   required
                 />
               </div>
+              <label htmlFor="email">Password</label>
               <div className="form-group mb-3 d-flex w-100 position-relative">
                 <input
                   type={passwordVisible ? "text" : "password"}
