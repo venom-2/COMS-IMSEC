@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Breadcrumbs, Container, Link, TextField, Typography, Box, Button } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import EnhancedTable from '../EnhancedTable';
+import EnhancedTable from '../EnhancedTableStudent';
 import { Modal } from '@mui/material';
 import toast from "react-hot-toast";
 

@@ -21,81 +21,81 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 
 function createData(id, name, year, branch, rollno, email) {
-    return {
-      id,
-      name,
-      year,
-      branch,
-      rollno,
-      email,
-    };
+  return {
+    id,
+    name,
+    year,
+    branch,
+    rollno,
+    email,
+  };
+}
+
+const rows = [
+  createData(1, 'Akshat', 4, 'CS', 2101430120000, 'a@imsec.ac.in'),
+  createData(2, 'Krishna', 4, 'CS', 2101430120001, 'a@imsec.ac.in'),
+  createData(3, 'Khushi', 4, 'CS', 2101430120002, 'a@imsec.ac.in'),
+  createData(4, 'Divyanshi', 4, 'CS', 2101430120003, 'a@imsec.ac.in'),
+  createData(5, 'Harsh', 4, 'CS', 2101430120004, 'a@imsec.ac.in'),
+  createData(6, 'Ayush', 4, 'CS', 2101430120005, 'a@imsec.ac.in'),
+  createData(7, 'Lalit', 4, 'CS', 2101430120006, 'a@imsec.ac.in'),
+  createData(8, 'Chandni', 4, 'CS', 2101430120007, 'a@imsec.ac.in'),
+  createData(9, 'Shweta', 4, 'CS', 2101430120008, 'a@imsec.ac.in'),
+  createData(10, 'Sunny', 4, 'CS', 2101430120009, 'a@imsec.ac.in'),
+  createData(11, 'Amit', 4, 'CS', 2101430120010, 'a@imsec.ac.in'),
+  createData(12, 'Aditya', 4, 'CS', 2101430120011, 'a@imsec.ac.in'),
+  createData(13, 'Krishna Kant', 4, 'CS', 2101430120012, 'a@imsec.ac.in'),
+];
+
+function descendingComparator(a, b, orderBy) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
   }
-  
-  const rows = [
-    createData(1, 'Akshat', 4, 'CS', 2101430120000, 'a@imsec.ac.in'),
-    createData(2, 'Krishna', 4, 'CS', 2101430120001, 'a@imsec.ac.in'),
-    createData(3, 'Khushi', 4, 'CS', 2101430120002, 'a@imsec.ac.in'),
-    createData(4, 'Divyanshi', 4, 'CS', 2101430120003, 'a@imsec.ac.in'),
-    createData(5, 'Harsh', 4, 'CS', 2101430120004, 'a@imsec.ac.in'),
-    createData(6, 'Ayush', 4, 'CS', 2101430120005, 'a@imsec.ac.in'),
-    createData(7, 'Lalit', 4, 'CS', 2101430120006, 'a@imsec.ac.in'),
-    createData(8, 'Chandni', 4, 'CS', 2101430120007, 'a@imsec.ac.in'),
-    createData(9, 'Shweta', 4, 'CS', 2101430120008, 'a@imsec.ac.in'),
-    createData(10, 'Sunny', 4, 'CS', 2101430120009, 'a@imsec.ac.in'),
-    createData(11, 'Amit', 4, 'CS', 2101430120010, 'a@imsec.ac.in'),
-    createData(12, 'Aditya', 4, 'CS', 2101430120011, 'a@imsec.ac.in'),
-    createData(13, 'Krishna Kant', 4, 'CS', 2101430120012, 'a@imsec.ac.in'),
-  ];
-  
-  function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-      return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-      return 1;
-    }
-    return 0;
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
   }
-  
-  function getComparator(order, orderBy) {
-    return order === 'desc'
-      ? (a, b) => descendingComparator(a, b, orderBy)
-      : (a, b) => -descendingComparator(a, b, orderBy);
-  }
-  
-  const headCells = [
-    {
-      id: 'name',
-      numeric: false,
-      disablePadding: true,
-      label: 'Name',
-    },
-    {
-      id: 'year',
-      numeric: true,
-      disablePadding: true,
-      label: 'Year',
-    },
-    {
-      id: 'branch',
-      numeric: false,
-      disablePadding: true,
-      label: 'Branch',
-    },
-    {
-      id: 'rollno',
-      numeric: true,
-      disablePadding: false,
-      label: 'Roll Number',
-    },
-    {
-      id: 'email',
-      numeric: false,
-      disablePadding: false,
-      label: 'Email',
-    },
-  ];
-  
+  return 0;
+}
+
+function getComparator(order, orderBy) {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+const headCells = [
+  {
+    id: 'name',
+    numeric: false,
+    disablePadding: true,
+    label: 'Name',
+  },
+  {
+    id: 'year',
+    numeric: true,
+    disablePadding: true,
+    label: 'Year',
+  },
+  {
+    id: 'branch',
+    numeric: false,
+    disablePadding: true,
+    label: 'Branch',
+  },
+  {
+    id: 'rollno',
+    numeric: true,
+    disablePadding: false,
+    label: 'Roll Number',
+  },
+  {
+    id: 'email',
+    numeric: false,
+    disablePadding: false,
+    label: 'Email',
+  },
+];
+
 
 function EnhancedTableHead(props) {
   const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
@@ -195,7 +195,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({searchTerm}) {
+export default function EnhancedTable({ searchTerm }) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);

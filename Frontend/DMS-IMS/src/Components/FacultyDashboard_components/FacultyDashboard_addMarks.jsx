@@ -1,6 +1,7 @@
-import React, {useState} from 'react'
-import { Breadcrumbs, Container, Link, Typography, Box, Button, TextField} from '@mui/material';
+import React, { useState } from 'react'
+import { Breadcrumbs, Container, Link, Typography, Box, Button, TextField } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import EnhancedTable from '../../Components/EnhancedTableMarks';
 
 
 const FacultyDashboard_addMarks = () => {
@@ -21,7 +22,7 @@ const FacultyDashboard_addMarks = () => {
   };
 
   return (
-    <Container sx={{mt: 10}}>
+    <Container sx={{ mt: 10 }}>
       <Breadcrumbs
         separator={<NavigateNextIcon fontSize="small" />}
         aria-label="breadcrumb"
@@ -39,12 +40,8 @@ const FacultyDashboard_addMarks = () => {
           sx={{ mt: 2 }}
         >
         </TextField>
-        <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
-          <Button variant='contained' sx={{ width: '9rem', ml: 2, height: '55px' }}>
-            Add Marks
-          </Button>
-        </Box>
       </Box>
+      <EnhancedTable searchTerm={searchTerm} />
     </Container>
   )
 }
