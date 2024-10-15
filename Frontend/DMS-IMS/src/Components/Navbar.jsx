@@ -116,7 +116,7 @@ const Navbar = ({ handleLogout }) => {
             </Typography>
           </Box>
 
-          <Divider sx={{ marginTop: "8px" }} />
+          <Divider />
 
           {/* Action Buttons */}
           <Box

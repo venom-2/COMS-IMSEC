@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { styled } from '@mui/material/styles';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -17,13 +18,18 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
 import Checkbox from '@mui/material/Checkbox';
-import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { Modal } from '@mui/material';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+import Avatar from '@mui/material/Avatar';
+import BookIcon from '@mui/icons-material/Book';
 
 function createData(id, name, year, branch, rollno, ct1, ct2) {
     return {
@@ -207,6 +213,18 @@ EnhancedTableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
 };
 
+function generate(element) {
+    return [0, 1, 2].map((value) =>
+        React.cloneElement(element, {
+            key: value,
+        }),
+    );
+}
+
+const Demo = styled('div')(({ theme }) => ({
+    backgroundColor: theme.palette.background.paper,
+}));
+
 export default function EnhancedTable({ searchTerm }) {
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
@@ -214,13 +232,9 @@ export default function EnhancedTable({ searchTerm }) {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [openModal, setOpenModal] = React.useState(false);
-    const [formData, setFormData] = useState({
-        name: '',
-        year: '',
-        rollno: '',
-        email: '',
-        section: '',
-    });
+    const [formData, setFormData] = useState('');
+    const [dense, setDense] = React.useState(false);
+    const [secondary, setSecondary] = React.useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -378,64 +392,40 @@ export default function EnhancedTable({ searchTerm }) {
                     justifyContent: 'center',
                 }}
             >
-                <Box sx={{ width: 1000, bgcolor: 'background.paper', p: 4, borderRadius: 1, boxShadow: 24 }}>
+                <Box sx={{ width: 600, bgcolor: 'background.paper', p: 4, borderRadius: 1, boxShadow: 24 }}>
                     <Container sx={{ mt: 1 }}>
                         <Typography variant="h4" gutterBottom sx={{ textAlign: 'center' }}>
-                            Add Student to Database
+                            Select Subject to Upload Marks
                         </Typography>
                         <Box
                             component="form"
-
                             sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '100%', maxWidth: '1000px', mt: 3 }}
                         >
-                            <Box component="div" sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <TextField
-                                    label="Name"
-                                    variant="outlined"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    fullWidth
-                                    sx={{ mr: 2 }}
-                                />
-                                <TextField
-                                    label="Roll Number"
-                                    variant="outlined"
-                                    name="rollno"
-                                    value={formData.rollno}
-                                    onChange={handleChange}
-                                    fullWidth
-                                />
-                            </Box>
-                            <TextField
-                                label="Email"
-                                variant="outlined"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                            <Box component="div" sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <TextField
-                                    label="Year"
-                                    variant="outlined"
-                                    name="year"
-                                    value={formData.year}
-                                    onChange={handleChange}
-                                    fullWidth
-                                    sx={{ mr: 2 }}
-                                />
-                                <TextField
-                                    label="Section"
-                                    variant="outlined"
-                                    name="section"
-                                    value={formData.section}
-                                    onChange={handleChange}
-                                    fullWidth
-                                />
-                            </Box>
-                            <Button variant="contained" type="submit" sx={{ mt: 3 }}>
-                                Submit
+                            <Demo>
+                                <List dense={dense}>
+                                    {generate(
+                                        <ListItem
+                                            secondaryAction={
+                                                <IconButton edge="end" aria-label="delete">
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            }
+                                        >
+                                            <ListItemAvatar>
+                                                <Avatar>
+                                                    <BookIcon />
+                                                </Avatar>
+                                            </ListItemAvatar>
+                                            <ListItemText
+                                                primary="Digital Electronics"
+                                                secondary={secondary ? 'Secondary text' : null}
+                                            />
+                                        </ListItem>,
+                                    )}
+                                </List>
+                            </Demo>
+                            <Button variant="contained" sx={{ mt: 2 }}>
+                                Proceed
                             </Button>
                         </Box>
                     </Container>
