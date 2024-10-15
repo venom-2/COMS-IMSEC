@@ -102,6 +102,24 @@ p {
     }
 }
 
+.butn {
+    padding: 0.5rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #1B1A55; /* Theme color */
+    color: white;
+    width: 100%;
+}
+
+.butn:hover {
+    background-color: #535C91; /* Lighter shade for hover */
+}
+
+
 @media screen and (max-width: 480px) {
     h1 {
         font-size: 1.5rem;

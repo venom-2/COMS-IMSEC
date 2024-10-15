@@ -1,180 +1,216 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import {
+  TextField,
+  Button,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  IconButton,
+  Grid,
+  InputAdornment,
+} from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import EmailIcon from "@mui/icons-material/Email";
+import LockIcon from "@mui/icons-material/Lock";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import Logo from "../../assets/favicon-32x32.png";
+import Cat from "../../assets/cat-sad-kitty-sad.webp";
+import LoginImage from "../../assets/login-image.jpg"; // Adjust the import path for your image
 import "../CSS/Login.css";
-import Cat from '../../assets/cat-sad-kitty-sad.webp';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import Logo from '../../assets/favicon-32x32.png'
 
 const Login = ({ isTokenExpired }) => {
-    const navigate = useNavigate();
-    const [credentials, setCredentials] = useState({
-        email: "",
-        password: "",
-        role: ""
-    });
-    const [passwordVisible, setPasswordVisible] = useState(false);
+  const navigate = useNavigate();
+  const [credentials, setCredentials] = useState({
+    email: "",
+    password: "",
+    role: "",
+  });
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
-    const handleChange = (e) => {
-        setCredentials({ ...credentials, [e.target.name]: e.target.value });
-    };
+  const handleChange = (e) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        // Check if any field is empty
-        if (!credentials.email || !credentials.password || !credentials.role) {
-            toast.error("Please fill in all the fields.");
-            return; // Do not proceed further if fields are empty
-        }
-
-        try {
-            const response = await fetch("https://dms-backend-eight.vercel.app/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(credentials)
-            });
-
-            const parsedResponse = await response.json();
-            const { authToken } = parsedResponse;
-
-            if (authToken) {
-                console.log("Received Token:", authToken);
-                localStorage.setItem("authToken", authToken);
-
-                // Check if the token is considered expired immediately
-                if (isTokenExpired(authToken)) {
-                    toast.error("Login failed! Token is expired.");
-                    return;
-                }
-
-                toast.success("Login successful!");
-
-                navigate(getDashboardRoute(credentials.role));
-            } else {
-                toast.error("Login failed! Invalid credentials.");
-            }
-
-            setCredentials({
-                email: "",
-                password: "",
-                role: ""
-            });
-        } catch (error) {
-            toast.error("Login failed! Invalid credentials.");
-        }
-    };
-
-    const getDashboardRoute = (role) => {
-        switch (role) {
-            case "admin":
-                return "/dashboardadmin";
-            case "hod":
-                return "/dashboardhod/home";
-            case "faculty":
-                return "/dashboardfaculty/home";
-            default:
-                return "/";
-        }
-    };
-
-    const togglePassword = () => {
-        setPasswordVisible(!passwordVisible);
+    // Check if any field is empty
+    if (!credentials.email || !credentials.password || !credentials.role) {
+      toast.error("Please fill in all the fields.");
+      return; // Do not proceed further if fields are empty
     }
 
-    return (
-        <>
-            <div className="small-screen-visibility">
-                <div className="content-container">
-                    <h1>Sorry, this website is not available on small screens.</h1>
-                    <img src={Cat} alt="" />
-                </div>
+    try {
+      const response = await fetch("https://dms-backend-eight.vercel.app/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+
+      const parsedResponse = await response.json();
+      const { authToken } = parsedResponse;
+
+      if (authToken) {
+        console.log("Received Token:", authToken);
+        localStorage.setItem("authToken", authToken);
+
+        // Check if the token is considered expired immediately
+        if (isTokenExpired(authToken)) {
+          toast.error("Login failed! Token is expired.");
+          return;
+        }
+
+        toast.success("Login successful!");
+        navigate(getDashboardRoute(credentials.role));
+      } else {
+        toast.error("Login failed! Invalid credentials.");
+      }
+
+      setCredentials({
+        email: "",
+        password: "",
+        role: "",
+      });
+    } catch (error) {
+      toast.error("Login failed! Invalid credentials.");
+    }
+  };
+
+  const getDashboardRoute = (role) => {
+    switch (role) {
+      case "admin":
+        return "/dashboardadmin";
+      case "hod":
+        return "/dashboardhod/home";
+      case "faculty":
+        return "/dashboardfaculty/home";
+      default:
+        return "/";
+    }
+  };
+
+  const togglePassword = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  return (
+    <>
+      <div className="small-screen-visibility">
+        <div className="content-container">
+          <h1>Sorry, this website is not available on small screens.</h1>
+          <img src={Cat} alt="" />
+        </div>
+      </div>
+      <Grid container className="login-container" sx={{ minHeight: "100vh" }}>
+        <Grid item xs={12} md={6} className="login d-flex align-items-center flex-column justify-content-center" sx={{ gap: "3rem" }}>
+          <div className="login-form d-flex flex-column align-items-center justify-content-center" style={{ width: "75%", minHeight: "60vh" }}>
+            <img src={Logo} alt="Gradium AI" className="mb-4" style={{ width: "60px" }} />
+            <div className="heading text-center mb-4">
+              <h1>Login to your Account</h1>
+              <p>See what is going on with your department</p>
             </div>
-            <div className="container-fluid d-flex flex-wrap p-0 login-container">
-                <div className="login d-flex align-items-center flex-column justify-content-center col-12 col-md-6" style={{ minHeight: '100vh', gap: '3rem' }}>
-                    <div className="login-form d-flex flex-column align-items-center justify-content-center w-75" style={{ minHeight: '60vh' }}>
-                        <div className="logo">
-                            <img src={Logo} alt="Gradium AI" className="mb-4" style={{width: '60px'}} />
-                        </div>
-                        <div className="heading text-center mb-4">
-                            <h1>Login to your Account</h1>
-                            <p>See what is going on with your department</p>
-                        </div>
-                        <div className="input w-100">
-                            <div className="form-group mb-3">
-                                <label htmlFor="email">Email</label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    id="email"
-                                    value={credentials.email}
-                                    onChange={handleChange}
-                                    placeholder="email@imsec.ac.in"
-                                    className="form-control"
-                                    required
-                                />
-                            </div>
-                            <div className="form-group mb-3 d-flex w-100">
-                                <div className="pass-container w-100">
-                                    <label htmlFor="password">Password</label>
-                                    <input
-                                        type={passwordVisible?"text":"password"}
-                                        name="password"
-                                        id="password"
-                                        value={credentials.password}
-                                        onChange={handleChange}
-                                        placeholder="********"
-                                        className="form-control"
-                                        required
-                                    />
-                                </div>
-                                <div className="input-group-append d-flex align-items-center mt-4">
-                                    <button
-                                        type="button"
-                                        className="btn btn-outline-secondary"
-                                        onClick={togglePassword}
-                                    >
-                                        {passwordVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                                    </button>
-                                </div>
-                            </div>
-                            <div className="form-group mb-3">
-                                <label htmlFor="role">Role</label>
-                                <select
-                                    name="role"
-                                    id="role"
-                                    value={credentials.role}
-                                    onChange={handleChange}
-                                    className="form-control"
-                                    required
-                                >
-                                    <option value="">Select Role</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="hod">Head of Department</option>
-                                    <option value="faculty">Faculty</option>
-                                </select>
-                            </div>
-                            <div className="d-flex justify-content-end mb-3">
-                                <a href="#"></a>
-                            </div>
-                            <div className="d-flex justify-content-center">
-                                <button onClick={handleSubmit} className="butn">Login</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="text-center pt-4">
-                        <p>Don't have an account ? <span style={{ color: '#1B1A55' }}>Contact Admin</span> </p>
-                    </div>
-                </div>
-                <div className="img login-image d-none d-md-block col-md-6" style={{ height: '100vh' }}>
-                    {/* Image Background */}
-                </div>
-            </div>
-        </>
-    );
+            <form className="input w-100" onSubmit={handleSubmit}>
+              <TextField
+                label="Email"
+                name="email"
+                type="email"
+                value={credentials.email}
+                onChange={handleChange}
+                placeholder="email@imsec.ac.in"
+                fullWidth
+                margin="normal"
+                required
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <EmailIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <FormControl fullWidth margin="normal" required>
+                <InputLabel>Role</InputLabel>
+                <Select
+                  name="role"
+                  value={credentials.role}
+                  onChange={handleChange}
+                  label="Role"
+                  startAdornment = {
+                    <InputAdornment position="start">
+                      <AssignmentIndIcon/>
+                    </InputAdornment>
+                  }
+                >
+                  <MenuItem value="">Select Role</MenuItem>
+                  <MenuItem value="admin">Admin</MenuItem>
+                  <MenuItem value="hod">Head of Department</MenuItem>
+                  <MenuItem value="faculty">Faculty</MenuItem>
+                </Select>
+              </FormControl>
+              <TextField
+                label="Password"
+                name="password"
+                type={passwordVisible ? "text" : "password"}
+                value={credentials.password}
+                onChange={handleChange}
+                placeholder="********"
+                fullWidth
+                margin="normal"
+                required
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <LockIcon />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={togglePassword}>
+                        {passwordVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <div className="d-flex justify-content-center">
+                <Button 
+                  type="submit" 
+                  variant="contained" 
+                  sx={{ 
+                    backgroundColor: "#1B1A55", 
+                    color: "white", 
+                    width: "100%", 
+                    marginTop: 2, 
+                    '&:hover': {
+                      backgroundColor: '#535C91' // Lighter shade on hover
+                    }
+                  }}
+                >
+                  Login
+                </Button>
+              </div>
+            </form>
+          </div>
+          <div className="text-center pt-4">
+            <p>
+              Don't have an account ?{" "}
+              <span style={{ color: "#1B1A55" }}>Contact Admin</span>
+            </p>
+          </div>
+        </Grid>
+        <Grid item md={6} className="img login-image d-none d-md-block" 
+              sx={{ height: "100vh", backgroundImage: `url(${LoginImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+          {/* Image Background */}
+        </Grid>
+      </Grid>
+    </>
+  );
 };
 
 export default Login;
