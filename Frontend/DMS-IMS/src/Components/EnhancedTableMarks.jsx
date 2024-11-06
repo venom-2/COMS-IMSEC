@@ -30,6 +30,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 import BookIcon from "@mui/icons-material/Book";
+import CTMarksgrid from "./CTMarksgrid";
 
 function createData(id, name, year, branch, rollno, ct1, ct2) {
   return {
@@ -252,6 +253,7 @@ export default function EnhancedTable({ searchTerm }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [openModal, setOpenModal] = React.useState(false);
+  const [openGrid, setOpenGrid] = React.useState(false);
   const [formData, setFormData] = useState("");
   const [dense, setDense] = React.useState(false);
   const [secondary, setSecondary] = React.useState(false);
@@ -267,6 +269,10 @@ export default function EnhancedTable({ searchTerm }) {
   const handleOpen = () => setOpenModal(true);
 
   const handleClose = () => setOpenModal(false);
+
+  const handleGridOpen = () => setOpenGrid(true);
+
+  const handleGridClose = () => setOpenGrid(false);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -481,7 +487,7 @@ export default function EnhancedTable({ searchTerm }) {
                       backgroundColor: "#e0f4eb", // Slightly darker green on hover
                     },
                   }}
-                  onClick={() => handleSubjectClick("Digital Electronics")}
+                  onClick={() => handleGridOpen()}
                 >
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Avatar sx={{ mr: 2, bgcolor: "#070f2b", color: "#fff" }}>
@@ -663,6 +669,30 @@ export default function EnhancedTable({ searchTerm }) {
               </Box>
             </Box>
           </Container>
+        </Box>
+      </Modal>
+      <Modal
+        aria-labelledby="unstyled-modal-title"
+        aria-describedby="unstyled-modal-description"
+        open={openGrid}
+        onClose={handleGridClose}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Box
+          sx={{
+            width: 800, // Increased width to keep subject names in one line
+            bgcolor: "#fff", // Light background
+            p: 4,
+            borderRadius: 2,
+            boxShadow: 24,
+            color: "#070f2b", // Main text color
+          }}
+        >
+          <CTMarksgrid subjectName="Digital Electronics"/>
         </Box>
       </Modal>
     </Box>

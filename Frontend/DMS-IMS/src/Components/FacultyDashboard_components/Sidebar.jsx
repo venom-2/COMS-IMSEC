@@ -65,13 +65,6 @@ const Sidebar = () => {
                     <ListItemText primary="Assignment Marks" sx={{ display: 'block', color: 'white' }} />
                 </ListItem>
 
-                <ListItem button component={Link} to='/dashboardfaculty/lab-marks' sx={{ '&:hover': { backgroundColor: '#2E3A59' } }}>
-                    <ListItemIcon sx={{ color: 'white' }}>
-                        <ScienceIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Lab Marks" sx={{ display: 'block', color: 'white' }} />
-                </ListItem>
-
                 <ListItem button component={Link} to='/dashboardfaculty/attendance' sx={{ '&:hover': { backgroundColor: '#2E3A59' } }}>
                     <ListItemIcon sx={{ color: 'white' }}>
                         <FactCheckIcon />
