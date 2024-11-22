@@ -395,7 +395,7 @@ export default function EnhancedTable({ searchTerm }) {
                     <TableCell align="center" onClick={handleOpen}>
                       {row.ct1}
                     </TableCell>
-                    <TableCell align="center">{row.ct2}</TableCell>
+                    <TableCell align="center" onClick={handleOpen}>{row.ct2}</TableCell>
                   </TableRow>
                 );
               })}
@@ -449,7 +449,7 @@ export default function EnhancedTable({ searchTerm }) {
                 color: "#070f2b", // Dark navy for heading
               }}
             >
-              Select Subject to Upload Marks
+              Select Subject to Upload CT Marks
             </Typography>
 
             {/* Instruction */}

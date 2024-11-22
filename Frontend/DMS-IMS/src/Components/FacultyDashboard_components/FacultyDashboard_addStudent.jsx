@@ -36,7 +36,7 @@ const FacultyDashboard_addStudent = () => {
     const file = e.target.files[0];
     if (file && file.type === 'text/csv') {
       setCsvFile(file);
-      console.log('CSV File Selected:', file.name);
+      toast.success(`CSV File Selected:, ${file.name}`);
     } else {
       toast.error("Please upload a valid CSV file.");
       setCsvFile(null);
@@ -65,7 +65,7 @@ const FacultyDashboard_addStudent = () => {
       <Breadcrumbs
         separator={<NavigateNextIcon fontSize="small" />}
         aria-label="breadcrumb"
-        sx={{ mt: '20px' }}
+        sx={{ mt: '20px' }} 
       >
         {breadcrumbs}
       </Breadcrumbs>

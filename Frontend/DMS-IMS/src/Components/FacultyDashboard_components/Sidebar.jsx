@@ -5,7 +5,6 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import AddIcon from '@mui/icons-material/Add';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import ScienceIcon from '@mui/icons-material/Science';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import ArticleIcon from '@mui/icons-material/Article';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -63,13 +62,6 @@ const Sidebar = () => {
                         <AssignmentIcon />
                     </ListItemIcon>
                     <ListItemText primary="Assignment Marks" sx={{ display: 'block', color: 'white' }} />
-                </ListItem>
-
-                <ListItem button component={Link} to='/dashboardfaculty/attendance' sx={{ '&:hover': { backgroundColor: '#2E3A59' } }}>
-                    <ListItemIcon sx={{ color: 'white' }}>
-                        <FactCheckIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Attendance" sx={{ display: 'block', color: 'white' }} />
                 </ListItem>
 
                 <ListItem button component={Link} to='/dashboardfaculty/view-co' sx={{ '&:hover': { backgroundColor: '#2E3A59' } }}>
