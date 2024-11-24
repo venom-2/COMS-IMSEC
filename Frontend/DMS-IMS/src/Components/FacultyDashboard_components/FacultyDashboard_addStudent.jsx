@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Breadcrumbs, Container, Link, TextField, Typography, Box, Button } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import EnhancedTable from '../EnhancedTableStudent';
 import { Modal } from '@mui/material';
 import toast from "react-hot-toast";
+import { jwtDecode } from 'jwt-decode';
 
 const FacultyDashboard_addStudent = () => {
 
@@ -12,11 +13,14 @@ const FacultyDashboard_addStudent = () => {
   const [csvFile, setCsvFile] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
-    year: '',
-    rollno: '',
+    rollNumber: '',
     email: '',
+    year: '',
     section: '',
   });
+  const [files, setFiles] = useState([]);
+  const [students, setStudents] = useState([]);
+  const year = '2023'; // Replace with dynamic year if needed
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,22 +30,103 @@ const FacultyDashboard_addStudent = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add logic for form submission
-    console.log(formData);
-  };
+    try {
+      const payload = jwtDecode(localStorage.getItem("authToken"));
+      formData.branch = payload.user.department;
+      console.log(formData);
+      const response = await fetch('https://dms-backend-eight.vercel.app/add/student', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "authToken": localStorage.getItem("authToken")
+        },
+        body: JSON.stringify(formData),
+      });
 
-  const handleCsvUpload = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type === 'text/csv') {
-      setCsvFile(file);
-      toast.success(`CSV File Selected:, ${file.name}`);
-    } else {
-      toast.error("Please upload a valid CSV file.");
-      setCsvFile(null);
+      const data = await response.json();
+      console.log(data);
+
+      if (data.success) {
+        toast.success('Student added successfully!');
+        setFormData({
+          name: '',
+          rollNumber: '',
+          email: '',
+          year: '',
+          section: '',
+        });
+        handleClose(); // Close the modal
+        fetchStudents(year);
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.message || 'Failed to add student.');
+      }
+    } catch (error) {
+      toast.error('An error occurred. Please try again.');
+      console.error(error);
     }
   };
+
+  const fetchStudents = async (department) => {
+    try {
+      const response = await fetch('https://dms-backend-eight.vercel.app/fetch/students', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'authToken': `${localStorage.getItem('authToken')}`,
+        },
+        body: JSON.stringify({ year }),
+      });
+      const data = await response.json();
+      setStudents(data.students);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+
+  useEffect(() => {
+    // Call fetchStudents when the component mounts
+    fetchStudents(year);
+  }, [year]); // Dependency array: add `year` if it can change
+
+
+  const handleCsvUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file || file.type !== "text/csv") {
+      toast.error("Please upload a valid CSV file.");
+      return;
+    }
+
+    try {
+      const fileData = new FormData();
+      fileData.append('file', file); // Add selected file to FormData
+
+      const response = await fetch("https://dms-backend-eight.vercel.app/csv/student", {
+        method: "POST",
+        headers: {
+          "authToken": localStorage.getItem("authToken"), // Add auth token
+        },
+        body: fileData,
+      });
+
+      const data = await response.json();
+      console.log(data);
+      if (data.success) {
+        toast.success("Students added successfully!");
+        setCsvFile(null); // Clear selected file
+        fetchStudents(year);
+      } else {
+        toast.error(data.message || "Failed to add students!");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while uploading the file.");
+    }
+  };
+
 
   const handleOpen = () => setOpen(true);
 
@@ -65,7 +150,7 @@ const FacultyDashboard_addStudent = () => {
       <Breadcrumbs
         separator={<NavigateNextIcon fontSize="small" />}
         aria-label="breadcrumb"
-        sx={{ mt: '20px' }} 
+        sx={{ mt: '20px' }}
       >
         {breadcrumbs}
       </Breadcrumbs>
@@ -89,12 +174,15 @@ const FacultyDashboard_addStudent = () => {
               type="file"
               accept=".csv"
               hidden
-              onChange={handleCsvUpload}
+              onChange={(e) => {
+                handleCsvUpload(e);
+                e.target.value = ""; // Clear the input
+              }}
             />
           </Button>
         </Box>
       </Box>
-      <EnhancedTable searchTerm={searchTerm} />
+      <EnhancedTable searchTerm={searchTerm} students={students}/>
       <Modal
         aria-labelledby="unstyled-modal-title"
         aria-describedby="unstyled-modal-description"
@@ -124,15 +212,17 @@ const FacultyDashboard_addStudent = () => {
                   value={formData.name}
                   onChange={handleChange}
                   fullWidth
-                  sx={{mr: 2}}
+                  sx={{ mr: 2 }}
+                  required
                 />
                 <TextField
                   label="Roll Number"
                   variant="outlined"
-                  name="rollno"
+                  name="rollNumber"
                   value={formData.rollno}
                   onChange={handleChange}
                   fullWidth
+                  required
                 />
               </Box>
               <TextField
@@ -142,6 +232,7 @@ const FacultyDashboard_addStudent = () => {
                 value={formData.email}
                 onChange={handleChange}
                 fullWidth
+                required
               />
               <Box component="div" sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <TextField
@@ -151,7 +242,8 @@ const FacultyDashboard_addStudent = () => {
                   value={formData.year}
                   onChange={handleChange}
                   fullWidth
-                  sx={{mr: 2}}
+                  sx={{ mr: 2 }}
+                  required
                 />
                 <TextField
                   label="Section"
@@ -160,6 +252,7 @@ const FacultyDashboard_addStudent = () => {
                   value={formData.section}
                   onChange={handleChange}
                   fullWidth
+                  required
                 />
               </Box>
               <Button variant="contained" type="submit" sx={{ mt: 3 }}>

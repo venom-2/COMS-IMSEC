@@ -195,7 +195,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({ searchTerm }) {
+export default function EnhancedTable({ searchTerm, students }) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -283,14 +283,14 @@ export default function EnhancedTable({ searchTerm }) {
               rowCount={filteredRows.length}
             />
             <TableBody>
-              {visibleRows.map((row, index) => {
+              {students.map((row, index) => {
                 const isItemSelected = selected.includes(row.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.id)}
+                    onClick={(event) => handleClick(event, row._id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -312,7 +312,7 @@ export default function EnhancedTable({ searchTerm }) {
                     </TableCell>
                     <TableCell align="center">{row.year}</TableCell>
                     <TableCell align="center">{row.branch}</TableCell>
-                    <TableCell align="center">{row.rollno}</TableCell>
+                    <TableCell align="center">{row.rollNumber}</TableCell>
                     <TableCell align="center">{row.email}</TableCell>
                   </TableRow>
                 );
