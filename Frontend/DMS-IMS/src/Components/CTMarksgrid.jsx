@@ -20,11 +20,11 @@ const initialRows = [
     createData('Q-01'),
     createData('Q-02'),
     createData('Q-03'),
-    createData('Q-04'),
+    createData('Q-04'), 
     createData('Q-05'),
 ];
 
-const CTMarksgrid = ({ subjectName }) => {
+const CTMarksgrid = ({ req }) => {
     const [rows, setRows] = React.useState(initialRows);
     const [allFilled, setAllFilled] = React.useState(false);
     const [showErrors, setShowErrors] = React.useState(false);
@@ -83,8 +83,8 @@ const CTMarksgrid = ({ subjectName }) => {
 
         // if (filledCorrectly) {
             const payload = {
-                classTestNumber: "ct1",
-                student: "676bcdb4a7d08b0f74df501a",
+                classTestNumber: req.classTestNumber,
+                student: req.student,
                 year: "1st year",
                 branch: "Computer Science",
                 section: "section-01",
@@ -146,7 +146,7 @@ const CTMarksgrid = ({ subjectName }) => {
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, p: 1 }}>
             <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2, color: 'primary.main' }}>
-                {subjectName}
+                {req.subject}
             </Typography>
             <TableContainer component={Paper} elevation={4} sx={{ maxWidth: 800, borderRadius: 2 }}>
                 <Table sx={{ minWidth: 650 }} aria-label="CT Marks Table">

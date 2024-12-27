@@ -88,7 +88,7 @@ const FacultyDashboard_addStudent = () => {
       });
       const data = await response.json();
       console.log(data);
-      if(response.status === 404) {
+      if (response.status === 404) {
         setStudents([]);
         return;
       }
@@ -100,7 +100,7 @@ const FacultyDashboard_addStudent = () => {
 
 
   useEffect(() => {
-    if(year !== null && session !== null) {
+    if (year !== null && session !== null) {
       fetchStudents();
     }
   }, [year, session]); // Dependency array: add `year` if it can change
@@ -195,7 +195,7 @@ const FacultyDashboard_addStudent = () => {
           </Button>
         </Box>
       </Box>
-      <Box display="flex" gap={2}>
+      <Box display="flex" gap={2} sx={{ mt: 2 }}>
         {/* Dropdown for Year Selection */}
         <TextField
           select
@@ -228,7 +228,7 @@ const FacultyDashboard_addStudent = () => {
           ))}
         </TextField>
       </Box>
-      <EnhancedTable searchTerm={searchTerm} students={students} />
+      {students.length !== 0 ? <EnhancedTable searchTerm={searchTerm} students={students} /> : <Typography variant="h6" sx={{ mt: 5 }}>No students found</Typography>}
       <Modal
         aria-labelledby="unstyled-modal-title"
         aria-describedby="unstyled-modal-description"

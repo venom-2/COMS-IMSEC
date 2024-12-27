@@ -16,7 +16,6 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import Container from "@mui/material/Container";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
@@ -38,22 +37,6 @@ function createData(id, name, year, branch, rollno, ct1, ct2) {
     ct2,
   };
 }
-
-const rows = [
-  createData(1, "Akshat", 4, "CS", 2101430120000, "60/60", "60/60"),
-  createData(2, "Krishna", 4, "CS", 2101430120001, "58/60", "58/60"),
-  createData(3, "Khushi", 4, "CS", 2101430120002, "56/60", "56/60"),
-  createData(4, "Divyanshi", 4, "CS", 2101430120003, "53/60", "53/60"),
-  createData(5, "Harsh", 4, "CS", 2101430120004, "46/60", "46/60"),
-  createData(6, "Ayush", 4, "CS", 2101430120005, "42/60", "42/60"),
-  createData(7, "Lalit", 4, "CS", 2101430120006, "43/60", "43/60"),
-  createData(8, "Chandni", 4, "CS", 2101430120007, "48/60", "48/60"),
-  createData(9, "Shweta", 4, "CS", 2101430120008, "50/60", "50/60"),
-  createData(10, "Sunny", 4, "CS", 2101430120009, "58/60", "58/60"),
-  createData(11, "Amit", 4, "CS", 2101430120010, "41/60", "41/60"),
-  createData(12, "Aditya", 4, "CS", 2101430120011, "38/60", "38/60"),
-  createData(13, "Krishna Kant", 4, "CS", 2101430120012, "10/60", "10/60"),
-];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -246,7 +229,7 @@ export default function EnhancedTable({ searchTerm, students, subject }) {
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [openGrid, setOpenGrid] = React.useState(false);
   const [formData, setFormData] = useState("");
   const [subjectName, setSubjectName] = useState("");
@@ -356,12 +339,12 @@ export default function EnhancedTable({ searchTerm, students, subject }) {
     fetchSubjectById();
   }, []);
 
-  const filteredRows = rows.filter(
-    (row) =>
-      row.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      row.branch.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      row.rollno.toString().includes(searchTerm) ||
-      row.year.toString().includes(searchTerm)
+  const filteredRows = students.filter(
+    (student) =>
+      student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      student.branch.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      student.rollno.toString().includes(searchTerm) ||
+      student.year.toString().includes(searchTerm)
   );
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -395,7 +378,7 @@ export default function EnhancedTable({ searchTerm, students, subject }) {
               rowCount={filteredRows.length}
             />
             <TableBody>
-              {students.map((row, index) => {
+              {visibleRows.map((row, index) => {
                 const isItemSelected = selected.includes(row.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -447,7 +430,7 @@ export default function EnhancedTable({ searchTerm, students, subject }) {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[10, 20, 25, 50]}
+          rowsPerPageOptions={[5, 10, 15, 20]}
           component="div"
           count={filteredRows.length}
           rowsPerPage={rowsPerPage}
@@ -477,7 +460,7 @@ export default function EnhancedTable({ searchTerm, students, subject }) {
             color: "#070f2b", // Main text color
           }}
         >
-          <CTMarksgrid subjectName={subjectName} />
+          <CTMarksgrid req={req} />
         </Box>
       </Modal>
     </Box>

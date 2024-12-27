@@ -31,22 +31,6 @@ function createData(id, name, year, branch, rollno, email) {
   };
 }
 
-const rows = [
-  createData(1, 'Akshat', 4, 'CS', 2101430120000, 'a@imsec.ac.in'),
-  createData(2, 'Krishna', 4, 'CS', 2101430120001, 'a@imsec.ac.in'),
-  createData(3, 'Khushi', 4, 'CS', 2101430120002, 'a@imsec.ac.in'),
-  createData(4, 'Divyanshi', 4, 'CS', 2101430120003, 'a@imsec.ac.in'),
-  createData(5, 'Harsh', 4, 'CS', 2101430120004, 'a@imsec.ac.in'),
-  createData(6, 'Ayush', 4, 'CS', 2101430120005, 'a@imsec.ac.in'),
-  createData(7, 'Lalit', 4, 'CS', 2101430120006, 'a@imsec.ac.in'),
-  createData(8, 'Chandni', 4, 'CS', 2101430120007, 'a@imsec.ac.in'),
-  createData(9, 'Shweta', 4, 'CS', 2101430120008, 'a@imsec.ac.in'),
-  createData(10, 'Sunny', 4, 'CS', 2101430120009, 'a@imsec.ac.in'),
-  createData(11, 'Amit', 4, 'CS', 2101430120010, 'a@imsec.ac.in'),
-  createData(12, 'Aditya', 4, 'CS', 2101430120011, 'a@imsec.ac.in'),
-  createData(13, 'Krishna Kant', 4, 'CS', 2101430120012, 'a@imsec.ac.in'),
-];
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -200,7 +184,7 @@ export default function EnhancedTable({ searchTerm, students }) {
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -241,16 +225,16 @@ export default function EnhancedTable({ searchTerm, students }) {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    setRowsPerPage(parseInt(event.target.value, 5));
     setPage(0);
   };
 
-  const filteredRows = rows.filter((row) =>
-    row.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    row.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    row.branch.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    row.rollno.toString().includes(searchTerm) ||
-    row.year.toString().includes(searchTerm)
+  const filteredRows = students.filter((student) =>
+    student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    student.branch.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    student.rollno.toString().includes(searchTerm) ||
+    student.year.toString().includes(searchTerm)
   );
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -283,7 +267,7 @@ export default function EnhancedTable({ searchTerm, students }) {
               rowCount={filteredRows.length}
             />
             <TableBody>
-              {students.map((row, index) => {
+              {visibleRows.map((row, index) => {
                 const isItemSelected = selected.includes(row.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -326,7 +310,7 @@ export default function EnhancedTable({ searchTerm, students }) {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[10, 20, 25, 50]}
+          rowsPerPageOptions={[5, 10, 15, 20]}
           component="div"
           count={filteredRows.length}
           rowsPerPage={rowsPerPage}
