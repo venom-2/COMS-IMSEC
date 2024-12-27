@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import toast from 'react-hot-toast';
 
 function createData(name) {
     return { name, a: '', b: '', c: '', d: '', e: '', f: '' };
@@ -72,18 +73,62 @@ const CTMarksgrid = ({ subjectName }) => {
         setAllFilled(filled);
     };
 
-    const handleSubmit = () => {
-        const filledCorrectly = rows.every(row => {
-            const { minFields, maxFields } = requirements[row.name];
-            const filledCount = Object.values(row).filter(val => val !== '').length;
-            return filledCount >= minFields && filledCount <= maxFields;
-        });
+    const handleSubmit = async () => {
+        console.log("Submitting data:", rows);
+        // const filledCorrectly = rows.every(row => {
+        //     const { minFields, maxFields } = requirements[row.name];
+        //     const filledCount = Object.values(row).filter(val => val !== '').length;
+        //     return filledCount >= minFields && filledCount <= maxFields;
+        // });
 
-        if (filledCorrectly) {
-            console.log("Data ready to upload:", rows);
-        } else {
-            setShowErrors(true);
-        }
+        // if (filledCorrectly) {
+            const payload = {
+                classTestNumber: "ct1",
+                student: "676bcdb4a7d08b0f74df501a",
+                year: "1st year",
+                branch: "Computer Science",
+                section: "section-01",
+                semester: "1st",
+                session: "2021-22",
+                marks: {
+                    sectionA: {
+                        _1a: rows[0].a || 0,
+                        _1b: rows[0].b || 0,
+                        _1c: rows[0].c || 0,
+                        _1d: rows[0].d || 0,
+                        _1e: rows[0].e || 0,
+                    },
+                    sectionB: {
+                        _2a: rows[1].a || 0,
+                        _2b: rows[1].b || 0,
+                        _2c: rows[1].c || 0,
+                        _2d: rows[1].d || 0,
+                        _2e: rows[1].e || 0,
+                    },
+                    sectionC: {
+                        _3: rows[2].a || 0,
+                        _4: rows[3].a || 0,
+                        _5: rows[4].a || 0,
+                    }
+                }
+            };
+
+            try {
+                console.log("Payload:", payload);
+                const response = await fetch('https://dms-backend-eight.vercel.app/add/classtest', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'authToken': localStorage.getItem('authToken'),
+                    },
+                    body: JSON.stringify(payload),
+                });
+                const data = await response.json();
+                console.log("Data uploaded successfully:", data);
+                toast.success("Marks uploaded successfully!");
+            } catch (error) {
+                console.error("Error uploading data:", error);
+            }
     };
 
     const getCellStyle = (row, field) => {

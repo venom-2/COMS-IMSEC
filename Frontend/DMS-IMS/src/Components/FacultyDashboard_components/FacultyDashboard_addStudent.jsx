@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Breadcrumbs, Container, Link, TextField, Typography, Box, Button } from '@mui/material';
+import { Breadcrumbs, Container, Link, TextField, Typography, Box, Button, MenuItem } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import EnhancedTable from '../EnhancedTableStudent';
 import { Modal } from '@mui/material';
@@ -11,16 +11,21 @@ const FacultyDashboard_addStudent = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [open, setOpen] = React.useState(false);
   const [csvFile, setCsvFile] = useState(null);
+  const [year, setYear] = React.useState('');
+  const [session, setSession] = React.useState('');
   const [formData, setFormData] = useState({
     name: '',
     rollNumber: '',
     email: '',
     year: '',
+    session: '',
     section: '',
   });
   const [files, setFiles] = useState([]);
   const [students, setStudents] = useState([]);
-  const year = '2023'; // Replace with dynamic year if needed
+
+  const years = ['1st year', '2nd year', '3rd year', '4th year'];
+  const sessions = ['2021-22', '2022-23', '2023-24', '2024-25'];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,6 +60,7 @@ const FacultyDashboard_addStudent = () => {
           rollNumber: '',
           email: '',
           year: '',
+          session: '',
           section: '',
         });
         handleClose(); // Close the modal
@@ -69,17 +75,23 @@ const FacultyDashboard_addStudent = () => {
     }
   };
 
-  const fetchStudents = async (department) => {
+  const fetchStudents = async () => {
     try {
+      console.log("Year: ", year, "Session: ", session);
       const response = await fetch('https://dms-backend-eight.vercel.app/fetch/students', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'authToken': `${localStorage.getItem('authToken')}`,
         },
-        body: JSON.stringify({ year }),
+        body: JSON.stringify({ year, session }),
       });
       const data = await response.json();
+      console.log(data);
+      if(response.status === 404) {
+        setStudents([]);
+        return;
+      }
       setStudents(data.students);
     } catch (err) {
       console.log(err);
@@ -88,9 +100,10 @@ const FacultyDashboard_addStudent = () => {
 
 
   useEffect(() => {
-    // Call fetchStudents when the component mounts
-    fetchStudents(year);
-  }, [year]); // Dependency array: add `year` if it can change
+    if(year !== null && session !== null) {
+      fetchStudents();
+    }
+  }, [year, session]); // Dependency array: add `year` if it can change
 
 
   const handleCsvUpload = async (e) => {
@@ -182,7 +195,40 @@ const FacultyDashboard_addStudent = () => {
           </Button>
         </Box>
       </Box>
-      <EnhancedTable searchTerm={searchTerm} students={students}/>
+      <Box display="flex" gap={2}>
+        {/* Dropdown for Year Selection */}
+        <TextField
+          select
+          label="Select Year"
+          value={year}
+          onChange={(e) => setYear(e.target.value)}
+          variant="outlined"
+          fullWidth
+        >
+          {years.map((yearOption) => (
+            <MenuItem key={yearOption} value={yearOption}>
+              {yearOption}
+            </MenuItem>
+          ))}
+        </TextField>
+
+        {/* Dropdown for Session Selection */}
+        <TextField
+          select
+          label="Select Session"
+          value={session}
+          onChange={(e) => setSession(e.target.value)}
+          variant="outlined"
+          fullWidth
+        >
+          {sessions.map((sessionOption) => (
+            <MenuItem key={sessionOption} value={sessionOption}>
+              {sessionOption}
+            </MenuItem>
+          ))}
+        </TextField>
+      </Box>
+      <EnhancedTable searchTerm={searchTerm} students={students} />
       <Modal
         aria-labelledby="unstyled-modal-title"
         aria-describedby="unstyled-modal-description"
@@ -234,6 +280,22 @@ const FacultyDashboard_addStudent = () => {
                 fullWidth
                 required
               />
+              <TextField
+                label="Session"
+                variant="outlined"
+                name="session"
+                value={formData.session}
+                onChange={handleChange}
+                fullWidth
+                required
+                select
+              >
+                {/* Dropdown options */}
+                <MenuItem value="2021-22">2021-22</MenuItem>
+                <MenuItem value="2022-23">2022-23</MenuItem>
+                <MenuItem value="2023-24">2023-24</MenuItem>
+                <MenuItem value="2024-25">2024-25</MenuItem>
+              </TextField>
               <Box component="div" sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <TextField
                   label="Year"
@@ -244,7 +306,14 @@ const FacultyDashboard_addStudent = () => {
                   fullWidth
                   sx={{ mr: 2 }}
                   required
-                />
+                  select
+                >
+                  {/* Dropdown options */}
+                  <MenuItem value="1st year">1st Year</MenuItem>
+                  <MenuItem value="2nd year">2nd Year</MenuItem>
+                  <MenuItem value="3rd year">3rd Year</MenuItem>
+                  <MenuItem value="4th year">4th Year</MenuItem>
+                </TextField>
                 <TextField
                   label="Section"
                   variant="outlined"
@@ -253,7 +322,14 @@ const FacultyDashboard_addStudent = () => {
                   onChange={handleChange}
                   fullWidth
                   required
-                />
+                  select
+                >
+                  {/* Dropdown options */}
+                  <MenuItem value="section-01">Section-01</MenuItem>
+                  <MenuItem value="section-02">Section-02</MenuItem>
+                  <MenuItem value="section-03">Section-03</MenuItem>
+                  <MenuItem value="section-04">Section-04</MenuItem>
+                </TextField>
               </Box>
               <Button variant="contained" type="submit" sx={{ mt: 3 }}>
                 Submit

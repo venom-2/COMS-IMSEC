@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
 import { alpha } from "@mui/material/styles";
@@ -24,13 +24,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { Modal } from "@mui/material";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import ListItemText from "@mui/material/ListItemText";
-import Avatar from "@mui/material/Avatar";
-import BookIcon from "@mui/icons-material/Book";
 import CTMarksgrid from "./CTMarksgrid";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 function createData(id, name, year, branch, rollno, ct1, ct2) {
   return {
@@ -246,18 +241,54 @@ const Demo = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
-export default function EnhancedTable({ searchTerm }) {
+export default function EnhancedTable({ searchTerm, students, subject }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [openModal, setOpenModal] = React.useState(false);
   const [openGrid, setOpenGrid] = React.useState(false);
   const [formData, setFormData] = useState("");
-  const [dense, setDense] = React.useState(false);
-  const [secondary, setSecondary] = React.useState(false);
+  const [subjectName, setSubjectName] = useState("");
+  const [req, setReq] = useState({
+    year: "",
+    session: "",
+    subject: "",
+    classTestNumber: "",
+    student: "",
+    branch: "",
+    section: "",
+    semester: "",
+    marks: {
+      sectionA: {
 
+      },
+      sectionB: {
+
+      },
+      sectionC: {
+
+      }
+    }
+  });
+
+  const fetchSubjectById = async () => {
+    try {
+      const res = await fetch(`https://dms-backend-eight.vercel.app/fetch/subject/${subject}`,{
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "authToken": localStorage.getItem("authToken"),
+        },
+      });
+      const data = await res.json();
+      console.log("Modal ki API call",data);
+      setSubjectName(data.subject.subjectName);
+      console.log("Subject Name: ", subjectName);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -266,11 +297,12 @@ export default function EnhancedTable({ searchTerm }) {
     }));
   };
 
-  const handleOpen = () => setOpenModal(true);
-
-  const handleClose = () => setOpenModal(false);
-
-  const handleGridOpen = () => setOpenGrid(true);
+  const handleGridOpen = (ctno, studentid) => {
+    setOpenGrid(true);
+    req.classTestNumber = ctno;
+    req.student = studentid;
+    req.subject = subject;
+  }
 
   const handleGridClose = () => setOpenGrid(false);
 
@@ -317,6 +349,13 @@ export default function EnhancedTable({ searchTerm }) {
     setPage(0);
   };
 
+  useEffect(() => {
+    if (students) {
+      console.log("Students: ", students);
+    }
+    fetchSubjectById();
+  }, []);
+
   const filteredRows = rows.filter(
     (row) =>
       row.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -356,7 +395,7 @@ export default function EnhancedTable({ searchTerm }) {
               rowCount={filteredRows.length}
             />
             <TableBody>
-              {visibleRows.map((row, index) => {
+              {students.map((row, index) => {
                 const isItemSelected = selected.includes(row.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -391,11 +430,11 @@ export default function EnhancedTable({ searchTerm }) {
                     </TableCell>
                     <TableCell align="center">{row.year}</TableCell>
                     <TableCell align="center">{row.branch}</TableCell>
-                    <TableCell align="center">{row.rollno}</TableCell>
-                    <TableCell align="center" onClick={handleOpen}>
-                      {row.ct1}
+                    <TableCell align="center">{row.rollNumber}</TableCell>
+                    <TableCell align="center" onClick={()=>handleGridOpen("ct1", row._id)}>
+                      <AddCircleIcon />
                     </TableCell>
-                    <TableCell align="center" onClick={handleOpen}>{row.ct2}</TableCell>
+                    <TableCell align="center" onClick={()=>handleGridOpen("ct2", row._id)}><AddCircleIcon /></TableCell>
                   </TableRow>
                 );
               })}
@@ -420,260 +459,6 @@ export default function EnhancedTable({ searchTerm }) {
       <Modal
         aria-labelledby="unstyled-modal-title"
         aria-describedby="unstyled-modal-description"
-        open={openModal}
-        onClose={handleClose}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Box
-          sx={{
-            width: 800, // Increased width to keep subject names in one line
-            bgcolor: "#fff", // Light background
-            p: 4,
-            borderRadius: 2,
-            boxShadow: 24,
-            color: "#070f2b", // Main text color
-          }}
-        >
-          <Container>
-            {/* Heading */}
-            <Typography
-              variant="h5"
-              gutterBottom
-              sx={{
-                textAlign: "center",
-                fontWeight: "bold",
-                color: "#070f2b", // Dark navy for heading
-              }}
-            >
-              Select Subject to Upload CT Marks
-            </Typography>
-
-            {/* Instruction */}
-            <Typography
-              variant="body2"
-              color="textSecondary"
-              sx={{ textAlign: "center", mb: 3, color: "#6b6b6b" }} // Subtle text for instructions
-            >
-              Choose a subject to upload or update the marks. Assigned subjects are
-              highlighted.
-            </Typography>
-
-            {/* List of Subjects */}
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 2,
-              }}
-            >
-              {/* First Row - Side by Side Layout */}
-              <Box sx={{ display: "flex", gap: 2 }}>
-                <Box
-                  sx={{
-                    flex: 1,
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    p: 2,
-                    borderRadius: 1,
-                    border: "1px solid #e0e0e0",
-                    backgroundColor: "#f0f8f5", // Light green for high marks or assigned subjects
-                    cursor: "pointer", // Make it clickable
-                    "&:hover": {
-                      backgroundColor: "#e0f4eb", // Slightly darker green on hover
-                    },
-                  }}
-                  onClick={() => handleGridOpen()}
-                >
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Avatar sx={{ mr: 2, bgcolor: "#070f2b", color: "#fff" }}>
-                      <BookIcon />
-                    </Avatar>
-                    <Box>
-                      <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
-                        Digital Electronics
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: "#6b6b6b" }}>
-                        Marks: 85
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Box>
-
-                <Box
-                  sx={{
-                    flex: 1,
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    p: 2,
-                    borderRadius: 1,
-                    border: "1px solid #e0e0e0",
-                    backgroundColor: "#f9f9f9", // Grey for normal subjects
-                    cursor: "pointer",
-                    "&:hover": {
-                      backgroundColor: "#ececec", // Slightly darker grey on hover
-                    },
-                  }}
-                  onClick={() => handleSubjectClick("Computer Networks")}
-                >
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Avatar sx={{ mr: 2, bgcolor: "#070f2b", color: "#fff" }}>
-                      <BookIcon />
-                    </Avatar>
-                    <Box>
-                      <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
-                        Computer Networks
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: "#6b6b6b" }}>
-                        Marks: 72
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>
-
-              {/* Second Row - Single Column Layout */}
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  p: 2,
-                  borderRadius: 1,
-                  border: "1px solid #e0e0e0",
-                  backgroundColor: "#f0f8f5", // Light green for high marks or assigned subjects
-                  cursor: "pointer",
-                  "&:hover": {
-                    backgroundColor: "#e0f4eb",
-                  },
-                }}
-                onClick={() => handleSubjectClick("Mathematics")}
-              >
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Avatar sx={{ mr: 2, bgcolor: "#070f2b", color: "#fff" }}>
-                    <BookIcon />
-                  </Avatar>
-                  <Box>
-                    <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
-                      Mathematics
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: "#6b6b6b" }}>
-                      Marks: 90
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-
-              {/* Third Row - Side by Side Layout */}
-              <Box sx={{ display: "flex", gap: 2 }}>
-                <Box
-                  sx={{
-                    flex: 1,
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    p: 2,
-                    borderRadius: 1,
-                    border: "1px solid #e0e0e0",
-                    backgroundColor: "#f9f9f9",
-                    cursor: "pointer",
-                    "&:hover": {
-                      backgroundColor: "#ececec",
-                    },
-                  }}
-                  onClick={() => handleSubjectClick("Software Engineering")}
-                >
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Avatar sx={{ mr: 2, bgcolor: "#070f2b", color: "#fff" }}>
-                      <BookIcon />
-                    </Avatar>
-                    <Box>
-                      <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
-                        Software Engineering
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: "#6b6b6b" }}>
-                        Marks: 65
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Box>
-
-                <Box
-                  sx={{
-                    flex: 1,
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    p: 2,
-                    borderRadius: 1,
-                    border: "1px solid #e0e0e0",
-                    backgroundColor: "#f0f8f5", // Light green for high marks or assigned subjects
-                    cursor: "pointer",
-                    "&:hover": {
-                      backgroundColor: "#e0f4eb",
-                    },
-                  }}
-                  onClick={() => handleSubjectClick("Microprocessors")}
-                >
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Avatar sx={{ mr: 2, bgcolor: "#070f2b", color: "#fff" }}>
-                      <BookIcon />
-                    </Avatar>
-                    <Box>
-                      <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
-                        Microprocessors
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: "#6b6b6b" }}>
-                        Marks: 78
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>
-
-              {/* Fourth Row - Single Column Layout */}
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  p: 2,
-                  borderRadius: 1,
-                  border: "1px solid #e0e0e0",
-                  backgroundColor: "#f0f8f5", // Light green for high marks or assigned subjects
-                  cursor: "pointer",
-                  "&:hover": {
-                    backgroundColor: "#e0f4eb",
-                  },
-                }}
-                onClick={() => handleSubjectClick("Data Structures")}
-              >
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Avatar sx={{ mr: 2, bgcolor: "#070f2b", color: "#fff" }}>
-                    <BookIcon />
-                  </Avatar>
-                  <Box>
-                    <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
-                      Data Structures
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: "#6b6b6b" }}>
-                      Marks: 92
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-          </Container>
-        </Box>
-      </Modal>
-      <Modal
-        aria-labelledby="unstyled-modal-title"
-        aria-describedby="unstyled-modal-description"
         open={openGrid}
         onClose={handleGridClose}
         sx={{
@@ -692,7 +477,7 @@ export default function EnhancedTable({ searchTerm }) {
             color: "#070f2b", // Main text color
           }}
         >
-          <CTMarksgrid subjectName="Digital Electronics"/>
+          <CTMarksgrid subjectName={subjectName} />
         </Box>
       </Modal>
     </Box>
