@@ -5,7 +5,7 @@ import DashboardHOD from "./Pages/JSX/DashboardHOD";
 import { Toaster } from "react-hot-toast";
 import DashboardFaculty from "./Pages/JSX/DashboardFaculty";
 import DashboardAdmin from "./Pages/JSX/DashboardAdmin";
-import { jwtDecode } from "jwt-decode"; 
+import { jwtDecode } from "jwt-decode";
 import { COProvider } from './contextAPI/COContext';
 import { ToggleProvider } from "./contextAPI/ToggleContext";
 
@@ -26,14 +26,14 @@ const allowedRole = (token) => {
   try {
     const decodedToken = jwtDecode(token);
     console.log("Decoded Token:", decodedToken);
-    return decodedToken.user.role;
+    return decodedToken.role;
   } catch (error) {
     return null; // Error while decoding token
   }
 };
 
 const isAuthenticated = (expectedRole) => {
-  const token = localStorage.getItem("authToken");
+  const token = localStorage.getItem("token");
 
   // Check if token exists
   if (!token) {
@@ -42,7 +42,7 @@ const isAuthenticated = (expectedRole) => {
 
   // Check if token is expired
   if (isTokenExpired(token)) {
-    localStorage.removeItem("authToken"); // Optionally remove expired token
+    localStorage.removeItem("token"); // Optionally remove expired token
     return false;
   }
 
@@ -81,7 +81,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Login isTokenExpired={isTokenExpired} />} />
 
-              <Route path="/dashboardhod" element={<ProtectedWrapper expectedRole="hod" />}>
+              <Route path="/dashboardhod" element={<ProtectedWrapper expectedRole="HoD" />}>
                 <Route index element={<DashboardHOD />} />
                 <Route path="add-students" element={<DashboardHOD />} />
                 <Route path="assign-faculty" element={<DashboardHOD />} />
@@ -90,7 +90,7 @@ function App() {
                 <Route path="add-subject" element={<DashboardHOD />} />
               </Route>
 
-              <Route path="/dashboardfaculty" element={<ProtectedWrapper expectedRole="faculty" />}>
+              <Route path="/dashboardfaculty" element={<ProtectedWrapper expectedRole="Faculty" />}>
                 <Route index element={<DashboardFaculty />} />
                 <Route path="add-students" element={<DashboardFaculty />} />
                 <Route path="add-marks" element={<DashboardFaculty />} />
@@ -99,7 +99,12 @@ function App() {
                 <Route path="assignment" element={<DashboardFaculty />} />
               </Route>
 
-              <Route path="/dashboardadmin" element={<ProtectedRoute element={<DashboardAdmin />} expectedRole="admin" />} />
+              <Route path="/dashboardadmin" element={<ProtectedRoute element={<DashboardAdmin />} expectedRole="Admin" />} >
+                <Route index element={<DashboardAdmin />} />
+                <Route path="home" element={<DashboardAdmin />} />
+                <Route path="create-user" element={<DashboardAdmin />} />
+                <Route path="view-users" element={<DashboardAdmin />} />
+              </Route>
 
             </Routes>
           </BrowserRouter>

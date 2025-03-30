@@ -21,6 +21,7 @@ import Logo from "../../assets/favicon-32x32.png";
 import Cat from "../../assets/cat-sad-kitty-sad.webp";
 import LoginImage from "../../assets/login-image.jpg"; // Adjust the import path for your image
 import "../CSS/Login.css";
+import {jwtDecode} from "jwt-decode";
 
 const Login = ({ isTokenExpired }) => {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ const Login = ({ isTokenExpired }) => {
     }
 
     try {
-      const response = await fetch("https://dms-backend-eight.vercel.app/login", {
+      const response = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,20 +55,25 @@ const Login = ({ isTokenExpired }) => {
       });
 
       const parsedResponse = await response.json();
-      const { authToken } = parsedResponse;
+      const { token } = parsedResponse;
+      console.log(parsedResponse);
+      const role = jwtDecode(token).role;
+      console.log("Decoded Role:", role);
 
-      if (authToken) {
-        console.log("Received Token:", authToken);
-        localStorage.setItem("authToken", authToken);
+      if (token) {
+        console.log("Received Token:", token);
+        localStorage.setItem("token", token);
 
         // Check if the token is considered expired immediately
-        if (isTokenExpired(authToken)) {
+        if (isTokenExpired(token)) {
           toast.error("Login failed! Token is expired.");
           return;
         }
 
         toast.success("Login successful!");
-        navigate(getDashboardRoute(credentials.role));
+        console.log(getDashboardRoute(role))
+        navigate(getDashboardRoute(role));
+
       } else {
         toast.error("Login failed! Invalid credentials.");
       }
@@ -84,11 +90,11 @@ const Login = ({ isTokenExpired }) => {
 
   const getDashboardRoute = (role) => {
     switch (role) {
-      case "admin":
+      case "Admin":
         return "/dashboardadmin";
-      case "hod":
+      case "HoD":
         return "/dashboardhod/home";
-      case "faculty":
+      case "Faculty":
         return "/dashboardfaculty/home";
       default:
         return "/";
@@ -134,25 +140,6 @@ const Login = ({ isTokenExpired }) => {
                   ),
                 }}
               />
-              <FormControl fullWidth margin="normal" required>
-                <InputLabel>Role</InputLabel>
-                <Select
-                  name="role"
-                  value={credentials.role}
-                  onChange={handleChange}
-                  label="Role"
-                  startAdornment = {
-                    <InputAdornment position="start">
-                      <AssignmentIndIcon/>
-                    </InputAdornment>
-                  }
-                >
-                  <MenuItem value="">Select Role</MenuItem>
-                  <MenuItem value="admin">Admin</MenuItem>
-                  <MenuItem value="hod">Head of Department</MenuItem>
-                  <MenuItem value="faculty">Faculty</MenuItem>
-                </Select>
-              </FormControl>
               <TextField
                 label="Password"
                 name="password"
@@ -178,15 +165,34 @@ const Login = ({ isTokenExpired }) => {
                   ),
                 }}
               />
+              <FormControl fullWidth margin="normal" required>
+                <InputLabel>Role</InputLabel>
+                <Select
+                  name="role"
+                  value={credentials.role}
+                  onChange={handleChange}
+                  label="Role"
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <AssignmentIndIcon />
+                    </InputAdornment>
+                  }
+                >
+                  <MenuItem value="">Select Role</MenuItem>
+                  <MenuItem value="Admin">Admin</MenuItem>
+                  <MenuItem value="HoD">Head of Department</MenuItem>
+                  <MenuItem value="Faculty">Faculty</MenuItem>
+                </Select>
+              </FormControl>
               <div className="d-flex justify-content-center">
-                <Button 
-                  type="submit" 
-                  variant="contained" 
-                  sx={{ 
-                    backgroundColor: "#1B1A55", 
-                    color: "white", 
-                    width: "100%", 
-                    marginTop: 2, 
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#1B1A55",
+                    color: "white",
+                    width: "100%",
+                    marginTop: 2,
                     '&:hover': {
                       backgroundColor: '#535C91' // Lighter shade on hover
                     }
@@ -204,8 +210,8 @@ const Login = ({ isTokenExpired }) => {
             </p>
           </div>
         </Grid>
-        <Grid item md={6} className="img login-image d-none d-md-block" 
-              sx={{ height: "100vh", backgroundImage: `url(${LoginImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <Grid item md={6} className="img login-image d-none d-md-block"
+          sx={{ height: "100vh", backgroundImage: `url(${LoginImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
           {/* Image Background */}
         </Grid>
       </Grid>

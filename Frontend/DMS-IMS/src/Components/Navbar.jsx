@@ -19,13 +19,12 @@ const Navbar = ({ handleLogout }) => {
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
+    const token = localStorage.getItem("token");
     if (!token) return;
 
     try {
       const decodedToken = jwtDecode(token);
-      setUserData(decodedToken.user);
-      console.log("Decoded Token:", decodedToken);
+      setUserData(decodedToken);
     } catch (error) {
       console.error("Error while decoding token:", error);
     }
@@ -90,7 +89,7 @@ const Navbar = ({ handleLogout }) => {
               fontFamily: "Inter, sans-serif", 
             }}
           >
-            Welcome, {userData.name}
+            Welcome, {userData.first_name} {userData.last_name}
           </Typography>
           <Divider sx={{ margin: "0" }} />
 
