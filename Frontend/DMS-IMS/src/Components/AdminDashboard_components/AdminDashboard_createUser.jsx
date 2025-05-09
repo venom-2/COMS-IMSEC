@@ -71,7 +71,7 @@ const AdminDashboard_createUser = () => {
     >
       <Container maxWidth="lg">
         <Paper
-          elevation={0}
+          elevation={3}
           sx={{
             padding: 4,
             borderRadius: 2,

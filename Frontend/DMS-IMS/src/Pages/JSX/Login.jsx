@@ -91,7 +91,7 @@ const Login = ({ isTokenExpired }) => {
   const getDashboardRoute = (role) => {
     switch (role) {
       case "Admin":
-        return "/dashboardadmin";
+        return "/dashboardadmin/home";
       case "HoD":
         return "/dashboardhod/home";
       case "Faculty":

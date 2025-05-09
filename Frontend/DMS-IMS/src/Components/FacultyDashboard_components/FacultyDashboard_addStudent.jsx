@@ -1,149 +1,142 @@
-import React, { useState, useEffect } from 'react'
-import { Breadcrumbs, Container, Link, TextField, Typography, Box, Button, MenuItem } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import {
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  TablePagination, Paper, TextField, MenuItem, Box, Typography, Breadcrumbs, Container, Link,
+  Button, Modal, Grid
+} from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import EnhancedTable from '../EnhancedTableStudent';
-import { Modal } from '@mui/material';
 import toast from "react-hot-toast";
-import { jwtDecode } from 'jwt-decode';
+
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 800,
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  borderRadius: 2,
+  p: 4,
+  maxHeight: '90vh',
+  overflowY: 'auto'
+};
 
 const FacultyDashboard_addStudent = () => {
-
-  const [searchTerm, setSearchTerm] = useState('');
-  const [open, setOpen] = React.useState(false);
-  const [csvFile, setCsvFile] = useState(null);
-  const [year, setYear] = React.useState('');
-  const [session, setSession] = React.useState('');
-  const [formData, setFormData] = useState({
-    name: '',
-    rollNumber: '',
-    email: '',
-    year: '',
-    session: '',
-    section: '',
-  });
-  const [files, setFiles] = useState([]);
+  const [search, setSearch] = useState('');
+  const [semesterFilter, setSemesterFilter] = useState('');
   const [students, setStudents] = useState([]);
+  const [genderFilter, setGenderFilter] = useState('');
+  const [page, setPage] = useState(0);
+  const rowsPerPage = 10;
+  const [open, setOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    roll_no: '',
+    first_name: '',
+    last_name: '',
+    department_id: '',
+    semester_id: '',
+    phone_no: '',
+    admission_type: '',
+    admission_id: '',
+    passing_year: '',
+    section: '',
+    email: '',
+    admission_year: '',
+    course_id: '',
+    gender: '',
+    disability: '',
+    category: '',
+    dob: ''
+  });
 
-  const years = ['1st year', '2nd year', '3rd year', '4th year'];
-  const sessions = ['2021-22', '2022-23', '2023-24', '2024-25'];
+  const departmentMapping = {
+    'Computer Science': 1,
+    'Computer Science & Design': 2,
+  };
+
+  const courseMapping = {
+    'B.Tech': 1,
+    'MBA': 3,
+    'MCA': 2,
+  };
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleAddStudent = async () => {
+    const mappedFormData = {
+      ...formData,
+      department_id: departmentMapping[formData.department_id] || formData.department_id,
+      course_id: courseMapping[formData.course_id] || formData.course_id,
+    };
+  
+    console.log('Student Data:', mappedFormData);
+  
     try {
-      const payload = jwtDecode(localStorage.getItem("authToken"));
-      formData.branch = payload.user.department;
-      console.log(formData);
-      const response = await fetch('https://dms-backend-eight.vercel.app/add/student', {
+      const response = await fetch('http://localhost:3000/add/student', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          "authToken": localStorage.getItem("authToken")
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(mappedFormData),
       });
-
+  
       const data = await response.json();
-      console.log(data);
-
-      if (data.success) {
-        toast.success('Student added successfully!');
+  
+      if (response.status === 201) {
+        console.log('Student added successfully:', data);
         setFormData({
-          name: '',
-          rollNumber: '',
-          email: '',
-          year: '',
-          session: '',
+          roll_no: '',
+          first_name: '',
+          last_name: '',
+          department_id: '',
+          semester_id: '',
+          phone_no: '',
+          admission_type: '',
+          admission_id: '',
+          passing_year: '',
           section: '',
+          email: '',
+          admission_year: '',
+          course_id: '',
+          gender: '',
+          disability: '',
+          category: '',
+          dob: ''
         });
-        handleClose(); // Close the modal
-        fetchStudents(year);
+        handleClose();
+        toast.success('Student added successfully!');
       } else {
-        const errorData = await response.json();
-        toast.error(errorData.message || 'Failed to add student.');
+        console.error('Error adding student:', data.message || 'Unknown error');
       }
     } catch (error) {
-      toast.error('An error occurred. Please try again.');
-      console.error(error);
+      console.error('Error adding student:', error);
     }
   };
+  
 
-  const fetchStudents = async () => {
-    try {
-      console.log("Year: ", year, "Session: ", session);
-      const response = await fetch('https://dms-backend-eight.vercel.app/fetch/students', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'authToken': `${localStorage.getItem('authToken')}`,
-        },
-        body: JSON.stringify({ year, session }),
-      });
-      const data = await response.json();
-      console.log(data);
-      if (response.status === 404) {
-        setStudents([]);
-        return;
-      }
-      setStudents(data.students);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const handleSearch = (e) => setSearch(e.target.value.toLowerCase());
+  const handleSemesterChange = (e) => setSemesterFilter(e.target.value);
+  const handleGenderChange = (e) => setGenderFilter(e.target.value);
+  const handleChangePage = (_, newPage) => setPage(newPage);
 
+  const filteredData = students.filter((student) => {
+    const matchesSearch =
+      student.name.toLowerCase().includes(search) ||
+      student.email.toLowerCase().includes(search) ||
+      student.roll_no.toLowerCase().includes(search);
+    const matchesSemester = semesterFilter ? String(student.semester) === semesterFilter : true;
+    const matchesGender = genderFilter ? student.gender === genderFilter : true;
 
-  useEffect(() => {
-    if (year !== null && session !== null) {
-      fetchStudents();
-    }
-  }, [year, session]); // Dependency array: add `year` if it can change
+    return matchesSearch && matchesSemester && matchesGender;
+  });
 
-
-  const handleCsvUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file || file.type !== "text/csv") {
-      toast.error("Please upload a valid CSV file.");
-      return;
-    }
-
-    try {
-      const fileData = new FormData();
-      fileData.append('file', file); // Add selected file to FormData
-
-      const response = await fetch("https://dms-backend-eight.vercel.app/csv/student", {
-        method: "POST",
-        headers: {
-          "authToken": localStorage.getItem("authToken"), // Add auth token
-        },
-        body: fileData,
-      });
-
-      const data = await response.json();
-      console.log(data);
-      if (data.success) {
-        toast.success("Students added successfully!");
-        setCsvFile(null); // Clear selected file
-        fetchStudents(year);
-      } else {
-        toast.error(data.message || "Failed to add students!");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("An error occurred while uploading the file.");
-    }
-  };
-
-
-  const handleOpen = () => setOpen(true);
-
-  const handleClose = () => setOpen(false);
+  const paginatedData = filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   const breadcrumbs = [
     <Link underline="none" key="1" color="inherit">
@@ -154,9 +147,23 @@ const FacultyDashboard_addStudent = () => {
     </Typography>,
   ];
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/fetch/students', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const data = await response.json();
+        setStudents(data.studentsResult);
+      } catch (error) {
+        console.error('Error fetching students:', error);
+      }
+    };
+    fetchStudents();
+  }, []);
 
   return (
     <Container sx={{ mt: 10 }}>
@@ -167,179 +174,174 @@ const FacultyDashboard_addStudent = () => {
       >
         {breadcrumbs}
       </Breadcrumbs>
-      <Box component="div" sx={{ display: 'flex', height: '80px', alignItems: 'center' }} >
+
+      {/* Search and Filters */}
+      <Box display="flex" gap={2} mb={2} mt={2} flexWrap="wrap">
         <TextField
           label="Search"
           variant="outlined"
-          value={searchTerm}
+          size="small"
           onChange={handleSearch}
-          fullWidth
-          sx={{ mt: 2 }}
-        >
-        </TextField>
-        <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
-          <Button variant='contained' sx={{ width: '5rem', ml: 2, height: '55px' }} onClick={handleOpen}>
-            Add
-          </Button>
-          <Button variant='contained' sx={{ width: '7rem', ml: 2, height: '55px' }} component="label">
-            Upload
-            <input
-              type="file"
-              accept=".csv"
-              hidden
-              onChange={(e) => {
-                handleCsvUpload(e);
-                e.target.value = ""; // Clear the input
-              }}
-            />
-          </Button>
-        </Box>
-      </Box>
-      <Box display="flex" gap={2} sx={{ mt: 2 }}>
-        {/* Dropdown for Year Selection */}
+          sx={{ width: 725 }}
+        />
         <TextField
+          label="Semester"
           select
-          label="Select Year"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
           variant="outlined"
-          fullWidth
+          size="small"
+          value={semesterFilter}
+          onChange={handleSemesterChange}
+          sx={{ minWidth: 120 }}
         >
-          {years.map((yearOption) => (
-            <MenuItem key={yearOption} value={yearOption}>
-              {yearOption}
-            </MenuItem>
+          <MenuItem value="">All</MenuItem>
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
+            <MenuItem key={sem} value={String(sem)}>{sem}</MenuItem>
           ))}
         </TextField>
+        <TextField
+          label="Gender"
+          select
+          variant="outlined"
+          size="small"
+          value={genderFilter}
+          onChange={handleGenderChange}
+          sx={{ minWidth: 120 }}
+        >
+          <MenuItem value="">All</MenuItem>
+          <MenuItem value="Male">Male</MenuItem>
+          <MenuItem value="Female">Female</MenuItem>
+        </TextField>
+        <Button variant="contained" color="primary" sx={{ backgroundColor: '#070F2B' }} onClick={handleOpen}>
+          Add Student
+        </Button>
+      </Box>
 
-        {/* Dropdown for Session Selection */}
-        <TextField
-          select
-          label="Select Session"
-          value={session}
-          onChange={(e) => setSession(e.target.value)}
-          variant="outlined"
-          fullWidth
-        >
-          {sessions.map((sessionOption) => (
-            <MenuItem key={sessionOption} value={sessionOption}>
-              {sessionOption}
-            </MenuItem>
-          ))}
-        </TextField>
-      </Box>
-      {students.length !== 0 ? <EnhancedTable searchTerm={searchTerm} students={students} /> : <Typography variant="h6" sx={{ mt: 5 }}>No students found</Typography>}
-      <Modal
-        aria-labelledby="unstyled-modal-title"
-        aria-describedby="unstyled-modal-description"
-        open={open}
-        onClose={handleClose}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Box sx={{ width: 1000, bgcolor: 'background.paper', p: 4, borderRadius: 1, boxShadow: 24 }}>
-          <Container sx={{ mt: 1 }}>
-            <Typography variant="h4" gutterBottom sx={{ textAlign: 'center' }}>
-              Add Student to Database
-            </Typography>
-            <Box
-              component="form"
-              onSubmit={handleSubmit}
-              sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '100%', maxWidth: '1000px', mt: 3 }}
-            >
-              <Box component="div" sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <TextField
-                  label="Name"
-                  variant="outlined"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  fullWidth
-                  sx={{ mr: 2 }}
-                  required
-                />
-                <TextField
-                  label="Roll Number"
-                  variant="outlined"
-                  name="rollNumber"
-                  value={formData.rollno}
-                  onChange={handleChange}
-                  fullWidth
-                  required
-                />
-              </Box>
+      {/* Table */}
+      <Paper borderRadius={6} elevation={1}>
+        <TableContainer>
+          <Table size="small" sx={{
+            '& .MuiTableCell-root': { border: '2px solid #ddd' },
+          }}>
+            <TableHead>
+              <TableRow sx={{ backgroundColor: '#070F2B' }}>
+                <TableCell sx={{ color: 'white' }}>Roll No</TableCell>
+                <TableCell sx={{ color: 'white' }}>Name</TableCell>
+                <TableCell sx={{ color: 'white' }}>Email</TableCell>
+                <TableCell sx={{ color: 'white' }}>Semester</TableCell>
+                <TableCell sx={{ color: 'white' }}>Gender</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {paginatedData.map((student, index) => (
+                <TableRow key={index}>
+                  <TableCell>{student.roll_no}</TableCell>
+                  <TableCell>{student.name}</TableCell>
+                  <TableCell>{student.email}</TableCell>
+                  <TableCell>{student.semester}</TableCell>
+                  <TableCell>{student.gender}</TableCell>
+                </TableRow>
+              ))}
+              {paginatedData.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5} align="center">
+                    No students found
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        {/* Pagination */}
+        <TablePagination
+          component="div"
+          count={filteredData.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          rowsPerPageOptions={[10]}
+        />
+      </Paper>
+
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={modalStyle}>
+
+
+          <Grid container spacing={2}>
+            {[
+              { label: 'Roll No', name: 'roll_no' },
+              { label: 'First Name', name: 'first_name' },
+              { label: 'Last Name', name: 'last_name' },
+              { label: 'Department', name: 'department_id', type: 'select', options: ['Computer Science', 'Computer Science & Design'] },
+              { label: 'Semester', name: 'semester_id', type: 'select', options: [1, 2, 3, 4, 5, 6, 7, 8] },
+              { label: 'Phone No', name: 'phone_no' },
+              { label: 'Admission Type', name: 'admission_type', type: 'select', options: ['Regular', 'Lateral', 'Readmitted'] },
+              { label: 'Admission Id', name: 'admission_id' },
+              { label: 'Passing Year', name: 'passing_year' },
+              { label: 'Section', name: 'section' },
+              { label: 'Email', name: 'email' },
+              { label: 'Admission Year', name: 'admission_year' },
+              { label: 'Course', name: 'course_id', type: 'select', options: ['B.Tech', 'MBA', 'MCA'] },
+              { label: 'Gender', name: 'gender', type: 'select', options: ['Male', 'Female'] },
+              { label: 'Disability', name: 'disability', type: 'select', options: ['Yes', 'No'] },
+              { label: 'Category', name: 'category', type: 'select', options: ['General', 'OBC', 'SC', 'ST', 'EWS'] },
+            ].map(({ label, name, type, options }) => (
+              <Grid item xs={12} sm={6} key={name}>
+                {type === 'select' ? (
+                  <TextField
+                    select
+                    fullWidth
+                    size="small"
+                    label={label}
+                    name={name}
+                    value={formData[name]}
+                    onChange={handleChange}
+                  >
+                    {options.map((opt) => (
+                      <MenuItem key={opt} value={opt}>
+                        {opt}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                ) : (
+                  <TextField
+                    fullWidth
+                    size="small"
+                    label={label}
+                    name={name}
+                    value={formData[name]}
+                    onChange={handleChange}
+                  />
+                )}
+              </Grid>
+            ))}
+
+            <Grid item xs={12} sm={12}>
               <TextField
-                label="Email"
-                variant="outlined"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
                 fullWidth
-                required
+                size="small"
+                label="Date of Birth"
+                name="dob"
+                type="date"
+                InputLabelProps={{ shrink: true }}
+                value={formData.dob}
+                onChange={handleChange}
               />
-              <TextField
-                label="Session"
-                variant="outlined"
-                name="session"
-                value={formData.session}
-                onChange={handleChange}
-                fullWidth
-                required
-                select
-              >
-                {/* Dropdown options */}
-                <MenuItem value="2021-22">2021-22</MenuItem>
-                <MenuItem value="2022-23">2022-23</MenuItem>
-                <MenuItem value="2023-24">2023-24</MenuItem>
-                <MenuItem value="2024-25">2024-25</MenuItem>
-              </TextField>
-              <Box component="div" sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <TextField
-                  label="Year"
-                  variant="outlined"
-                  name="year"
-                  value={formData.year}
-                  onChange={handleChange}
-                  fullWidth
-                  sx={{ mr: 2 }}
-                  required
-                  select
-                >
-                  {/* Dropdown options */}
-                  <MenuItem value="1st year">1st Year</MenuItem>
-                  <MenuItem value="2nd year">2nd Year</MenuItem>
-                  <MenuItem value="3rd year">3rd Year</MenuItem>
-                  <MenuItem value="4th year">4th Year</MenuItem>
-                </TextField>
-                <TextField
-                  label="Section"
-                  variant="outlined"
-                  name="section"
-                  value={formData.section}
-                  onChange={handleChange}
-                  fullWidth
-                  required
-                  select
-                >
-                  {/* Dropdown options */}
-                  <MenuItem value="section-01">Section-01</MenuItem>
-                  <MenuItem value="section-02">Section-02</MenuItem>
-                  <MenuItem value="section-03">Section-03</MenuItem>
-                  <MenuItem value="section-04">Section-04</MenuItem>
-                </TextField>
-              </Box>
-              <Button variant="contained" type="submit" sx={{ mt: 3 }}>
-                Submit
-              </Button>
-            </Box>
-          </Container>
+            </Grid>
+          </Grid>
+
+          <Box display="flex" justifyContent="flex-end" mt={2}>
+            <Button onClick={handleClose} sx={{ mr: 1, color: '#070F2B' }} variant="outlined">
+              Cancel
+            </Button>
+            <Button variant="contained" onClick={handleAddStudent} sx={{ backgroundColor: '#070F2B' }}>
+              Add
+            </Button>
+          </Box>
         </Box>
       </Modal>
     </Container>
-  )
-}
+  );
+};
 
-export default FacultyDashboard_addStudent
+export default FacultyDashboard_addStudent;

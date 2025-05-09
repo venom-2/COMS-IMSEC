@@ -3,7 +3,7 @@ import { Container, Grid2, Typography, Breadcrumbs, Link, Paper, Card, CardConte
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { LineChart } from '@mui/x-charts/LineChart';
-import { SparkLineChart } from '@mui/x-charts/SparkLineChart';
+import { SparkLineChart } from '@mui/x-charts/SparkLineChart'; 
 
 const ProgressCard = ({ title, progress }) => {
   return (
@@ -57,43 +57,47 @@ const FacultyDashboard_home = () => {
       </Typography>
       <Grid2 container spacing={3}>
         <Grid2 item md={3} lg={3}>
-          <Paper sx={{ width: '270px', height: '170px', backgroundColor: '#ffffff' }}>
-            <Typography sx={{ px: 2, py: 2, color: 'black' }}>
+          <Paper sx={{ width: '270px', height: '100px', backgroundColor: '#ffffff' }}>
+            <Box sx={{paddingX: '10px', marginLeft: '5px', fontSize: '20px', paddingY: '10px', color: 'black'}}>
+              {/* <SparkLineChart data={smallValues} colors={['red']} {...settings} /> */}
+              5
+            </Box>
+            <Typography sx={{ px: 2, py: 1, color: 'black' }}>
               Assigned Subjects
             </Typography>
-            <Box sx={{paddingX: '10px'}}>
-              <SparkLineChart data={smallValues} colors={['red']} {...settings} />
-            </Box>
           </Paper>
         </Grid2>
         <Grid2 item md={3} lg={3}>
-          <Paper sx={{ width: '270px', height: '170px', backgroundColor: '#fff' }}>
-            <Typography sx={{ px: 2, py: 2, color: 'black' }}>
+          <Paper sx={{ width: '270px', height: '100px', backgroundColor: '#fff' }}>
+            <Box sx={{paddingX: '10px', marginLeft: '5px', fontSize: '20px', paddingY: '10px', color: 'black'}}>
+              {/* <SparkLineChart data={smallValues} colors={['orange']} {...settings} /> */}
+              250
+            </Box>
+            <Typography sx={{ px: 2, py: 1, color: 'black' }}>
               Total Students
             </Typography>
-            <Box sx={{paddingX: '10px'}}>
-              <SparkLineChart data={smallValues} colors={['orange']} {...settings} />
-            </Box>
           </Paper>
         </Grid2>
         <Grid2 item md={3} lg={3}>
-          <Paper sx={{ width: '270px', height: '170px', backgroundColor: '#fff' }}>
-            <Typography sx={{ px: 2, py: 2, color: 'black' }}>
-              Assigned Subjects
-            </Typography>
-            <Box sx={{paddingX: '10px'}}>
-              <SparkLineChart data={smallValues} colors={['green']} {...settings} />
+          <Paper sx={{ width: '270px', height: '100px', backgroundColor: '#fff' }}>
+            <Box sx={{paddingX: '10px', marginLeft: '5px', fontSize: '20px', paddingY: '10px', color: 'black'}}>
+              {/* <SparkLineChart data={smallValues} colors={['green']} {...settings} /> */}
+              2
             </Box>
+            <Typography sx={{ px: 2, py: 1, color: 'black' }}>
+              Course Outcome
+            </Typography>
           </Paper>
         </Grid2>
         <Grid2 item md={3} lg={3}>
-          <Paper sx={{ width: '270px', height: '170px', backgroundColor: '#fff' }}>
-            <Typography sx={{ px: 2, py: 2, color: 'black' }}>
-              Assigned Subjects
-            </Typography>
-            <Box sx={{paddingX: '10px'}}>
-              <SparkLineChart data={smallValues} colors={['purple']} {...settings} />
+          <Paper sx={{ width: '270px', height: '100px', backgroundColor: '#fff' }}>
+            <Box sx={{paddingX: '10px', marginLeft: '5px', fontSize: '20px', paddingY: '10px', color: 'black'}}>
+              {/* <SparkLineChart data={smallValues} colors={['purple']} {...settings} /> */}
+              45
             </Box>
+            <Typography sx={{ px: 2, py: 1, color: 'black' }}>
+              Feedback Score
+            </Typography>
           </Paper>
         </Grid2>
       </Grid2>

@@ -1,93 +1,52 @@
 import React, { useState, useEffect } from 'react'
-import { Breadcrumbs, Container, Link, Typography, Box, Button, TextField, MenuItem } from '@mui/material';
+import { Breadcrumbs, Container, Link, Typography, Box, Button, TextField, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import EnhancedTable from '../../Components/EnhancedTableMarks';
-import { jwtDecode } from 'jwt-decode';
 
 const FacultyDashboard_addMarks = () => {
-
-  const [searchTerm, setSearchTerm] = useState('');
-  const [year, setYear] = React.useState('');
-  const [session, setSession] = React.useState('');
+  const [search, setSearch] = useState('');
+  const [semesterFilter, setSemesterFilter] = useState('');
   const [students, setStudents] = useState([]);
-  const [subjects, setSubjects] = useState([]);
-  const [subject, setSubject] = useState('');
-  const [assignedSubjects, setAssignedSubjects] = useState([]);
+  // const [genderFilter, setGenderFilter] = useState('');
+  const [page, setPage] = useState(0);
+  const rowsPerPage = 10;
 
-  const years = ['1st year', '2nd year', '3rd year', '4th year'];
-  const sessions = ['2021-22', '2022-23', '2023-24', '2024-25'];
+  const handleSearch = (e) => setSearch(e.target.value.toLowerCase());
+  const handleSemesterChange = (e) => setSemesterFilter(e.target.value);
+  // const handleGenderChange = (e) => setGenderFilter(e.target.value);
+  const handleChangePage = (_, newPage) => setPage(newPage);
 
-  const fetchCTMarks = async () => {
-    try {
-      const response = await fetch("https://dms-backend-eight.vercel.app/fetch/ctmarks", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          "authToken": localStorage.getItem("authToken"),
-        },
-        body: JSON.stringify({ year, session }),
-      });
-      const data = await response.json();
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  const filteredData = students.filter((student) => {
+    const matchesSearch =
+      student.name.toLowerCase().includes(search) ||
+      student.subject_code.toLowerCase().includes(search) ||
+      student.roll_no.toLowerCase().includes(search) ||
+      student.type_name.toLowerCase().includes(search) ||
+      String(student.marks_obtained).includes(search);
+    const matchesSemester = semesterFilter ? String(student.semester_id) === semesterFilter : true;
+    // const matchesGender = genderFilter ? student.gender === genderFilter : true;
 
-  const fetchStudents = async (e) => {
-    try {
-      console.log("Year: " + year, "Session:" + session);
-      const response = await fetch("https://dms-backend-eight.vercel.app/fetch/students", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          "authToken": localStorage.getItem("authToken"),
-        },
-        body: JSON.stringify({ year, session }),
-      });
-      const data = await response.json();
-      if (response.status === 404) {
-        setStudents([]);
-        return;
+    return matchesSearch && matchesSemester;
+  });
+
+  const paginatedData = filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/fetch/class-test', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const data = await response.json();
+        setStudents(data.response);
+      } catch (error) {
+        console.error('Error fetching students:', error);
       }
-      setStudents(data.students);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  const fetchSubjects = async () => {
-    try {
-      console.log("Year: " + year);
-      const response = await fetch(`https://dms-backend-eight.vercel.app/fetch/subject`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          "authToken": localStorage.getItem("authToken"),
-        },
-        body: JSON.stringify({ year }),
-      });
-      const data = await response.json();
-      console.log("Data:", data);
-      setSubjects(data.subjects);
-      console.log("Subjects: ", subjects);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  useEffect(() => {
-    if (year !== null && session !== null) {
-      fetchStudents();
-    }
-  }, [year, session]);
-
-  useEffect(() => {
-    const token = jwtDecode(localStorage.getItem("authToken")).user.assignedSubjects;
-    setAssignedSubjects(token);
-    fetchSubjects();
-    console.log("Assigned Subjects: ", assignedSubjects);
-    console.log("Subjects: ", subjects);
-  }, [year, session]);
+    };
+    fetchStudents();
+  }, []);
 
   const breadcrumbs = [
     <Link underline="none" key="1" color="inherit">
@@ -98,10 +57,6 @@ const FacultyDashboard_addMarks = () => {
     </Typography>,
   ];
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
   return (
     <Container sx={{ mt: 10 }}>
       <Breadcrumbs
@@ -111,72 +66,95 @@ const FacultyDashboard_addMarks = () => {
       >
         {breadcrumbs}
       </Breadcrumbs>
-      <Box component="div" display="flex" gap={2} >
+      {/* Search and Filters */}
+      <Box display="flex" gap={2} mb={2} mt={2} flexWrap="wrap">
         <TextField
           label="Search"
           variant="outlined"
-          value={searchTerm}
+          size="small"
           onChange={handleSearch}
-          fullWidth
-          sx={{ mt: 2 }}
-        >
-        </TextField>
-      </Box>
-      <Box display="flex" gap={2} sx={{ mt: 2 }}>
-        {/* Dropdown for Year Selection */}
+          sx={{ width: 880 }}
+        />
         <TextField
+          label="Semester"
           select
-          label="Select Year"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
           variant="outlined"
-          fullWidth
+          size="small"
+          value={semesterFilter}
+          onChange={handleSemesterChange}
+          sx={{ minWidth: 120 }}
         >
-          {years.map((yearOption) => (
-            <MenuItem key={yearOption} value={yearOption}>
-              {yearOption}
-            </MenuItem>
+          <MenuItem value="">All</MenuItem>
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
+            <MenuItem key={sem} value={String(sem)}>{sem}</MenuItem>
           ))}
         </TextField>
-
-        {/* Dropdown for Session Selection */}
-        <TextField
+        {/* <TextField
+          label="Gender"
           select
-          label="Select Session"
-          value={session}
-          onChange={(e) => setSession(e.target.value)}
           variant="outlined"
-          fullWidth
+          size="small"
+          value={genderFilter}
+          onChange={handleGenderChange}
+          sx={{ minWidth: 120 }}
         >
-          {sessions.map((sessionOption) => (
-            <MenuItem key={sessionOption} value={sessionOption}>
-              {sessionOption}
-            </MenuItem>
-          ))}
-        </TextField>
-
-        <TextField
-          label="Subject"
-          variant="outlined"
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-          fullWidth
-          select
-        >
-          <MenuItem disabled>Select Subject
-          </MenuItem>
-          {subjects.length > 0 ? (
-            subjects.map((sub) => (
-              <MenuItem key={sub._id} value={sub._id}>
-                {sub.subjectName}
-              </MenuItem>
-            ))
-          ) : (
-            <MenuItem disabled>No subjects available</MenuItem>
-          )}
-        </TextField>
+          <MenuItem value="">All</MenuItem>
+          <MenuItem value="Male">Male</MenuItem>
+          <MenuItem value="Female">Female</MenuItem>
+        </TextField> */}
+        <Button variant="contained" color="primary" sx={{ backgroundColor: '#070F2B' }}>
+          Add Marks
+        </Button>
       </Box>
-      {students.length !== 0 ? <EnhancedTable searchTerm={searchTerm} students={students} subject={subject}/> : <Typography variant="h6" sx={{ mt: 5 }}>No students found</Typography>}
+
+      {/* Table */}
+      <Paper borderRadius={6} elevation={1}>
+        <TableContainer>
+          <Table size="small" sx={{
+            '& .MuiTableCell-root': { border: '2px solid #ddd' },
+          }}>
+            <TableHead>
+              <TableRow sx={{ backgroundColor: '#070F2B' }}>
+                <TableCell sx={{ color: 'white' }}>Roll No</TableCell>
+                <TableCell sx={{ color: 'white' }}>Name</TableCell>
+                <TableCell sx={{ color: 'white' }}>Subject</TableCell>
+                <TableCell sx={{ color: 'white' }}>Semester</TableCell>
+                <TableCell sx={{ color: 'white' }}>Assessment Type</TableCell>
+                <TableCell sx={{ color: 'white' }}>Marks Obtained</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {paginatedData.map((student, index) => (
+                <TableRow key={index}>
+                  <TableCell>{student.roll_no}</TableCell>
+                  <TableCell>{student.name}</TableCell>
+                  <TableCell>{student.subject_code}</TableCell>
+                  <TableCell>{student.semester_id}</TableCell>
+                  <TableCell>{student.type_name}</TableCell>
+                  <TableCell>{student.marks_obtained}</TableCell>
+                </TableRow>
+              ))}
+              {paginatedData.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={6} align="center">
+                    No students found
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        {/* Pagination */}
+        <TablePagination
+          component="div"
+          count={filteredData.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          rowsPerPageOptions={[10]}
+        />
+      </Paper>
     </Container>
   )
 }

@@ -26,7 +26,7 @@ const DashboardHOD = () => {
       <div>
         <Navbar handleLogout={handleLogout} />
       </div>
-      <div>
+      <div className="d-flex">
         <div>
           <Sidebar />
         </div>

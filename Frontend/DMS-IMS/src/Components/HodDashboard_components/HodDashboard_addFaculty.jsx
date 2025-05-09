@@ -1,183 +1,299 @@
-import React, { useEffect, useState } from 'react';
-import './HodDashboard_addFaculty.css';
-import {jwtDecode} from 'jwt-decode';
-import { toast } from 'react-hot-toast';
-import Modal from '../Modal';
+import React, { useState, useEffect } from 'react';
+import {
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  TablePagination, Paper, TextField, MenuItem, Box, Typography, Breadcrumbs, Container, Link,
+  Button, Modal, Grid
+} from '@mui/material';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import toast from "react-hot-toast";
+
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 800,
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  borderRadius: 2,
+  p: 4,
+  maxHeight: '90vh',
+  overflowY: 'auto'
+};
 
 const HodDashboard_addFaculty = () => {
+  const [search, setSearch] = useState('');
+  const [semesterFilter, setSemesterFilter] = useState('');
   const [faculties, setFaculties] = useState([]);
-  const [dept, setDept] = useState("");
-  const [faculty, setFaculty] = useState({
-    name: "",
-    role: "faculty",
-    email: "",
-    password: "",
+  // const [genderFilter, setGenderFilter] = useState('');
+  const [page, setPage] = useState(0);
+  const rowsPerPage = 10;
+  const [open, setOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone_no: '',
+    subject_code: '',
+    department_id: '',
   });
-  const [showModal, setShowModal] = useState(false);
-  const [selectedFacultyId, setSelectedFacultyId] = useState(null);
+
+  const departmentMapping = {
+    'Computer Science': 1,
+    'Computer Science & Design': 2,
+  };
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleChange = (e) => {
-    setFaculty({ ...faculty, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
+
+  const handleAddStudent = async () => {
+    const mappedFormData = {
+      ...formData,
+      department_id: departmentMapping[formData.department_id] || formData.department_id
+    };
+
+    console.log('Faculty Data:', mappedFormData);
+
+    try {
+      const response = await fetch('http://localhost:3000/add/assignfaculty', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(mappedFormData),
+      });
+
+      const data = await response.json();
+
+      if (response.status === 201) {
+        console.log('Faculty added successfully:', data);
+        setFormData({
+          first_name: '',
+          last_name: '',
+          email: '',
+          phone_no: '',
+          subject_code: '',
+          department_id: '',
+        });
+        handleClose();
+        toast.success('Faculty added successfully!');
+        fetchFaculties(); // Refresh the faculty list after adding a new faculty
+      } else {
+        console.error('Error adding faculty:', data.message || 'Unknown error');
+      }
+    } catch (error) {
+      console.error('Error adding faculty:', error);
+    }
+  };
+
+  const handleSearch = (e) => setSearch(e.target.value.toLowerCase());
+  // const handleSemesterChange = (e) => setSemesterFilter(e.target.value);
+  // const handleGenderChange = (e) => setGenderFilter(e.target.value);
+  const handleChangePage = (_, newPage) => setPage(newPage);
+
+  const filteredData = faculties.filter((student) => {
+    const matchesSearch =
+      student.first_name.toLowerCase().includes(search) ||
+      student.last_name.toLowerCase().includes(search) ||
+      student.subject_code.toLowerCase().includes(search) ||
+      student.department.toLowerCase().includes(search);
+      // String(student.subject_year).toLowerCase().includes(search);
+    // const matchesSemester = semesterFilter ? String(student.subject_semester_id) === semesterFilter : true;
+    // const matchesGender = genderFilter ? student.gender === genderFilter : true;
+
+    return matchesSearch;
+  });
+
+  const paginatedData = filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+  const breadcrumbs = [
+    <Link underline="none" key="1" color="inherit">
+      HoD Dashboard
+    </Link>,
+    <Typography key="2" sx={{ color: 'text.primary' }}>
+      Add Faculty
+    </Typography>,
+  ];
+
 
   useEffect(() => {
-    const payload = jwtDecode(localStorage.getItem('authToken'));
-    setDept(payload.user.department);
-    fetchFaculties(payload.user.department); // Fetch faculties when department is set
+    const fetchFaculties = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/fetch/faculty', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const data = await response.json();
+        setFaculties(data.faculty);
+      } catch (error) {
+        console.error('Error fetching students:', error);
+      }
+    };
+    fetchFaculties();
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (faculty.password !== document.getElementById('confirm-password').value) {
-      toast('Passwords do not match');
-      return;
-    }
-    faculty.department = dept;
-    try {
-      const response = await fetch('https://dms-backend-eight.vercel.app/add/user', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'authToken': `${localStorage.getItem('authToken')}`,
-        },
-        body: JSON.stringify(faculty),
-      });
-      const data = await response.json();
-      if (data.success) {
-        toast.success('Faculty added successfully');
-        setFaculties([...faculties, faculty]);
-        setFaculty({
-          name: "",
-          role: "faculty",
-          email: "",
-          password: "",
-        });
-        fetchFaculties(dept); // Refetch faculties after adding a new one
-      } else {
-        toast.error(data.message);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const fetchFaculties = async (department) => {
-    try {
-      const response = await fetch('https://dms-backend-eight.vercel.app/fetch/faculty', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'authToken': `${localStorage.getItem('authToken')}`,
-        },
-        body: JSON.stringify({ department }),
-      });
-      const data = await response.json();
-      setFaculties(data.faculty);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleRemove = async () => {
-    try {
-      const response = await fetch(`https://dms-backend-eight.vercel.app/delete/user/${selectedFacultyId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'authToken': `${localStorage.getItem('authToken')}`,
-        },
-      });
-      const data = await response.json();
-      if (data.success) {
-        toast.success('Faculty removed successfully');
-        fetchFaculties(dept); // Refetch faculties after removing one
-      } else {
-        toast.error(data.message);
-      }
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setShowModal(false);
-      setSelectedFacultyId(null);
-    }
-  };
-
-  const openModal = (facultyId) => {
-    setSelectedFacultyId(facultyId);
-    setShowModal(true);
-  };
-
   return (
-    <div className='add-faculty-container d-flex flex-column align-items-center' style={{marginTop: '70px'}}>
-      <div className="heading-faculty h-20 d-flex justify-content-center mt-2">
-        <h2>Add Faculty</h2>
-      </div>
-      <div className="form-faculty d-flex justify-content-center mt-2">
-        <form className="d-flex flex-column gap-3">
-          <div className="first-row d-flex gap-5 flex-wrap">
-            <div className="name d-flex flex-column col md-6 ">
-              <label htmlFor="name">Name</label>
-              <input className='form-control' onChange={handleChange} value={faculty.name} type="text" id="name" name="name" placeholder="Enter name" required />
-            </div>
-            <div className="department d-flex flex-column col md-6">
-              <label htmlFor="department">Department</label>
-              <input className='form-control' type="text" value={dept} id="department" name="department" readOnly />
-            </div>
-          </div>
-          <div className="email d-flex flex-column flex-wrap">
-            <label htmlFor="email">Email</label>
-            <input className='form-control' type="email" onChange={handleChange} value={faculty.email} id="email" name="email" placeholder="Enter email" required />
-          </div>
-          <div className="third-row d-flex gap-5 flex-wrap">
-            <div className="password d-flex flex-column col md-6">
-              <label htmlFor="password">Password</label>
-              <input className='form-control' type="password" onChange={handleChange} value={faculty.password} id="password" name="password" placeholder="Enter password" required />
-            </div>
-            <div className="confirm-password d-flex flex-column col md-6">
-              <label htmlFor="confirm-password">Confirm Password</label>
-              <input className='form-control' type="password" id="confirm-password" name="confirmPassword" placeholder="Confirm password" required />
-            </div>
-          </div>
-          <div className="submit d-flex justify-content-center">
-            <input className='submit-btn' type="submit" onClick={handleSubmit} value="Add Faculty" />
-          </div>
-        </form>
-      </div>
-      <div className="faculty-table mt-2">
-        <table className="table table-striped table-hover">
-          <thead>
-            <tr>
-              <th scope="col">Sr. No.</th>
-              <th scope="col">Name</th>
-              <th scope="col">Department</th>
-              <th scope="col">Email</th>
-              <th scope="col">Edit</th>
-              <th scope="col">Remove</th>
-            </tr>
-          </thead>
-          <tbody>
-            {faculties.map((faculty, index) => (
-              <tr key={index}>
-                <th scope="row">{index + 1}</th>
-                <td>{faculty.name}</td>
-                <td>{faculty.department}</td>
-                <td>{faculty.email}</td>
-                <td><button className='btn btn-primary'>Edit</button></td>
-                <td><button className='btn btn-danger' onClick={() => openModal(faculty._id)}>Remove</button></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      {showModal && (
-        <Modal 
-          onClose={() => setShowModal(false)}
-          onConfirm={handleRemove}
-          userId = {faculty._id}
-          body={`Are you sure you want to remove this faculty member?`}
+    <Container sx={{ mt: 10 }}>
+      <Breadcrumbs
+        separator={<NavigateNextIcon fontSize="small" />}
+        aria-label="breadcrumb"
+        sx={{ mt: '20px' }}
+      >
+        {breadcrumbs}
+      </Breadcrumbs>
+
+      {/* Search and Filters */}
+      <Box display="flex" gap={2} mb={2} mt={2} flexWrap="wrap">
+        <TextField
+          label="Search"
+          variant="outlined"
+          size="small"
+          onChange={handleSearch}
+          sx={{ width: 1000 }}
         />
-      )}
-    </div>
+        {/* <TextField
+          label="Semester"
+          select
+          variant="outlined"
+          size="small"
+          value={semesterFilter}
+          onChange={handleSemesterChange}
+          sx={{ minWidth: 120 }}
+        >
+          <MenuItem value="">All</MenuItem>
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
+            <MenuItem key={sem} value={String(sem)}>{sem}</MenuItem>
+          ))}
+        </TextField> */}
+        {/* <TextField
+                    label="Gender"
+                    select
+                    variant="outlined"
+                    size="small"
+                    value={genderFilter}
+                    onChange={handleGenderChange}
+                    sx={{ minWidth: 120 }}
+                >
+                    <MenuItem value="">All</MenuItem>
+                    <MenuItem value="Male">Male</MenuItem>
+                    <MenuItem value="Female">Female</MenuItem>
+                </TextField> */}
+        <Button variant="contained" color="primary" sx={{ backgroundColor: '#070F2B' }} onClick={handleOpen}>
+          Add Faculty
+        </Button>
+      </Box>
+
+      {/* Table */}
+      <Paper borderRadius={6} elevation={1}>
+        <TableContainer>
+          <Table size="small" sx={{
+            '& .MuiTableCell-root': { border: '2px solid #ddd' },
+          }}>
+            <TableHead>
+              <TableRow sx={{ backgroundColor: '#070F2B' }}>
+                <TableCell sx={{ color: 'white' }}>First Name</TableCell>
+                <TableCell sx={{ color: 'white' }}>Last Name</TableCell>
+                <TableCell sx={{ color: 'white' }}>Email</TableCell>
+                <TableCell sx={{ color: 'white' }}>Phone Number</TableCell>
+                <TableCell sx={{ color: 'white' }}>Subject Code</TableCell>
+                <TableCell sx={{ color: 'white' }}>Department</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {paginatedData.map((student, index) => (
+                <TableRow key={index}>
+                  <TableCell>{student.first_name}</TableCell>
+                  <TableCell>{student.last_name}</TableCell>
+                  <TableCell>{student.email}</TableCell>
+                  <TableCell>{student.phone_no}</TableCell>
+                  <TableCell>{student.subject_code}</TableCell>
+                  <TableCell>{student.department_id}</TableCell>
+                </TableRow>
+              ))}
+              {paginatedData.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={6} align="center">
+                    No students found
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        {/* Pagination */}
+        <TablePagination
+          component="div"
+          count={filteredData.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          rowsPerPageOptions={[10]}
+        />
+      </Paper>
+
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={modalStyle}>
+
+
+          <Grid container spacing={2}>
+            {[
+              { label: 'Email', name: 'email' },
+              { label: 'First Name', name: 'first_name' },
+              { label: 'Last Name', name: 'last_name' },
+              { label: 'Phone Number', name: 'phone_no' },
+              { label: 'Subject Code', name: 'subject_code' },
+              { label: 'Department', name: 'department_id', type: 'select', options: ['Computer Science', 'Computer Science & Design'] }
+            ].map(({ label, name, type, options }) => (
+              <Grid item xs={12} sm={6} key={name}>
+                {type === 'select' ? (
+                  <TextField
+                    select
+                    fullWidth
+                    size="small"
+                    label={label}
+                    name={name}
+                    value={formData[name]}
+                    onChange={handleChange}
+                  >
+                    {options.map((opt) => (
+                      <MenuItem key={opt} value={opt}>
+                        {opt}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                ) : (
+                  <TextField
+                    fullWidth
+                    size="small"
+                    label={label}
+                    name={name}
+                    value={formData[name]}
+                    onChange={handleChange}
+                  />
+                )}
+              </Grid>
+            ))}
+          </Grid>
+
+          <Box display="flex" justifyContent="flex-end" mt={2}>
+            <Button onClick={handleClose} sx={{ mr: 1, color: '#070F2B' }} variant="outlined">
+              Cancel
+            </Button>
+            <Button variant="contained" onClick={handleAddStudent} sx={{ backgroundColor: '#070F2B' }}>
+              Add
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+    </Container>
   );
 };
 

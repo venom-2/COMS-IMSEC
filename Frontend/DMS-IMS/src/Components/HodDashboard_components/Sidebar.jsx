@@ -51,12 +51,12 @@ const Sidebar = () => {
                 </ListItem>
 
                 {/* Assign Faculty */}
-                <ListItem button component={Link} to="/dashboardhod/assign-faculty" sx={{ '&:hover': { backgroundColor: '#2E3A59' } }}>
+                {/* <ListItem button component={Link} to="/dashboardhod/assign-faculty" sx={{ '&:hover': { backgroundColor: '#2E3A59' } }}>
                     <ListItemIcon sx={{ color: '#fff' }}>
                         <GroupIcon />
                     </ListItemIcon>
                     <ListItemText primary="Assign Faculty" sx={{ color: 'white' }} />
-                </ListItem>
+                </ListItem> */}
 
                 {/* Add Student */}
                 <ListItem button component={Link} to="/dashboardhod/add-students" sx={{ '&:hover': { backgroundColor: '#2E3A59' } }}>
