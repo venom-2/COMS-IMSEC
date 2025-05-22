@@ -3,7 +3,7 @@ import { Container, Grid2, Typography, Breadcrumbs, Link, Paper, Card, CardConte
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { LineChart } from '@mui/x-charts/LineChart';
-import { SparkLineChart } from '@mui/x-charts/SparkLineChart'; 
+import { SparkLineChart } from '@mui/x-charts/SparkLineChart';
 
 const ProgressCard = ({ title, progress }) => {
   return (
@@ -31,7 +31,7 @@ const FacultyDashboard_home = () => {
     showTooltip: true,
     showHighlight: true,
   };
-  
+
   const smallValues = [0, 2, 3, 4, 6, 8, 7, 9, 15, 6, 8, 7, 12];
 
   const breadcrumbs = [
@@ -58,7 +58,7 @@ const FacultyDashboard_home = () => {
       <Grid2 container spacing={3}>
         <Grid2 item md={3} lg={3}>
           <Paper sx={{ width: '270px', height: '100px', backgroundColor: '#ffffff' }}>
-            <Box sx={{paddingX: '10px', marginLeft: '5px', fontSize: '20px', paddingY: '10px', color: 'black'}}>
+            <Box sx={{ paddingX: '10px', marginLeft: '5px', fontSize: '20px', paddingY: '10px', color: 'black' }}>
               {/* <SparkLineChart data={smallValues} colors={['red']} {...settings} /> */}
               5
             </Box>
@@ -69,7 +69,7 @@ const FacultyDashboard_home = () => {
         </Grid2>
         <Grid2 item md={3} lg={3}>
           <Paper sx={{ width: '270px', height: '100px', backgroundColor: '#fff' }}>
-            <Box sx={{paddingX: '10px', marginLeft: '5px', fontSize: '20px', paddingY: '10px', color: 'black'}}>
+            <Box sx={{ paddingX: '10px', marginLeft: '5px', fontSize: '20px', paddingY: '10px', color: 'black' }}>
               {/* <SparkLineChart data={smallValues} colors={['orange']} {...settings} /> */}
               250
             </Box>
@@ -80,7 +80,7 @@ const FacultyDashboard_home = () => {
         </Grid2>
         <Grid2 item md={3} lg={3}>
           <Paper sx={{ width: '270px', height: '100px', backgroundColor: '#fff' }}>
-            <Box sx={{paddingX: '10px', marginLeft: '5px', fontSize: '20px', paddingY: '10px', color: 'black'}}>
+            <Box sx={{ paddingX: '10px', marginLeft: '5px', fontSize: '20px', paddingY: '10px', color: 'black' }}>
               {/* <SparkLineChart data={smallValues} colors={['green']} {...settings} /> */}
               2
             </Box>
@@ -91,7 +91,7 @@ const FacultyDashboard_home = () => {
         </Grid2>
         <Grid2 item md={3} lg={3}>
           <Paper sx={{ width: '270px', height: '100px', backgroundColor: '#fff' }}>
-            <Box sx={{paddingX: '10px', marginLeft: '5px', fontSize: '20px', paddingY: '10px', color: 'black'}}>
+            <Box sx={{ paddingX: '10px', marginLeft: '5px', fontSize: '20px', paddingY: '10px', color: 'black' }}>
               {/* <SparkLineChart data={smallValues} colors={['purple']} {...settings} /> */}
               45
             </Box>
@@ -109,13 +109,20 @@ const FacultyDashboard_home = () => {
           <Paper>
             <BarChart
               series={[
-                { data: [35, 44, 24, 34] },
-                { data: [51, 6, 49, 30] },
+                {
+                  data: [35, 44, 24, 34],
+                  label: "Odd Semester",
+                },
+                {
+                  data: [51, 6, 49, 30],
+                  label: "Even Semester",
+                },
               ]}
-              xAxis={[{ data: ['Year 1', 'Year 2', 'Year 3', 'Year 4'], scaleType: 'band' }]}
-              margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
+              xAxis={[{ data: ['Year 1', 'Year 2', 'Year 3', 'Year 4'], scaleType: 'band', label: 'Years' }]}
+              yAxis={[{ scaleType: 'linear', label: 'Students Achieving Target' }]}
+              margin={{ top: 20, bottom: 50, left: 60, right: 10 }}
               width={552}
-              height={260}
+              height={280}
             />
           </Paper>
         </Grid2>
@@ -123,11 +130,13 @@ const FacultyDashboard_home = () => {
           <Paper>
             <LineChart
               series={[
-                { curve: "linear", data: [0, 5, 2, 6, 3, 9.3] },
-                { curve: "linear", data: [6, 3, 7, 9.5, 4, 2] },
+                { curve: "linear", data: [0, 5, 2, 6, 3, 9.3], label: "Odd Semester" },
+                { curve: "linear", data: [6, 3, 7, 9.5, 4, 2], label: "Even Semester" },
               ]}
               width={552}
-              height={260}
+              height={280}
+              xAxis={[{ data: [0, 1, 2, 3, 4, 5], scaleType: "linear", label: "Feedback Score" }]}
+              yAxis={[{ data: [5, 10, 15, 20], scaleType: "linear", label: "No. of Students" }]}
             />
           </Paper>
         </Grid2>

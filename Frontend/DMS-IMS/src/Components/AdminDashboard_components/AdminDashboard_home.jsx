@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box, Container, Grid, Paper, Typography
 } from '@mui/material';
-import { 
-  LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer
+import {
+  LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, Label
 } from 'recharts';
 
 const studentPerformance = [
@@ -51,7 +51,7 @@ const AdminDashboard_home = () => {
       }
     }
 
-    fetchDashboardData();  
+    fetchDashboardData();
   }, []);
 
   const cards = [
@@ -77,15 +77,19 @@ const AdminDashboard_home = () => {
       {/* Charts Section */}
       <Grid container spacing={3} sx={{ mt: 0 }}>
         <Grid item xs={12} md={6}>
-          <Paper sx={{ height: 300, p: 2 }}>
+          <Paper sx={{ height: 350, p: 2 }}>
             <Typography variant="h6" gutterBottom>Student Performance</Typography>
             <Box sx={{ height: '85%' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={studentPerformance}>
                   <Line type="monotone" dataKey="score" stroke="#8884d8" />
                   <CartesianGrid stroke="#ccc" />
-                  <XAxis dataKey="department" />
-                  <YAxis />
+                  <XAxis dataKey="department">
+                    <Label value="Department" offset={-1} position="insideBottom" />
+                  </XAxis>
+                  <YAxis >
+                    <Label value="Avg Marks" angle={-90} position="insideLeft" />
+                  </YAxis>
                   <Tooltip />
                 </LineChart>
               </ResponsiveContainer>
@@ -93,15 +97,19 @@ const AdminDashboard_home = () => {
           </Paper>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Paper sx={{ height: 300, p: 2 }}>
+          <Paper sx={{ height: 350, p: 2 }}>
             <Typography variant="h6" gutterBottom>Faculty Performance</Typography>
             <Box sx={{ height: '85%' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={facultyPerformance}>
                   <Line type="monotone" dataKey="score" stroke="#82ca9d" />
                   <CartesianGrid stroke="#ccc" />
-                  <XAxis dataKey="department" />
-                  <YAxis />
+                  <XAxis dataKey="department" >
+                    <Label value="Department" offset={-1} position="insideBottom" />
+                  </XAxis>
+                  <YAxis >
+                    <Label value="Avg Marks" angle={-90} position="insideLeft" />
+                  </YAxis>
                   <Tooltip />
                 </LineChart>
               </ResponsiveContainer>

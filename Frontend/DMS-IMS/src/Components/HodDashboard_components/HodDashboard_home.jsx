@@ -2,7 +2,7 @@ import React from 'react'
 import { Breadcrumbs, Container, Link, Typography, Grid2, Grid, Paper, Box, LinearProgress } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import {
-  LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer
+  LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, Label
 } from 'recharts';
 
 const ProgressCard = ({ title, progress }) => {
@@ -127,8 +127,12 @@ const HodDashboard_home = () => {
                 <LineChart data={studentPerformance}>
                   <Line type="monotone" dataKey="score" stroke="#8884d8" />
                   <CartesianGrid stroke="#ccc" />
-                  <XAxis dataKey="semester"/>
-                  <YAxis />
+                  <XAxis dataKey="semester">
+                    <Label value="Semester" offset={-5} position="insideBottom" />
+                  </XAxis>
+                  <YAxis >
+                    <Label value="Marks" angle={-90} position="insideLeft" />
+                  </YAxis>
                   <Tooltip />
                 </LineChart>
               </ResponsiveContainer>
@@ -143,8 +147,12 @@ const HodDashboard_home = () => {
                 <LineChart data={facultyPerformance}>
                   <Line type="monotone" dataKey="score" stroke="#82ca9d" />
                   <CartesianGrid stroke="#ccc" />
-                  <XAxis dataKey="semester" />
-                  <YAxis />
+                  <XAxis dataKey="semester" >
+                    <Label value="Semester" offset={-5} position="insideBottom" />
+                  </XAxis>
+                  <YAxis >
+                    <Label value="Marks" angle={-90} position="insideLeft" />
+                  </YAxis>
                   <Tooltip />
                 </LineChart>
               </ResponsiveContainer>
