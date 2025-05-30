@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Breadcrumbs,
   Container,
@@ -18,12 +18,53 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 const FacultyDashboard_viewCO = () => {
   const [selectedValue, setSelectedValue] = useState('60');
+  const [pdfUrl, setPdfUrl] = useState(null);
   const [subjectCode, setSubjectCode] = useState('');
   const [semester, setSemester] = useState('');
   const [co, setCo] = useState({});
   const [value, setValue] = useState(false);
-  const [reportData, setReportData] = useState({});
-  const [geminiResponse, setGeminiResponse] = useState({});
+  const [statusMessage, setStatusMessage] = useState('');
+  const [statusType, setStatusType] = useState('');
+  const [reportData, setReportData] = useState(
+    {
+      "targetValue": 60,
+      "subjectCode": "KCS-302",
+      "semester": 3,
+      "assessmentData": {
+        "CT1": {
+          "studentsAboveTarget": 30
+        },
+        "CT2": {
+          "studentsAboveTarget": 25
+        },
+        "PUT": {
+          "studentsAboveTarget": 13
+        },
+        "Assignment": {
+          "studentsAboveTarget": 23
+        },
+        "UT": {
+          "studentsAboveTarget": 33
+        }
+      },
+      "coCalculationDetails": {
+        "formula": "60% in (CT1+CT2+PUT) + 10% in (Assignment) + 30% in (UT)",
+        "step1Calculation": "60% of (68) + 10% of (23) + 30% of (33) = 53.0",
+        "step2Calculation": "80% of (53.0) + 20% of (0) = 42.4",
+        "finalCOValue": 1
+      }
+    }
+  );
+
+  // Effect to clean up the object URL when pdfUrl changes or component unmounts
+  useEffect(() => {
+    return () => {
+      if (pdfUrl) {
+        window.URL.revokeObjectURL(pdfUrl);
+        console.log('PDF object URL revoked:', pdfUrl);
+      }
+    };
+  }, [pdfUrl]);
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
@@ -55,7 +96,7 @@ const FacultyDashboard_viewCO = () => {
   };
 
   const fetchReportData = async () => {
-    try{
+    try {
       const response = await fetch('http://localhost:3000/fetch/class-test-assignment', {
         method: 'GET',
         headers: {
@@ -74,29 +115,60 @@ const FacultyDashboard_viewCO = () => {
   }
 
   const generateReport = async () => {
+    setValue(false);
     await fetchReportData();
     console.log('Generating report...');
+    setStatusMessage('Generating PDF... Please wait.'); // Set loading message
+    setStatusType(''); // Clear any previous type
+    setPdfUrl(null); // Clear previous PDF if any
     try {
-      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyCATVG1d_jRoDpaPuuWkjwP8nbRB4ED-GY', {
+      const response = await fetch('http://localhost:3000/report/generate-report', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          "contents": [{
-            "parts": [{ "text": JSON.stringify(reportData, null, 2)  }]
-          }]
-        }),
-      })
+        body: JSON.stringify(reportData),
+      });
       if (!response.ok) {
-        throw new Error(response);
+        // If backend sends JSON error, try to parse it
+        const errorResponse = await response.json().catch(() => ({ message: 'Unknown error' }));
+        throw new Error(`Server error: ${response.status} - ${errorResponse.error || errorResponse.message || 'Unknown error'}`);
       }
-      const data = await response.json();
-      console.log(data);
-      setGeminiResponse(data.candidates.content.parts[0].text);
-      console.log('Gemini response:', geminiResponse);
-    } catch (err) {
-      console.log(err);
+      
+      // IMPORTANT: Get response as Blob for PDF
+      const pdfBlob = await response.blob();
+      console.log('PDF Blob received:', pdfBlob);
+      if (!pdfBlob || pdfBlob.size === 0) {
+        throw new Error('Received empty PDF blob. Please check the server response.');
+      }
+
+      // Create a temporary URL for the blob
+      const url = window.URL.createObjectURL(pdfBlob);
+      setPdfUrl(url); // Set the PDF URL in state
+
+      console.log('PDF URL:', url);
+
+      // Create a temporary <a> tag for download
+      // const a = document.createElement('a');
+      // a.href = url;
+      // a.download = 'college_co_report.pdf'; // Suggested filename for download
+      // document.body.appendChild(a); // Append to body to make it clickable
+
+      // // Programmatically click the link to trigger download
+      // a.click();
+
+      // // Clean up by revoking the object URL and removing the link
+      // window.URL.revokeObjectURL(url);
+      // a.remove();
+
+      setStatusMessage('PDF generated and downloaded successfully!');
+      setStatusType('success'); // Set type for styling
+    }
+    catch (err) {
+      console.error('Error during PDF generation or download:', error);
+      setStatusMessage(`Error: ${err.message}`);
+      setStatusType('error');
+      setPdfUrl(null); // Clear PDF URL on error
     }
   }
 
@@ -163,6 +235,10 @@ const FacultyDashboard_viewCO = () => {
         <Box>
           <Button variant="contained" sx={{ mt: 2, mr: 2, backgroundColor: '#070F2B' }} onClick={handleSubmit}>Calculate CO</Button>
           <Button variant="contained" sx={{ mt: 2, backgroundColor: '#070F2B' }} onClick={generateReport}>Generate Report</Button>
+          {/* Display the status message */}
+          <Typography variant="body2" sx={{ mt: 2 }} className={statusType}>
+            {statusMessage}
+          </Typography>
         </Box>
       </Box>
 
@@ -194,6 +270,20 @@ const FacultyDashboard_viewCO = () => {
           </Box>
         )}
       </Box>
+
+      {/* PDF Display Section */}
+      {pdfUrl && (
+        <Box sx={{ mt: 5, width: '100%', height: '800px', border: '1px solid #ccc' }}>
+          <iframe
+            src={pdfUrl}
+            title="Generated Report PDF"
+            width="100%"
+            height="100%"
+            style={{ border: 'none' }}
+          />
+        </Box>
+      )}
+
     </Container>
   );
 };
